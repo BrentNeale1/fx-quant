@@ -1,0 +1,11 @@
+services:
+  fx-quant:
+    build: .
+    container_name: fx-quant
+    env_file:
+      - config/.env
+    volumes:
+      - ./config/system.yaml:/app/config/system.yaml:ro
+      - ./logs:/app/logs
+      - ./models:/app/models
+    restart: unless-stopped

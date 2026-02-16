@@ -1,0 +1,11 @@
+.git/
+__pycache__/
+*.pyc
+.env
+logs/
+models/
+.claude/
+venv/
+data/
+fx-quant/
+*.pdf

@@ -6,7 +6,9 @@ Includes kill switch, position limits, and full order logging.
 """
 
 import os
+import sys
 import csv
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -16,6 +18,7 @@ from supabase import create_client
 
 from config_loader import load_config, get_project_root
 from backtester import fetch_candles_from_supabase, generate_signals
+from ai_wrapper import train_ensemble, validate_signal, log_ai_decision
 
 
 # ---------------------------------------------------------------------------
@@ -277,11 +280,14 @@ def place_order(instrument, units, side, cfg, price=None):
 # Signal execution
 # ---------------------------------------------------------------------------
 
-def execute_signals(signals_df, cfg):
+def execute_signals(signals_df, cfg, ai_models=None):
     """
     Takes a DataFrame with signal column (from generate_signals).
     Reads the latest signal per instrument, compares to current positions,
     and places orders for needed changes.
+
+    If ai_models are provided, validates signals through the AI decision
+    wrapper before placing orders.
 
     Returns list of order results.
     """
@@ -327,6 +333,14 @@ def execute_signals(signals_df, cfg):
 
     # Signal=1 means go long, signal=0 means go flat
     if signal == 1 and current_position == 0:
+        # AI validation before placing BUY order
+        if ai_models:
+            ai_decision = validate_signal(instrument, signal, signals_df, cfg, models=ai_models)
+            log_ai_decision(ai_decision)
+            if not ai_decision["approved"]:
+                print(f"  AI REJECTED: confidence={ai_decision['confidence']:.2f}, {ai_decision['rationale']}")
+                return results
+
         units = compute_units(balance, instrument, "BUY", cfg)
         result = place_order(instrument, units, "BUY", cfg, price=close_price)
         results.append(result)
@@ -418,8 +432,17 @@ def main():
         latest_signal = "LONG" if df["signal"].iloc[-1] == 1 else "FLAT"
         print(f"  Latest signal: {latest_signal} (close={df['close'].iloc[-1]:.5f})")
 
-        # Execute
-        results = execute_signals(df, cfg)
+        # Train AI ensemble for this instrument
+        ai_models = None
+        ai_cfg = cfg.get("ai", {})
+        if ai_cfg.get("model") == "local-ensemble":
+            print(f"  Training AI ensemble for {instrument}...")
+            models_list, val_metrics = train_ensemble(df, strategy_cfg)
+            if models_list:
+                ai_models = models_list
+
+        # Execute with AI validation
+        results = execute_signals(df, cfg, ai_models=ai_models)
         all_results.extend(results)
         print()
 
@@ -432,4 +455,19 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    cfg = load_config()
+    interval = cfg.get("execution", {}).get("interval_seconds", 60)
+
+    # One-shot mode: pass --once to run a single iteration and exit
+    if "--once" in sys.argv:
+        main()
+    else:
+        print(f"Running on {interval}s loop. Press Ctrl+C to stop.\n")
+        while True:
+            try:
+                main()
+                print(f"\nSleeping {interval}s until next run...\n")
+                time.sleep(interval)
+            except KeyboardInterrupt:
+                print("\nShutting down gracefully.")
+                break

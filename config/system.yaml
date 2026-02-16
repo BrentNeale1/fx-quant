@@ -26,10 +26,16 @@ features:
   volatility_window: 20
 
 ai:
-  model: "local-ensemble" # example: 'openai', 'local-llm', 'ensemble'
+  model: "local-ensemble"
   confidence_threshold: 0.85
   retriever_enabled: true
   retriever_source: "supabase"
+  ensemble_models: ["logistic_regression", "random_forest", "gradient_boosting"]
+  backtest_validation_window: 50
+  sanity_checks:
+    rsi_overbought: 80
+    rsi_oversold: 20
+    volatility_multiplier: 3.0
 
 strategy:
   rule: "sma_cross" # human-readable name of the rule
@@ -43,6 +49,7 @@ execution:
   paper_mode: true
   canary_size_pct: 0.01
   max_positions: 3
+  interval_seconds: 60
 
 supabase:
   url: "https://<your>.supabase.co"
