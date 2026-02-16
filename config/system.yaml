@@ -1,0 +1,50 @@
+general:
+  project_name: "fx-quant"
+  timezone: "UTC"
+
+brokers:
+  - name: "oanda"
+    type: "oanda_v20"
+    enabled: true
+    instruments:
+      - "EUR_USD"
+      - "USD_JPY"
+
+data:
+  candle_count: 200
+  candle_granularities:
+    - "M1"
+    - "M5"
+  tick_export: false # true to capture raw ticks
+
+features:
+  sma_windows: [3, 20]
+  ema_windows: [20]
+  rsi_period: 14
+  atr_period: 14
+  vwap_window: 20
+  volatility_window: 20
+
+ai:
+  model: "local-ensemble" # example: 'openai', 'local-llm', 'ensemble'
+  confidence_threshold: 0.85
+  retriever_enabled: true
+  retriever_source: "supabase"
+
+strategy:
+  rule: "sma_cross" # human-readable name of the rule
+  params:
+    short: 3
+    long: 20
+  trade_size_pct_of_equity: 0.01
+  max_drawdown_pct: 0.05
+
+execution:
+  paper_mode: true
+  canary_size_pct: 0.01
+  max_positions: 3
+
+supabase:
+  url: "https://<your>.supabase.co"
+  key_env_name: "SUPABASE_KEY" # key stored in .env
+  table: "fx_candles"
