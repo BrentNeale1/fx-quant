@@ -93,6 +93,15 @@ def df_to_records(df: pd.DataFrame, instrument: str, granularity: str = "M1"):
         df2[col] = df2[col].apply(_convert_cell)
 
     records = df2.to_dict(orient="records")
+
+    # Final pass: ensure no NaN/inf leaks through (pandas can re-introduce
+    # numpy.nan when storing None back into float columns)
+    def _sanitize(v):
+        if isinstance(v, float) and (math.isnan(v) or math.isinf(v)):
+            return None
+        return v
+
+    records = [{k: _sanitize(v) for k, v in row.items()} for row in records]
     return records
 
 
@@ -131,7 +140,9 @@ def upload_dataframe(df: pd.DataFrame, instrument="EUR_USD", granularity="M1", c
         batch = records[start:end]
 
         resp = supabase.table(TABLE).upsert(batch).execute()
-        if resp and getattr(resp, "status_code", None) not in (200, 201):
+        if hasattr(resp, "data") and resp.data is not None:
+            pass  # success
+        elif getattr(resp, "status_code", None) not in (200, 201, None):
             print("Upload chunk error:", resp)
             raise SystemExit("Upsert failed")
         print(f"Chunk {i+1}/{chunks} uploaded ({len(batch)} rows).")
