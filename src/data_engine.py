@@ -124,4 +124,7 @@ def build_all_features(df, config=None):
     df = add_atr(df, period=atr_p)
     df = add_vwap(df, period=vwap_w)
 
+    # Drop intermediate helper columns
+    df.drop(columns=["pv", "typical_price", "tr"], inplace=True, errors="ignore")
+
     return df

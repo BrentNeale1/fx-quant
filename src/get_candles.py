@@ -49,6 +49,7 @@ def main():
             )
             df = candles_to_df(candles)
             df = build_all_features(df, config=feature_cfg)
+            df["granularity"] = granularity
             print(df.tail(10).to_string())
 
 

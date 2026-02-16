@@ -23,7 +23,7 @@ if not SUPABASE_URL or not SUPABASE_KEY:
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 
-def df_to_records(df: pd.DataFrame, instrument: str):
+def df_to_records(df: pd.DataFrame, instrument: str, granularity: str = "M1"):
     """
     Convert DataFrame to a list of dicts suitable for Supabase/Postgres.
     Ensures time is ISO string and numeric types are regular Python types.
@@ -36,8 +36,9 @@ def df_to_records(df: pd.DataFrame, instrument: str):
         df2.index.name = "time"
     df2 = df2.reset_index()
 
-    # Add instrument column
+    # Add instrument and granularity columns
     df2["instrument"] = instrument
+    df2["granularity"] = granularity
 
     # Convert Timestamp -> ISO string (timezone-aware preserved)
     df2["time"] = df2["time"].apply(lambda t: pd.to_datetime(t).isoformat())
@@ -95,8 +96,8 @@ def df_to_records(df: pd.DataFrame, instrument: str):
     return records
 
 
-def upload_dataframe(df: pd.DataFrame, instrument="EUR_USD", chunk_size=500):
-    records = df_to_records(df, instrument)
+def upload_dataframe(df: pd.DataFrame, instrument="EUR_USD", granularity="M1", chunk_size=500):
+    records = df_to_records(df, instrument, granularity)
 
     # debug: check first record is JSON serializable
     if records:
@@ -165,6 +166,6 @@ if __name__ == "__main__":
             df = candles_to_df(data)
             df = build_all_features(df, config=feature_cfg)
 
-            upload_dataframe(df, instrument=instrument, chunk_size=200)
+            upload_dataframe(df, instrument=instrument, granularity=granularity, chunk_size=200)
 
     print("Upload completed.")

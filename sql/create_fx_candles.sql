@@ -1,0 +1,20 @@
+CREATE TABLE fx_candles (
+    time         TIMESTAMPTZ   NOT NULL,
+    instrument   TEXT          NOT NULL,
+    granularity  TEXT          NOT NULL,
+    open         DOUBLE PRECISION,
+    high         DOUBLE PRECISION,
+    low          DOUBLE PRECISION,
+    close        DOUBLE PRECISION,
+    volume       INTEGER,
+    ret          DOUBLE PRECISION,
+    logret       DOUBLE PRECISION,
+    sma_3        DOUBLE PRECISION,
+    sma_20       DOUBLE PRECISION,
+    ema_20       DOUBLE PRECISION,
+    rsi_14       DOUBLE PRECISION,
+    vol_20       DOUBLE PRECISION,
+    atr_14       DOUBLE PRECISION,
+    vwap_20      DOUBLE PRECISION,
+    PRIMARY KEY (time, instrument, granularity)
+);
