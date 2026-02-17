@@ -1,69 +1,190 @@
 # fx-quant
 
+Algorithmic FX trading system with backtesting, paper/live execution via OANDA, and a Flask web dashboard.
+
+## Quick Start (New Machine Setup)
+
+### 1. Clone & install dependencies
+
+```bash
+git clone <your-repo-url>
+cd fx-quant
+python -m pip install -r requirements.txt
+```
+
+### 2. Configure environment variables
+
+Copy the template and fill in your credentials:
+
+```bash
+cp config/.env.example config/.env
+```
+
+Required variables in `config/.env`:
+
+| Variable | Description |
+|----------|-------------|
+| `SUPABASE_URL` | Your Supabase project URL |
+| `SUPABASE_KEY` | Supabase anon/service key |
+| `OANDA_API_KEY` | OANDA v20 API token |
+| `OANDA_ACCOUNT_ID` | OANDA account ID |
+| `OANDA_ENV` | `practice` or `live` (default: practice) |
+| `DASHBOARD_PASSWORD` | Password for web dashboard login |
+
+### 3. Verify connectivity
+
+```bash
+python src/test_connection.py
+```
+
+### 4. Load historical data (if Supabase table is empty)
+
+```bash
+python src/historical_loader.py
+```
+
+### 5. Run the backtester
+
+```bash
+python src/backtester.py
+```
+
+Output goes to `logs/`:
+- `backtest_trades_<INSTRUMENT>_<GRANULARITY>.csv` -- trade log
+- `backtest_summary_<INSTRUMENT>_<GRANULARITY>.json` -- metrics + monthly P&L
+
+### 6. Visualize trades on a chart
+
+```bash
+python src/chart_trades.py --start 2025-02-24 --end 2025-02-27
+python src/chart_trades.py --granularity M15 --start 2025-04-01 --end 2025-04-15
+```
+
+Saves PNG charts to `logs/chart_trades_*.png`.
+
+---
+
+## Project Structure
+
+```
+fx-quant/
+  config/
+    system.yaml          # Main configuration (strategy, features, execution)
+    .env                 # Secrets (not committed)
+  src/
+    config_loader.py     # Loads system.yaml + .env
+    data_engine.py       # Feature engineering (SMA, EMA, RSI, ATR, VWAP, pivots, engulfing)
+    backtester.py        # Backtesting engine (SMA cross + pivot retest strategies)
+    order_executor.py    # Paper/live order execution via OANDA
+    ai_wrapper.py        # ML ensemble (logistic reg, RF, gradient boosting) signal validation
+    dashboard.py         # Flask web dashboard
+    chart_trades.py      # Matplotlib/mplfinance trade visualization
+    get_candles.py       # Fetch candles from OANDA API
+    historical_loader.py # Bulk historical data loader
+    supabase_upload.py   # Upload candle data to Supabase
+    param_sweep.py       # Strategy parameter optimization
+    test_connection.py   # OANDA + Supabase connectivity check
+  templates/             # Flask HTML templates (chart, backtest, config, logs)
+  logs/                  # Output: trade CSVs, JSON summaries, chart PNGs
+  models/                # Saved ML models
+  sql/                   # Database schemas
+  Dockerfile             # Bot container
+  docker-compose.yml     # Bot + dashboard services
+  requirements.txt       # Python dependencies (portable)
+  requirements.docker.txt# Docker-specific deps
+```
+
+## Strategies
+
+### 1. SMA Cross (original)
+
+Long-only strategy. Goes long when short SMA > long SMA, flat otherwise.
+
+```yaml
+strategy:
+  rule: sma_cross
+  params:
+    short: 50
+    long: 100
+```
+
+### 2. Pivot Retest + Engulfing (current)
+
+Long/short strategy with dual take-profit and ATR-based stop loss.
+
+**Entry conditions (all must be true):**
+- Price retests a pivot level (broke through, then returned within ATR tolerance)
+- SMA 50 aligns with trade direction relative to the pivot level
+- Engulfing candle pattern confirmed
+- Strong close (in top/bottom 30% of candle range)
+
+**Position management:**
+- SL: 1.5x ATR from entry
+- TP1: next pivot level in trade direction (close 50%, move SL to breakeven)
+- TP2: pivot level after TP1 (close remaining 50%)
+
+```yaml
+strategy:
+  rule: pivot_retest_engulfing
+  params:
+    sma_period: 50
+    lookback_bars: 20
+    retest_tolerance_atr: 0.5
+    strong_close_pct: 0.30
+    sl_atr_multiplier: 1.5
+```
+
+To switch strategies, edit `config/system.yaml` and change `strategy.rule`.
+
+## Configuration Reference
+
+All settings live in `config/system.yaml`:
+
+| Section | Key settings |
+|---------|-------------|
+| `brokers[0].instruments` | Currency pairs to trade (e.g. `EUR_USD`) |
+| `data.candle_granularities` | Timeframes (`M5`, `M15`, `H1`, etc.) |
+| `features.*` | Indicator windows (SMA, EMA, RSI, ATR, VWAP, volatility) |
+| `strategy.*` | Active strategy rule + parameters |
+| `ai.*` | ML ensemble config, confidence threshold, sanity checks |
+| `execution.paper_mode` | `true` for paper trading, `false` for live |
+| `execution.interval_seconds` | Bot loop interval |
+| `execution.max_positions` | Max concurrent open trades |
+
 ## Web Dashboard
 
-A Flask-based web UI for managing the trading bot remotely — edit config, monitor status, view logs, and toggle the kill switch from a browser instead of SSH + manual YAML editing.
+Flask-based UI for remote management.
 
-### Setup
+```bash
+# Docker
+docker-compose build && docker-compose up -d
 
-1. **Set your dashboard password** in `config/.env`:
-   ```
-   DASHBOARD_PASSWORD=your-secure-password-here
-   ```
+# Or run directly
+python src/dashboard.py
+```
 
-2. **Build and start** both services:
-   ```bash
-   docker-compose build && docker-compose up -d
-   ```
+Access via SSH tunnel: `ssh -L 5000:localhost:5000 your-server`, then open http://localhost:5000.
 
-3. **Access via SSH tunnel** (dashboard is not exposed publicly):
-   ```bash
-   ssh -L 5000:localhost:5000 your-server
-   ```
-   Then open http://localhost:5000 in your browser.
+Pages: Status (`/`), Backtest (`/backtest`), Chart (`/chart`), Config (`/config`), Logs (`/logs`)
 
-4. **Log in** with username `admin` and the password you set in step 1.
+## Kill Switch
 
-### Dashboard Pages
+Create `STOP_ALL_TRADING` in the project root to halt all trading immediately. The bot checks for this file every loop iteration. In live mode, it also closes all open trades. Toggle via the dashboard or manually:
 
-- **Status** (`/`) — Current mode (paper/live), strategy, instruments, loop interval, kill switch toggle, and last 10 orders
-- **Config** (`/config`) — Form-based editor for all `system.yaml` sections: instruments, granularities, strategy params, feature windows, AI settings, execution settings. Saves with backup and signals the bot to reload.
-- **Logs** (`/logs`) — Tabbed tables showing order history (`logs/order_log.csv`) and AI decisions (`logs/ai_decisions.csv`), newest first
+```bash
+touch STOP_ALL_TRADING   # activate
+rm STOP_ALL_TRADING      # deactivate
+```
 
-### Config Reload Flow
+## Running the Bot
 
-When you save config changes through the dashboard:
+```bash
+# Single execution
+python src/order_executor.py --once
 
-1. Dashboard backs up `system.yaml` to `system.yaml.backup`
-2. Dashboard writes the updated config
-3. Dashboard creates a `RELOAD_CONFIG` signal file
-4. Bot checks for this file at the top of each 60s loop iteration
-5. Bot reloads config, deletes the signal file, and continues with new settings
+# Continuous loop (default 60s interval)
+python src/order_executor.py
 
-### Kill Switch
-
-The dashboard provides activate/deactivate buttons (with confirmation prompts) that create/remove the `STOP_ALL_TRADING` file — the same mechanism the bot already uses.
-
-### Files Added/Changed
-
-| File | What |
-|------|------|
-| `src/dashboard.py` | Flask app — routes, auth, config editor, status, logs |
-| `templates/base.html` | Base layout (Bootstrap 5 via CDN) |
-| `templates/index.html` | Status page |
-| `templates/config.html` | Config editor form |
-| `templates/logs.html` | Order log + AI decisions tables |
-| `docker-compose.yml` | Added `dashboard` service on port 5000 |
-| `requirements.docker.txt` | Added `flask`, `flask-httpauth` |
-| `config/.env` | Added `DASHBOARD_PASSWORD` |
-| `src/order_executor.py` | Added `RELOAD_CONFIG` signal check in main loop |
-
-### Verification Checklist
-
-- [ ] `docker-compose build && docker-compose up -d` — both containers start
-- [ ] http://localhost:5000 shows login prompt (via SSH tunnel)
-- [ ] Status page shows current config and kill switch state
-- [ ] Edit a setting (e.g. add `GBP_USD` to instruments), save
-- [ ] Bot logs show `CONFIG RELOAD REQUESTED` within 60s
-- [ ] Logs page shows order history and AI decisions
-- [ ] Kill switch toggle works with confirmation dialog
+# Docker
+docker-compose up -d
+```

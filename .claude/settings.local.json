@@ -8,7 +8,16 @@
       "Bash(python:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git -C /c/Users/brent/Documents/Projects/fx-quant log --oneline -10)",
+      "Bash(where:*)",
+      "Bash(docker build:*)",
+      "Bash(docker-compose build:*)",
+      "Bash(docker-compose up:*)",
+      "Bash(docker-compose down:*)",
+      "Bash(docker-compose logs:*)",
+      "Bash(echo:*)",
+      "Bash(docker exec:*)"
     ]
   }
 }

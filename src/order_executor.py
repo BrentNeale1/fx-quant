@@ -319,6 +319,7 @@ def execute_signals(signals_df, cfg, ai_models=None):
     close_price = float(latest["close"])
 
     # Determine current position for this instrument
+    # Track position state for paper mode using a module-level dict
     current_position = 0
     if not paper_mode:
         try:
@@ -331,8 +332,27 @@ def execute_signals(signals_df, cfg, ai_models=None):
 
     results = []
 
-    # Signal=1 means go long, signal=0 means go flat
-    if signal == 1 and current_position == 0:
+    # Extract per-bar SL/TP levels if available (pivot_retest_engulfing strategy)
+    sl_price = latest.get("sl_price") if hasattr(latest, "get") else getattr(latest, "sl_price", None)
+    tp1_price = latest.get("tp1_price") if hasattr(latest, "get") else getattr(latest, "tp1_price", None)
+    tp2_price = latest.get("tp2_price") if hasattr(latest, "get") else getattr(latest, "tp2_price", None)
+
+    # Coerce NaN to None
+    if sl_price is not None and pd.isna(sl_price):
+        sl_price = None
+    if tp1_price is not None and pd.isna(tp1_price):
+        tp1_price = None
+    if tp2_price is not None and pd.isna(tp2_price):
+        tp2_price = None
+
+    # Signal=1 means go long, signal=-1 means go short, signal=0 means go flat
+    if signal == 1 and current_position <= 0:
+        # Close any existing short first
+        if current_position == -1:
+            units = compute_units(balance, instrument, "BUY", cfg)
+            result = place_order(instrument, units, "BUY", cfg, price=close_price)
+            results.append(result)
+
         # AI validation before placing BUY order
         if ai_models:
             ai_decision = validate_signal(instrument, signal, signals_df, cfg, models=ai_models)
@@ -344,12 +364,39 @@ def execute_signals(signals_df, cfg, ai_models=None):
         units = compute_units(balance, instrument, "BUY", cfg)
         result = place_order(instrument, units, "BUY", cfg, price=close_price)
         results.append(result)
-    elif signal == 0 and current_position == 1:
+
+        if sl_price is not None:
+            print(f"  SL={sl_price:.5f}  TP1={tp1_price:.5f}  TP2={tp2_price:.5f}")
+
+    elif signal == -1 and current_position >= 0:
+        # Close any existing long first
+        if current_position == 1:
+            units = compute_units(balance, instrument, "SELL", cfg)
+            result = place_order(instrument, units, "SELL", cfg, price=close_price)
+            results.append(result)
+
+        # AI validation before placing SHORT order
+        if ai_models:
+            ai_decision = validate_signal(instrument, signal, signals_df, cfg, models=ai_models)
+            log_ai_decision(ai_decision)
+            if not ai_decision["approved"]:
+                print(f"  AI REJECTED: confidence={ai_decision['confidence']:.2f}, {ai_decision['rationale']}")
+                return results
+
         units = compute_units(balance, instrument, "SELL", cfg)
         result = place_order(instrument, units, "SELL", cfg, price=close_price)
         results.append(result)
+
+        if sl_price is not None:
+            print(f"  SL={sl_price:.5f}  TP1={tp1_price:.5f}  TP2={tp2_price:.5f}")
+
+    elif signal == 0 and current_position != 0:
+        side = "SELL" if current_position == 1 else "BUY"
+        units = compute_units(balance, instrument, side, cfg)
+        result = place_order(instrument, units, side, cfg, price=close_price)
+        results.append(result)
     else:
-        action = "LONG" if signal == 1 else "FLAT"
+        action = {1: "LONG", -1: "SHORT", 0: "FLAT"}.get(signal, "FLAT")
         print(f"  {instrument}: signal={action}, position matches — no action.")
 
     return results
@@ -429,7 +476,8 @@ def main():
         if "instrument" not in df.columns:
             df["instrument"] = instrument
 
-        latest_signal = "LONG" if df["signal"].iloc[-1] == 1 else "FLAT"
+        sig_val = int(df["signal"].iloc[-1])
+        latest_signal = {1: "LONG", -1: "SHORT", 0: "FLAT"}.get(sig_val, "FLAT")
         print(f"  Latest signal: {latest_signal} (close={df['close'].iloc[-1]:.5f})")
 
         # Train AI ensemble for this instrument

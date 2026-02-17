@@ -40,12 +40,23 @@ ai:
     rsi_oversold: 20
     volatility_multiplier: 3.0
 strategy:
-  rule: sma_cross
+  rule: pivot_retest_engulfing
   params:
-    short: 50
-    long: 100
+    sma_period: 50
+    lookback_bars: 20
+    retest_tolerance_atr: 0.5
+    strong_close_pct: 0.30
+    sl_atr_multiplier: 1.5
   trade_size_pct_of_equity: 0.025
   max_drawdown_pct: 0.05
+# Previous strategy (uncomment to switch back):
+# strategy:
+#   rule: sma_cross
+#   params:
+#     short: 50
+#     long: 100
+#   trade_size_pct_of_equity: 0.025
+#   max_drawdown_pct: 0.05
 execution:
   paper_mode: true
   canary_size_pct: 0.01

@@ -37,6 +37,7 @@
 (function() {
   var ohlc = {{ ohlc_json | safe }};
   var pivots = {{ pivot_json | safe }};
+  var smas = {{ sma_json | safe }};
 
   if (!ohlc || ohlc.length === 0) {
     document.getElementById('chart').innerHTML =
@@ -57,6 +58,26 @@
     decreasing: {line: {color: '#dc3545'}},
     name: '{{ instrument }}'
   }];
+
+  // SMA overlay lines
+  var smaColors = {
+    'sma_3':   '#ff9800',
+    'sma_20':  '#9c27b0',
+    'sma_21':  '#673ab7',
+    'sma_50':  '#00bcd4',
+    'sma_100': '#e91e63'
+  };
+  Object.keys(smas).forEach(function(key) {
+    traces.push({
+      x: times,
+      y: smas[key],
+      type: 'scatter',
+      mode: 'lines',
+      name: key.toUpperCase().replace('_', ' '),
+      line: {color: smaColors[key] || '#999', width: 1.5},
+      connectgaps: false
+    });
+  });
 
   // Pivot level lines
   var levelDefs = [

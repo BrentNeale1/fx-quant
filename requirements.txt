@@ -1,35 +1,16 @@
-backports.zstd @ file:///D:/bld/bld/rattler-build_backports.zstd_1767045012/work
-Brotli @ file:///D:/bld/brotli-split_1764017006836/work
-certifi @ file:///home/conda/feedstock_root/build_artifacts/certifi_1767500808759/work/certifi
-charset-normalizer @ file:///home/conda/feedstock_root/build_artifacts/charset-normalizer_1760437218288/work
-contourpy==1.3.3
-cycler==0.12.1
-fonttools==4.61.1
-h2 @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_h2_1756364871/work
-hpack @ file:///home/conda/feedstock_root/build_artifacts/hpack_1737618293087/work
-hyperframe @ file:///home/conda/feedstock_root/build_artifacts/hyperframe_1737618333194/work
-idna @ file:///home/conda/feedstock_root/build_artifacts/idna_1760286409563/work
-joblib==1.5.3
-kiwisolver==1.4.9
-lightgbm @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_lightgbm_1768022071/work
-matplotlib==3.10.8
-narwhals==2.16.0
-numpy @ file:///D:/bld/bld/rattler-build_numpy_1770098404/work/dist/numpy-2.4.2-cp311-cp311-win_amd64.whl#sha256=1dc64abcea7678d915a259496c0283ff327afeed3b11d508be6117caf2623ad7
+pandas>=2.0
+numpy>=1.24
+scipy>=1.10
+scikit-learn>=1.3
+lightgbm>=4.0
+matplotlib>=3.7
+mplfinance>=0.12.10b0
+plotly>=5.0
+pyarrow>=14.0
 oandapyV20==0.7.2
-packaging @ file:///C:/miniconda3/conda-bld/packaging_1761049096285/work
-pandas @ file:///D:/bld/bld/rattler-build_pandas_1769076324/work
-pillow==12.1.1
-plotly==6.5.2
-pyarrow==23.0.0
-pyparsing==3.3.2
-PySocks @ file:///D:/bld/pysocks_1733217287171/work
-python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_python-dateutil_1751104122/work
-python-dotenv @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_python-dotenv_1761503229/work
-requests @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_requests_1766926974/work
-scikit-learn==1.8.0
-scipy @ file:///C:/bld/scipy-split_1768799500391/work/dist/scipy-1.17.0-cp311-cp311-win_amd64.whl#sha256=ab381c0683a4c5959a4eb8ad52025d587189c73b376c9d03fe6886a42f3fe699
-six @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_six_1753199211/work
-threadpoolctl==3.6.0
-tzdata @ file:///home/conda/feedstock_root/build_artifacts/python-tzdata_1765719872007/work
-urllib3 @ file:///home/conda/feedstock_root/build_artifacts/urllib3_1767817748113/work
-win_inet_pton @ file:///D:/bld/win_inet_pton_1733130564612/work
+requests>=2.28
+supabase>=2.0
+python-dotenv>=1.0
+PyYAML>=6.0
+flask>=3.0
+flask-httpauth>=4.8

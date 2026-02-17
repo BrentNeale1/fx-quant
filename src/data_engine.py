@@ -90,6 +90,35 @@ def add_vwap(df, period=20):
     return df
 
 
+def detect_engulfing(df):
+    """
+    Detect bullish and bearish engulfing candle patterns.
+
+    Bullish engulfing: current close > prev open AND current open < prev close
+                       AND current body > prev body (fully engulfs).
+    Bearish engulfing: current close < prev open AND current open > prev close
+                       AND current body > prev body (fully engulfs).
+
+    Returns df with 'bullish_engulfing' and 'bearish_engulfing' boolean columns.
+    """
+    prev_open = df["open"].shift(1)
+    prev_close = df["close"].shift(1)
+    prev_body = (prev_close - prev_open).abs()
+    curr_body = (df["close"] - df["open"]).abs()
+
+    df["bullish_engulfing"] = (
+        (df["close"] > prev_open)
+        & (df["open"] < prev_close)
+        & (curr_body > prev_body)
+    )
+    df["bearish_engulfing"] = (
+        (df["close"] < prev_open)
+        & (df["open"] > prev_close)
+        & (curr_body > prev_body)
+    )
+    return df
+
+
 def add_pivot_points(df):
     """
     Add Classic Pivot Point support/resistance levels.

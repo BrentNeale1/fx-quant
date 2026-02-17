@@ -305,6 +305,7 @@ def chart():
 
     ohlc_json = "[]"
     pivot_json = "{}"
+    sma_json = "{}"
     error_msg = None
 
     try:
@@ -325,7 +326,7 @@ def chart():
 
             resp = (
                 sb.table(table)
-                .select("time,open,high,low,close")
+                .select("time,open,high,low,close,sma_3,sma_20,sma_21,sma_50,sma_100")
                 .eq("instrument", instrument)
                 .eq("granularity", granularity)
                 .order("time", desc=True)
@@ -355,6 +356,16 @@ def chart():
                 latest = df[pivot_cols].dropna().iloc[-1] if df[pivot_cols].dropna().shape[0] > 0 else None
                 if latest is not None:
                     pivot_json = latest.to_json()
+
+                # Prepare SMA data as {col_name: [values]} for overlay
+                sma_cols = [c for c in df.columns if c.startswith("sma_")]
+                if sma_cols:
+                    sma_dict = {}
+                    for c in sma_cols:
+                        df[c] = pd.to_numeric(df[c], errors="coerce")
+                        sma_dict[c] = df[c].where(df[c].notna(), None).tolist()
+                    import json
+                    sma_json = json.dumps(sma_dict)
         else:
             error_msg = "Supabase credentials not configured."
     except Exception as e:
@@ -363,6 +374,7 @@ def chart():
     return render_template("chart.html",
                            ohlc_json=ohlc_json,
                            pivot_json=pivot_json,
+                           sma_json=sma_json,
                            instrument=instrument,
                            granularity=granularity,
                            instruments=VALID_INSTRUMENTS,
