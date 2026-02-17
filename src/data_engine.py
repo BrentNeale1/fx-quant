@@ -90,6 +90,46 @@ def add_vwap(df, period=20):
     return df
 
 
+def add_pivot_points(df):
+    """
+    Add Classic Pivot Point support/resistance levels.
+
+    Resamples intraday OHLC data to daily bars, computes pivot levels from the
+    *previous* day's High/Low/Close, and merges them back onto the original
+    DataFrame so every intraday bar carries the current day's pivot levels.
+
+    Columns added: pivot, r1, r2, r3, s1, s2, s3
+    """
+    # Need a DatetimeIndex to resample
+    df2 = df.copy()
+    daily = df2.resample("D").agg({"high": "max", "low": "min", "close": "last"}).dropna()
+
+    # Compute pivots from previous day
+    daily["pivot"] = (daily["high"] + daily["low"] + daily["close"]) / 3
+    daily["r1"] = 2 * daily["pivot"] - daily["low"]
+    daily["s1"] = 2 * daily["pivot"] - daily["high"]
+    daily["r2"] = daily["pivot"] + (daily["high"] - daily["low"])
+    daily["s2"] = daily["pivot"] - (daily["high"] - daily["low"])
+    daily["r3"] = daily["high"] + 2 * (daily["pivot"] - daily["low"])
+    daily["s3"] = daily["low"] - 2 * (daily["high"] - daily["pivot"])
+
+    # Shift so today's bars use *yesterday's* pivot levels
+    pivot_cols = ["pivot", "r1", "r2", "r3", "s1", "s2", "s3"]
+    daily_pivots = daily[pivot_cols].shift(1)
+
+    # Assign a date key to the original df for merging
+    df["_date"] = df.index.date
+    daily_pivots["_date"] = daily_pivots.index.date
+
+    df = df.merge(daily_pivots, on="_date", how="left")
+    df.drop(columns=["_date"], inplace=True)
+
+    # Restore the original DatetimeIndex
+    df.index = df2.index
+
+    return df
+
+
 def build_all_features(df, config=None):
     """
     Run a standard set of features. config is optional dict matching the

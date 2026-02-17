@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}Chart - fx-quant{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col">
+    <h4>Price Chart with Pivot Points</h4>
+  </div>
+  <div class="col-auto">
+    <form method="get" action="/chart" class="d-flex gap-2">
+      <select name="instrument" class="form-select form-select-sm" onchange="this.form.submit()">
+        {% for inst in instruments %}
+        <option value="{{ inst }}" {% if inst == instrument %}selected{% endif %}>{{ inst }}</option>
+        {% endfor %}
+      </select>
+      <select name="granularity" class="form-select form-select-sm" onchange="this.form.submit()">
+        {% for g in granularities %}
+        <option value="{{ g }}" {% if g == granularity %}selected{% endif %}>{{ g }}</option>
+        {% endfor %}
+      </select>
+    </form>
+  </div>
+</div>
+
+{% if error_msg %}
+<div class="alert alert-warning">{{ error_msg }}</div>
+{% endif %}
+
+<div class="card">
+  <div class="card-body p-2">
+    <div id="chart" style="width:100%; height:600px;"></div>
+  </div>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<script>
+(function() {
+  var ohlc = {{ ohlc_json | safe }};
+  var pivots = {{ pivot_json | safe }};
+
+  if (!ohlc || ohlc.length === 0) {
+    document.getElementById('chart').innerHTML =
+      '<p class="text-muted text-center mt-5">No candle data available for {{ instrument }} / {{ granularity }}.</p>';
+    return;
+  }
+
+  var times  = ohlc.map(function(r) { return r.time; });
+  var opens  = ohlc.map(function(r) { return r.open; });
+  var highs  = ohlc.map(function(r) { return r.high; });
+  var lows   = ohlc.map(function(r) { return r.low; });
+  var closes = ohlc.map(function(r) { return r.close; });
+
+  var traces = [{
+    x: times, open: opens, high: highs, low: lows, close: closes,
+    type: 'candlestick',
+    increasing: {line: {color: '#198754'}},
+    decreasing: {line: {color: '#dc3545'}},
+    name: '{{ instrument }}'
+  }];
+
+  // Pivot level lines
+  var levelDefs = [
+    {key: 'r3', color: '#b71c1c', label: 'R3'},
+    {key: 'r2', color: '#e53935', label: 'R2'},
+    {key: 'r1', color: '#ef9a9a', label: 'R1'},
+    {key: 'pivot', color: '#1565c0', label: 'Pivot'},
+    {key: 's1', color: '#a5d6a7', label: 'S1'},
+    {key: 's2', color: '#43a047', label: 'S2'},
+    {key: 's3', color: '#1b5e20', label: 'S3'}
+  ];
+
+  var shapes = [];
+  var annotations = [];
+
+  levelDefs.forEach(function(lv) {
+    var val = pivots[lv.key];
+    if (val == null) return;
+    shapes.push({
+      type: 'line',
+      x0: times[0], x1: times[times.length - 1],
+      y0: val, y1: val,
+      line: {color: lv.color, width: 1.5, dash: lv.key === 'pivot' ? 'solid' : 'dash'}
+    });
+    annotations.push({
+      x: times[times.length - 1], y: val,
+      xanchor: 'left', yanchor: 'middle',
+      text: '  ' + lv.label + ' ' + val.toFixed(5),
+      showarrow: false,
+      font: {size: 11, color: lv.color}
+    });
+  });
+
+  var layout = {
+    title: '{{ instrument }}  {{ granularity }}',
+    xaxis: {
+      type: 'category',
+      rangeslider: {visible: false},
+      nticks: 12
+    },
+    yaxis: {title: 'Price'},
+    shapes: shapes,
+    annotations: annotations,
+    margin: {l: 60, r: 100, t: 40, b: 40},
+    paper_bgcolor: '#fff',
+    plot_bgcolor: '#f8f9fa'
+  };
+
+  Plotly.newPlot('chart', traces, layout, {responsive: true});
+})();
+</script>
+{% endblock %}

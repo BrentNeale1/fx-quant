@@ -13,7 +13,8 @@ from pathlib import Path
 from functools import wraps
 
 import yaml
-from flask import Flask, render_template, request, redirect, url_for, flash, Response
+import pandas as pd
+from flask import Flask, render_template, request, redirect, url_for, flash, Response, jsonify
 
 app = Flask(__name__, template_folder=str(Path(__file__).resolve().parent.parent / "templates"))
 app.secret_key = os.urandom(24)
@@ -287,6 +288,86 @@ def killswitch():
             KILL_SWITCH_FILE.unlink()
         flash("Kill switch deactivated. Trading will resume on next loop.", "success")
     return redirect(url_for("index"))
+
+
+@app.route("/chart")
+@requires_auth
+def chart():
+    """Candlestick chart with Classic Pivot Point support/resistance levels."""
+    instrument = request.args.get("instrument", "EUR_USD")
+    granularity = request.args.get("granularity", "M15")
+
+    # Validate inputs
+    if instrument not in VALID_INSTRUMENTS:
+        instrument = "EUR_USD"
+    if granularity not in VALID_GRANULARITIES:
+        granularity = "M15"
+
+    ohlc_json = "[]"
+    pivot_json = "{}"
+    error_msg = None
+
+    try:
+        from supabase import create_client
+        from dotenv import load_dotenv
+
+        env_path = APP_ROOT / "config" / ".env"
+        if env_path.exists():
+            load_dotenv(env_path)
+
+        url = os.environ.get("SUPABASE_URL")
+        key = os.environ.get("SUPABASE_KEY")
+
+        if url and key:
+            sb = create_client(url, key)
+            cfg = load_config()
+            table = cfg.get("supabase", {}).get("table", "fx_candles")
+
+            resp = (
+                sb.table(table)
+                .select("time,open,high,low,close")
+                .eq("instrument", instrument)
+                .eq("granularity", granularity)
+                .order("time", desc=True)
+                .limit(500)
+                .execute()
+            )
+
+            rows = resp.data if resp.data else []
+            if rows:
+                df = pd.DataFrame(rows)
+                df["time"] = pd.to_datetime(df["time"])
+                df = df.sort_values("time").set_index("time")
+                for col in ["open", "high", "low", "close"]:
+                    df[col] = df[col].astype(float)
+
+                # Compute pivot points
+                from data_engine import add_pivot_points
+                df = add_pivot_points(df)
+
+                # Prepare OHLC JSON
+                ohlc_data = df[["open", "high", "low", "close"]].reset_index()
+                ohlc_data["time"] = ohlc_data["time"].dt.strftime("%Y-%m-%d %H:%M")
+                ohlc_json = ohlc_data.to_json(orient="records")
+
+                # Prepare pivot levels (latest non-null values)
+                pivot_cols = ["pivot", "r1", "r2", "r3", "s1", "s2", "s3"]
+                latest = df[pivot_cols].dropna().iloc[-1] if df[pivot_cols].dropna().shape[0] > 0 else None
+                if latest is not None:
+                    pivot_json = latest.to_json()
+        else:
+            error_msg = "Supabase credentials not configured."
+    except Exception as e:
+        error_msg = f"Could not load candle data: {e}"
+
+    return render_template("chart.html",
+                           ohlc_json=ohlc_json,
+                           pivot_json=pivot_json,
+                           instrument=instrument,
+                           granularity=granularity,
+                           instruments=VALID_INSTRUMENTS,
+                           granularities=VALID_GRANULARITIES,
+                           error_msg=error_msg)
 
 
 # ---------------------------------------------------------------------------
