@@ -1,0 +1,43 @@
+{
+  "pair": "EUR_AUD",
+  "strategy_id": 4,
+  "strategy_name": "S4_EMA_Ribbon_Scalp",
+  "total_trades": 64,
+  "win_rate_pct": 39.06,
+  "avg_rr": 1.57,
+  "expectancy_pips": 0.03,
+  "sharpe_ratio": -1.44,
+  "max_drawdown_pct": -10.14,
+  "profit_factor": 0.82,
+  "total_pnl_pips": 2.01,
+  "total_pnl_dollars": -6615.42,
+  "avg_win_pips": 12.59,
+  "avg_loss_pips": 8.02,
+  "max_consecutive_wins": 3,
+  "max_consecutive_losses": 5,
+  "avg_hold_time_minutes": 46.2,
+  "best_trade_pips": 36.66,
+  "worst_trade_pips": -14.72,
+  "best_trade_dollars": 2401.09,
+  "worst_trade_dollars": -1017.5,
+  "final_equity": 93384.58,
+  "starting_equity": 100000.0,
+  "session_breakdown": {
+    "LONDON": {
+      "trades": 36,
+      "win_rate": 33.33333333333333,
+      "total_pnl_pips": -37.71266692845352
+    },
+    "OVERLAP": {
+      "trades": 28,
+      "win_rate": 46.42857142857143,
+      "total_pnl_pips": 39.72751125460139
+    }
+  },
+  "exit_reasons": {
+    "TP1+SL": 9,
+    "TP1+TP2+SL": 9,
+    "SL": 39,
+    "TP3": 7
+  }
+}

@@ -11,7 +11,7 @@
 {% for s in summaries %}
 <div class="card mb-4">
   <div class="card-header">
-    <strong>{{ s.instrument }} / {{ s.granularity }}</strong>
+    <strong>{% if s.strategy_name %}{{ s.strategy_name }} &mdash; {% endif %}{{ s.instrument }} / {{ s.granularity }}</strong>
     <span class="text-muted float-end">Run: {{ s.run_time[:19] }} | {{ s.data_range.bars | default(0) }} bars ({{ s.data_range.start[:10] }} to {{ s.data_range.end[:10] }})</span>
   </div>
   <div class="card-body">

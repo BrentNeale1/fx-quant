@@ -293,7 +293,7 @@ def killswitch():
 @app.route("/chart")
 @requires_auth
 def chart():
-    """Candlestick chart with Classic Pivot Point support/resistance levels."""
+    """Interactive TradingView-style candlestick chart with indicators."""
     instrument = request.args.get("instrument", "EUR_USD")
     granularity = request.args.get("granularity", "M15")
 
@@ -305,12 +305,13 @@ def chart():
 
     ohlc_json = "[]"
     pivot_json = "{}"
-    sma_json = "{}"
+    indicators_json = "{}"
     error_msg = None
 
     try:
         from supabase import create_client
         from dotenv import load_dotenv
+        import numpy as np
 
         env_path = APP_ROOT / "config" / ".env"
         if env_path.exists():
@@ -326,11 +327,11 @@ def chart():
 
             resp = (
                 sb.table(table)
-                .select("time,open,high,low,close,sma_3,sma_20,sma_21,sma_50,sma_100")
+                .select("*")
                 .eq("instrument", instrument)
                 .eq("granularity", granularity)
                 .order("time", desc=True)
-                .limit(500)
+                .limit(2000)
                 .execute()
             )
 
@@ -341,31 +342,88 @@ def chart():
                 df = df.sort_values("time").set_index("time")
                 for col in ["open", "high", "low", "close"]:
                     df[col] = df[col].astype(float)
+                df["volume"] = pd.to_numeric(df.get("volume", 0), errors="coerce").fillna(0).astype(int)
+
+                # Ensure stored indicators are numeric
+                for col in ["sma_3", "sma_20", "ema_20", "rsi_14", "atr_14", "vwap_20"]:
+                    if col in df.columns:
+                        df[col] = pd.to_numeric(df[col], errors="coerce")
+
+                # Compute SMA 50, SMA 100 on the fly (not stored in DB)
+                df["sma_50"] = df["close"].rolling(50).mean()
+                df["sma_100"] = df["close"].rolling(100).mean()
+
+                # Compute EMA 50, 100, 200 on the fly (only EMA 20 stored)
+                df["ema_50"] = df["close"].ewm(span=50, adjust=False).mean()
+                df["ema_100"] = df["close"].ewm(span=100, adjust=False).mean()
+                df["ema_200"] = df["close"].ewm(span=200, adjust=False).mean()
+
+                # Compute Session VWAP (resets each trading day)
+                tp = (df["high"] + df["low"] + df["close"]) / 3.0
+                pv = tp * df["volume"]
+                df["_date"] = df.index.date
+                df["session_vwap"] = (
+                    pv.groupby(df["_date"]).cumsum()
+                    / df["volume"].groupby(df["_date"]).cumsum()
+                )
+                df["session_vwap"] = df["session_vwap"].replace([np.inf, -np.inf], np.nan)
+                df.drop(columns=["_date"], inplace=True)
 
                 # Compute pivot points
                 from data_engine import add_pivot_points
                 df = add_pivot_points(df)
 
-                # Prepare OHLC JSON
-                ohlc_data = df[["open", "high", "low", "close"]].reset_index()
-                ohlc_data["time"] = ohlc_data["time"].dt.strftime("%Y-%m-%d %H:%M")
-                ohlc_json = ohlc_data.to_json(orient="records")
+                # Prepare OHLC JSON (with volume for client-side anchored VWAP)
+                time_strings = df.index.strftime("%Y-%m-%dT%H:%M:%S").tolist()
+                ohlc_data = []
+                for i, (idx, row) in enumerate(df.iterrows()):
+                    ohlc_data.append({
+                        "time": time_strings[i],
+                        "open": row["open"],
+                        "high": row["high"],
+                        "low": row["low"],
+                        "close": row["close"],
+                        "volume": int(row["volume"]),
+                    })
+                ohlc_json = json.dumps(ohlc_data)
 
                 # Prepare pivot levels (latest non-null values)
                 pivot_cols = ["pivot", "r1", "r2", "r3", "s1", "s2", "s3"]
-                latest = df[pivot_cols].dropna().iloc[-1] if df[pivot_cols].dropna().shape[0] > 0 else None
-                if latest is not None:
-                    pivot_json = latest.to_json()
+                pivot_available = df[pivot_cols].dropna()
+                if len(pivot_available) > 0:
+                    pivot_json = pivot_available.iloc[-1].to_json()
 
-                # Prepare SMA data as {col_name: [values]} for overlay
-                sma_cols = [c for c in df.columns if c.startswith("sma_")]
-                if sma_cols:
-                    sma_dict = {}
-                    for c in sma_cols:
-                        df[c] = pd.to_numeric(df[c], errors="coerce")
-                        sma_dict[c] = df[c].where(df[c].notna(), None).tolist()
-                    import json
-                    sma_json = json.dumps(sma_dict)
+                # Build indicators_json: { key: [{time, value}, ...] }
+                indicator_cols = {
+                    "sma_3": "sma_3", "sma_20": "sma_20",
+                    "sma_50": "sma_50", "sma_100": "sma_100",
+                    "ema_20": "ema_20", "ema_50": "ema_50",
+                    "ema_100": "ema_100", "ema_200": "ema_200",
+                    "rsi_14": "rsi_14", "atr_14": "atr_14",
+                    "session_vwap": "session_vwap",
+                }
+                ind_dict = {}
+                for key, col in indicator_cols.items():
+                    if col in df.columns:
+                        series_data = []
+                        for i, (idx, row) in enumerate(df.iterrows()):
+                            val = row[col]
+                            if pd.notna(val):
+                                series_data.append({"time": time_strings[i], "value": float(val)})
+                        ind_dict[key] = series_data
+
+                # Volume as indicator data
+                vol_data = []
+                for i, (idx, row) in enumerate(df.iterrows()):
+                    color = "rgba(38,166,154,0.5)" if row["close"] >= row["open"] else "rgba(239,83,80,0.5)"
+                    vol_data.append({
+                        "time": time_strings[i],
+                        "value": int(row["volume"]),
+                        "color": color,
+                    })
+                ind_dict["volume"] = vol_data
+
+                indicators_json = json.dumps(ind_dict)
         else:
             error_msg = "Supabase credentials not configured."
     except Exception as e:
@@ -374,7 +432,7 @@ def chart():
     return render_template("chart.html",
                            ohlc_json=ohlc_json,
                            pivot_json=pivot_json,
-                           sma_json=sma_json,
+                           indicators_json=indicators_json,
                            instrument=instrument,
                            granularity=granularity,
                            instruments=VALID_INSTRUMENTS,

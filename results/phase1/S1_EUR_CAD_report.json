@@ -1,0 +1,43 @@
+{
+  "pair": "EUR_CAD",
+  "strategy_id": 1,
+  "strategy_name": "S1_MA_Breakout_Retest",
+  "total_trades": 83,
+  "win_rate_pct": 44.58,
+  "avg_rr": 1.1,
+  "expectancy_pips": -0.9,
+  "sharpe_ratio": -1.0,
+  "max_drawdown_pct": -9.26,
+  "profit_factor": 0.88,
+  "total_pnl_pips": -74.43,
+  "total_pnl_dollars": -5635.08,
+  "avg_win_pips": 15.14,
+  "avg_loss_pips": 13.8,
+  "max_consecutive_wins": 4,
+  "max_consecutive_losses": 5,
+  "avg_hold_time_minutes": 300.4,
+  "best_trade_pips": 33.9,
+  "worst_trade_pips": -22.21,
+  "best_trade_dollars": 2148.48,
+  "worst_trade_dollars": -1017.68,
+  "final_equity": 94364.92,
+  "starting_equity": 100000.0,
+  "session_breakdown": {
+    "LONDON": {
+      "trades": 33,
+      "win_rate": 27.27272727272727,
+      "total_pnl_pips": -197.00053954000785
+    },
+    "OVERLAP": {
+      "trades": 50,
+      "win_rate": 56.00000000000001,
+      "total_pnl_pips": 122.56671504231885
+    }
+  },
+  "exit_reasons": {
+    "SL": 46,
+    "TP1+TP2+SL": 18,
+    "TP1+SL": 15,
+    "TP3": 4
+  }
+}

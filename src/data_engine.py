@@ -90,6 +90,110 @@ def add_vwap(df, period=20):
     return df
 
 
+def add_macd(df, fast=12, slow=26, signal=9, col="close"):
+    """
+    MACD (Moving Average Convergence Divergence).
+    Columns added: macd, macd_signal, macd_hist
+    """
+    ema_fast = df[col].ewm(span=fast, adjust=False).mean()
+    ema_slow = df[col].ewm(span=slow, adjust=False).mean()
+    df["macd"] = ema_fast - ema_slow
+    df["macd_signal"] = df["macd"].ewm(span=signal, adjust=False).mean()
+    df["macd_hist"] = df["macd"] - df["macd_signal"]
+    return df
+
+
+def add_adx(df, period=14):
+    """
+    Average Directional Index (ADX).
+    Measures trend strength regardless of direction.
+    Column added: adx_{period}
+    """
+    high = df["high"]
+    low = df["low"]
+    close = df["close"]
+
+    plus_dm = high.diff()
+    minus_dm = -low.diff()
+
+    plus_dm = plus_dm.where((plus_dm > minus_dm) & (plus_dm > 0), 0.0)
+    minus_dm = minus_dm.where((minus_dm > plus_dm) & (minus_dm > 0), 0.0)
+
+    tr = pd.concat([
+        high - low,
+        (high - close.shift(1)).abs(),
+        (low - close.shift(1)).abs(),
+    ], axis=1).max(axis=1)
+
+    atr_smooth = tr.rolling(period).mean()
+    plus_di = 100 * (plus_dm.rolling(period).mean() / atr_smooth)
+    minus_di = 100 * (minus_dm.rolling(period).mean() / atr_smooth)
+
+    dx = 100 * (plus_di - minus_di).abs() / (plus_di + minus_di).replace(0, np.nan)
+    df[f"adx_{period}"] = dx.rolling(period).mean()
+    return df
+
+
+def add_stochastic(df, k_period=5, k_smooth=3, d_smooth=3):
+    """
+    Stochastic Oscillator (%K and %D).
+    Columns added: stoch_k, stoch_d
+    """
+    low_min = df["low"].rolling(k_period).min()
+    high_max = df["high"].rolling(k_period).max()
+    raw_k = 100 * (df["close"] - low_min) / (high_max - low_min).replace(0, np.nan)
+    df["stoch_k"] = raw_k.rolling(k_smooth).mean()
+    df["stoch_d"] = df["stoch_k"].rolling(d_smooth).mean()
+    return df
+
+
+def add_session_vwap_bands(df, session_start_hour=8):
+    """
+    Session VWAP with standard deviation bands, reset at London open.
+    Bands at +/-1.5sigma, +/-2sigma, +/-2.5sigma.
+
+    Columns added: session_vwap, vwap_upper_1_5, vwap_lower_1_5,
+                    vwap_upper_2, vwap_lower_2, vwap_upper_2_5, vwap_lower_2_5
+    """
+    tp = (df["high"] + df["low"] + df["close"]) / 3.0
+    vol = df["volume"].replace(0, np.nan)
+
+    # Identify session boundaries (new session starts at session_start_hour UTC)
+    hours = df.index.hour if df.index.tz is None else df.index.tz_convert("UTC").hour
+    dates = df.index.date if df.index.tz is None else df.index.tz_convert("UTC").date
+    session_id = pd.Series(
+        [f"{d}_{1 if h >= session_start_hour else 0}" for d, h in zip(dates, hours)],
+        index=df.index,
+    )
+
+    # Compute cumulative VWAP and std dev per session
+    cum_pv = (tp * vol).groupby(session_id).cumsum()
+    cum_vol = vol.groupby(session_id).cumsum()
+    vwap = cum_pv / cum_vol
+
+    # Rolling deviation from VWAP within session
+    deviation = tp - vwap
+    cum_count = vol.groupby(session_id).cumcount() + 1
+    cum_sq_dev = (deviation ** 2).groupby(session_id).cumsum()
+    std_dev = np.sqrt(cum_sq_dev / cum_count)
+
+    df["session_vwap"] = vwap
+    df["vwap_upper_1_5"] = vwap + 1.5 * std_dev
+    df["vwap_lower_1_5"] = vwap - 1.5 * std_dev
+    df["vwap_upper_2"] = vwap + 2.0 * std_dev
+    df["vwap_lower_2"] = vwap - 2.0 * std_dev
+    df["vwap_upper_2_5"] = vwap + 2.5 * std_dev
+    df["vwap_lower_2_5"] = vwap - 2.5 * std_dev
+
+    # Clean inf/nan
+    vwap_cols = ["session_vwap", "vwap_upper_1_5", "vwap_lower_1_5",
+                 "vwap_upper_2", "vwap_lower_2", "vwap_upper_2_5", "vwap_lower_2_5"]
+    for c in vwap_cols:
+        df[c] = df[c].replace([np.inf, -np.inf], np.nan)
+
+    return df
+
+
 def detect_engulfing(df):
     """
     Detect bullish and bearish engulfing candle patterns.
@@ -294,6 +398,27 @@ def build_all_features(df, config=None, calendar_df=None):
     df = add_rolling_volatility(df, period=vol_w, source="logret")
     df = add_atr(df, period=atr_p)
     df = add_vwap(df, period=vwap_w)
+
+    # MACD
+    macd_cfg = config.get("macd")
+    if macd_cfg:
+        fast, slow, sig = macd_cfg if isinstance(macd_cfg, (list, tuple)) else (12, 26, 9)
+        df = add_macd(df, fast=fast, slow=slow, signal=sig)
+
+    # ADX
+    adx_p = config.get("adx_period")
+    if adx_p:
+        df = add_adx(df, period=adx_p)
+
+    # Stochastic
+    stoch_cfg = config.get("stochastic")
+    if stoch_cfg:
+        k, ks, ds = stoch_cfg if isinstance(stoch_cfg, (list, tuple)) else (5, 3, 3)
+        df = add_stochastic(df, k_period=k, k_smooth=ks, d_smooth=ds)
+
+    # Session VWAP bands
+    if config.get("session_vwap_bands"):
+        df = add_session_vwap_bands(df, session_start_hour=8)
 
     # Drop intermediate helper columns
     df.drop(columns=["pv", "typical_price", "tr"], inplace=True, errors="ignore")

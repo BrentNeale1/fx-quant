@@ -1,0 +1,43 @@
+{
+  "pair": "EUR_NZD",
+  "strategy_id": 1,
+  "strategy_name": "S1_MA_Breakout_Retest",
+  "total_trades": 113,
+  "win_rate_pct": 34.51,
+  "avg_rr": 1.24,
+  "expectancy_pips": -3.75,
+  "sharpe_ratio": -4.05,
+  "max_drawdown_pct": -27.27,
+  "profit_factor": 0.59,
+  "total_pnl_pips": -423.65,
+  "total_pnl_dollars": -25976.66,
+  "avg_win_pips": 20.64,
+  "avg_loss_pips": 16.6,
+  "max_consecutive_wins": 4,
+  "max_consecutive_losses": 10,
+  "avg_hold_time_minutes": 199.5,
+  "best_trade_pips": 53.65,
+  "worst_trade_pips": -31.04,
+  "best_trade_dollars": 1748.96,
+  "worst_trade_dollars": -1000.0,
+  "final_equity": 74023.34,
+  "starting_equity": 100000.0,
+  "session_breakdown": {
+    "LONDON": {
+      "trades": 55,
+      "win_rate": 38.18181818181819,
+      "total_pnl_pips": -36.44186517391843
+    },
+    "OVERLAP": {
+      "trades": 58,
+      "win_rate": 31.03448275862069,
+      "total_pnl_pips": -387.2043441397173
+    }
+  },
+  "exit_reasons": {
+    "SL": 74,
+    "TP1+SL": 18,
+    "TP1+TP2+SL": 16,
+    "TP3": 5
+  }
+}

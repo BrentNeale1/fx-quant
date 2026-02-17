@@ -1,0 +1,43 @@
+{
+  "pair": "EUR_GBP",
+  "strategy_id": 5,
+  "strategy_name": "S5_Momentum_Exhaustion",
+  "total_trades": 278,
+  "win_rate_pct": 32.73,
+  "avg_rr": 0.9,
+  "expectancy_pips": -2.67,
+  "sharpe_ratio": -6.16,
+  "max_drawdown_pct": -66.51,
+  "profit_factor": 0.43,
+  "total_pnl_pips": -741.99,
+  "total_pnl_dollars": -66510.95,
+  "avg_win_pips": 6.35,
+  "avg_loss_pips": 7.06,
+  "max_consecutive_wins": 4,
+  "max_consecutive_losses": 14,
+  "avg_hold_time_minutes": 171.6,
+  "best_trade_pips": 32.1,
+  "worst_trade_pips": -22.25,
+  "best_trade_dollars": 1906.94,
+  "worst_trade_dollars": -1000.0,
+  "final_equity": 33489.05,
+  "starting_equity": 100000.0,
+  "session_breakdown": {
+    "LONDON": {
+      "trades": 138,
+      "win_rate": 36.95652173913043,
+      "total_pnl_pips": -327.8603639263469
+    },
+    "OVERLAP": {
+      "trades": 140,
+      "win_rate": 28.57142857142857,
+      "total_pnl_pips": -414.133370295348
+    }
+  },
+  "exit_reasons": {
+    "SL": 187,
+    "TP1+TP2+SL": 28,
+    "TP1+SL": 52,
+    "TP3": 11
+  }
+}

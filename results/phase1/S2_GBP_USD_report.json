@@ -1,0 +1,46 @@
+{
+  "pair": "GBP_USD",
+  "strategy_id": 2,
+  "strategy_name": "S2_Session_VWAP_Reversal",
+  "total_trades": 370,
+  "win_rate_pct": 23.24,
+  "avg_rr": 2.61,
+  "expectancy_pips": -1.97,
+  "sharpe_ratio": -2.08,
+  "max_drawdown_pct": -65.19,
+  "profit_factor": 0.72,
+  "total_pnl_pips": -728.43,
+  "total_pnl_dollars": -44200.15,
+  "avg_win_pips": 32.08,
+  "avg_loss_pips": 12.28,
+  "max_consecutive_wins": 5,
+  "max_consecutive_losses": 26,
+  "avg_hold_time_minutes": 207.9,
+  "best_trade_pips": 106.39,
+  "worst_trade_pips": -47.95,
+  "best_trade_dollars": 3922.7,
+  "worst_trade_dollars": -1000.0,
+  "final_equity": 55799.85,
+  "starting_equity": 100000.0,
+  "session_breakdown": {
+    "LONDON": {
+      "trades": 215,
+      "win_rate": 23.72093023255814,
+      "total_pnl_pips": -690.7713524714953
+    },
+    "OVERLAP": {
+      "trades": 155,
+      "win_rate": 22.58064516129032,
+      "total_pnl_pips": -37.66221703104436
+    }
+  },
+  "exit_reasons": {
+    "SL": 284,
+    "TP1+TP2+SL": 38,
+    "TP1+SL": 17,
+    "TP3": 21,
+    "TP1+TIME": 5,
+    "TIME": 4,
+    "TP1+TP2+TIME": 1
+  }
+}

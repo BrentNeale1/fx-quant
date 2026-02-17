@@ -1,0 +1,38 @@
+{
+  "strategy_name": "S5_Momentum_Exhaustion",
+  "strategy_key": "S5",
+  "instrument": "GBP_CAD",
+  "granularity": "M15",
+  "run_time": "2026-02-17T12:46:37.516933+00:00",
+  "data_range": {
+    "start": "2024-01-29 12:15:00+00:00",
+    "end": "2024-02-12 21:30:00+00:00",
+    "bars": 998
+  },
+  "metrics": {
+    "starting_equity": 100000.0,
+    "total_return_pct": 0.0024,
+    "max_drawdown_pct": 0.0025,
+    "num_trades": 26,
+    "round_trips": 6,
+    "win_rate_pct": 0.0,
+    "sharpe_ratio": 10.7444,
+    "final_equity": 100002.44
+  },
+  "monthly_pnl": [
+    {
+      "month": "2024-01",
+      "start_equity": 100000.0,
+      "end_equity": 100000.13,
+      "pnl": 0.13,
+      "pnl_pct": 0.0001
+    },
+    {
+      "month": "2024-02",
+      "start_equity": 100000.13,
+      "end_equity": 100002.44,
+      "pnl": 2.31,
+      "pnl_pct": 0.0023
+    }
+  ]
+}

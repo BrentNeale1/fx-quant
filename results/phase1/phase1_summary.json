@@ -1,0 +1,872 @@
+{
+  "S1_GBP_AUD": {
+    "pair": "GBP_AUD",
+    "strategy_id": 1,
+    "strategy_name": "S1_MA_Breakout_Retest",
+    "total_trades": 122,
+    "win_rate_pct": 39.34,
+    "avg_rr": 1.36,
+    "expectancy_pips": -1.19,
+    "sharpe_ratio": -1.55,
+    "max_drawdown_pct": -17.01,
+    "profit_factor": 0.81,
+    "total_pnl_pips": -145.24,
+    "total_pnl_dollars": -12339.87,
+    "avg_win_pips": 22.33,
+    "avg_loss_pips": 16.45,
+    "max_consecutive_wins": 4,
+    "max_consecutive_losses": 9,
+    "avg_hold_time_minutes": 237.3,
+    "best_trade_pips": 44.83,
+    "worst_trade_pips": -26.92,
+    "best_trade_dollars": 2242.77,
+    "worst_trade_dollars": -1000.0,
+    "final_equity": 87660.13,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 58,
+        "win_rate": 41.37931034482759,
+        "total_pnl_pips": -22.01687471378051
+      },
+      "OVERLAP": {
+        "trades": 64,
+        "win_rate": 37.5,
+        "total_pnl_pips": -123.2260709958683
+      }
+    },
+    "exit_reasons": {
+      "SL": 74,
+      "TP1+SL": 21,
+      "TP1+TP2+SL": 17,
+      "TP3": 10
+    }
+  },
+  "S1_EUR_AUD": {
+    "pair": "EUR_AUD",
+    "strategy_id": 1,
+    "strategy_name": "S1_MA_Breakout_Retest",
+    "total_trades": 95,
+    "win_rate_pct": 45.26,
+    "avg_rr": 1.24,
+    "expectancy_pips": 0.19,
+    "sharpe_ratio": -0.28,
+    "max_drawdown_pct": -8.42,
+    "profit_factor": 0.96,
+    "total_pnl_pips": 18.43,
+    "total_pnl_dollars": -1952.89,
+    "avg_win_pips": 17.6,
+    "avg_loss_pips": 14.2,
+    "max_consecutive_wins": 5,
+    "max_consecutive_losses": 5,
+    "avg_hold_time_minutes": 202.3,
+    "best_trade_pips": 56.97,
+    "worst_trade_pips": -24.57,
+    "best_trade_dollars": 2281.5,
+    "worst_trade_dollars": -1061.56,
+    "final_equity": 98047.11,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 51,
+        "win_rate": 39.21568627450981,
+        "total_pnl_pips": -72.08655191531844
+      },
+      "OVERLAP": {
+        "trades": 44,
+        "win_rate": 52.27272727272727,
+        "total_pnl_pips": 90.52045431346279
+      }
+    },
+    "exit_reasons": {
+      "SL": 52,
+      "TP1+SL": 19,
+      "TP3": 9,
+      "TP1+TP2+SL": 15
+    }
+  },
+  "S1_EUR_CAD": {
+    "pair": "EUR_CAD",
+    "strategy_id": 1,
+    "strategy_name": "S1_MA_Breakout_Retest",
+    "total_trades": 83,
+    "win_rate_pct": 44.58,
+    "avg_rr": 1.1,
+    "expectancy_pips": -0.9,
+    "sharpe_ratio": -1.0,
+    "max_drawdown_pct": -9.26,
+    "profit_factor": 0.88,
+    "total_pnl_pips": -74.43,
+    "total_pnl_dollars": -5635.08,
+    "avg_win_pips": 15.14,
+    "avg_loss_pips": 13.8,
+    "max_consecutive_wins": 4,
+    "max_consecutive_losses": 5,
+    "avg_hold_time_minutes": 300.4,
+    "best_trade_pips": 33.9,
+    "worst_trade_pips": -22.21,
+    "best_trade_dollars": 2148.48,
+    "worst_trade_dollars": -1017.68,
+    "final_equity": 94364.92,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 33,
+        "win_rate": 27.27272727272727,
+        "total_pnl_pips": -197.00053954000785
+      },
+      "OVERLAP": {
+        "trades": 50,
+        "win_rate": 56.00000000000001,
+        "total_pnl_pips": 122.56671504231885
+      }
+    },
+    "exit_reasons": {
+      "SL": 46,
+      "TP1+TP2+SL": 18,
+      "TP1+SL": 15,
+      "TP3": 4
+    }
+  },
+  "S1_EUR_NZD": {
+    "pair": "EUR_NZD",
+    "strategy_id": 1,
+    "strategy_name": "S1_MA_Breakout_Retest",
+    "total_trades": 113,
+    "win_rate_pct": 34.51,
+    "avg_rr": 1.24,
+    "expectancy_pips": -3.75,
+    "sharpe_ratio": -4.05,
+    "max_drawdown_pct": -27.27,
+    "profit_factor": 0.59,
+    "total_pnl_pips": -423.65,
+    "total_pnl_dollars": -25976.66,
+    "avg_win_pips": 20.64,
+    "avg_loss_pips": 16.6,
+    "max_consecutive_wins": 4,
+    "max_consecutive_losses": 10,
+    "avg_hold_time_minutes": 199.5,
+    "best_trade_pips": 53.65,
+    "worst_trade_pips": -31.04,
+    "best_trade_dollars": 1748.96,
+    "worst_trade_dollars": -1000.0,
+    "final_equity": 74023.34,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 55,
+        "win_rate": 38.18181818181819,
+        "total_pnl_pips": -36.44186517391843
+      },
+      "OVERLAP": {
+        "trades": 58,
+        "win_rate": 31.03448275862069,
+        "total_pnl_pips": -387.2043441397173
+      }
+    },
+    "exit_reasons": {
+      "SL": 74,
+      "TP1+SL": 18,
+      "TP1+TP2+SL": 16,
+      "TP3": 5
+    }
+  },
+  "S2_GBP_USD": {
+    "pair": "GBP_USD",
+    "strategy_id": 2,
+    "strategy_name": "S2_Session_VWAP_Reversal",
+    "total_trades": 370,
+    "win_rate_pct": 23.24,
+    "avg_rr": 2.61,
+    "expectancy_pips": -1.97,
+    "sharpe_ratio": -2.08,
+    "max_drawdown_pct": -65.19,
+    "profit_factor": 0.72,
+    "total_pnl_pips": -728.43,
+    "total_pnl_dollars": -44200.15,
+    "avg_win_pips": 32.08,
+    "avg_loss_pips": 12.28,
+    "max_consecutive_wins": 5,
+    "max_consecutive_losses": 26,
+    "avg_hold_time_minutes": 207.9,
+    "best_trade_pips": 106.39,
+    "worst_trade_pips": -47.95,
+    "best_trade_dollars": 3922.7,
+    "worst_trade_dollars": -1000.0,
+    "final_equity": 55799.85,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 215,
+        "win_rate": 23.72093023255814,
+        "total_pnl_pips": -690.7713524714953
+      },
+      "OVERLAP": {
+        "trades": 155,
+        "win_rate": 22.58064516129032,
+        "total_pnl_pips": -37.66221703104436
+      }
+    },
+    "exit_reasons": {
+      "SL": 284,
+      "TP1+TP2+SL": 38,
+      "TP1+SL": 17,
+      "TP3": 21,
+      "TP1+TIME": 5,
+      "TIME": 4,
+      "TP1+TP2+TIME": 1
+    }
+  },
+  "S2_EUR_USD": {
+    "pair": "EUR_USD",
+    "strategy_id": 2,
+    "strategy_name": "S2_Session_VWAP_Reversal",
+    "total_trades": 384,
+    "win_rate_pct": 25.0,
+    "avg_rr": 2.47,
+    "expectancy_pips": -1.3,
+    "sharpe_ratio": -1.61,
+    "max_drawdown_pct": -54.94,
+    "profit_factor": 0.78,
+    "total_pnl_pips": -499.49,
+    "total_pnl_dollars": -46914.05,
+    "avg_win_pips": 24.3,
+    "avg_loss_pips": 9.84,
+    "max_consecutive_wins": 5,
+    "max_consecutive_losses": 19,
+    "avg_hold_time_minutes": 201.2,
+    "best_trade_pips": 77.52,
+    "worst_trade_pips": -24.78,
+    "best_trade_dollars": 6405.35,
+    "worst_trade_dollars": -1103.24,
+    "final_equity": 53085.95,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 217,
+        "win_rate": 27.64976958525346,
+        "total_pnl_pips": -202.79071203238428
+      },
+      "OVERLAP": {
+        "trades": 167,
+        "win_rate": 21.55688622754491,
+        "total_pnl_pips": -296.70058575933086
+      }
+    },
+    "exit_reasons": {
+      "SL": 287,
+      "TP3": 35,
+      "TP1+TP2+SL": 43,
+      "TP1+SL": 12,
+      "TIME": 4,
+      "TP1+TIME": 2,
+      "TP1+TP2+TIME": 1
+    }
+  },
+  "S2_GBP_JPY": {
+    "pair": "GBP_JPY",
+    "strategy_id": 2,
+    "strategy_name": "S2_Session_VWAP_Reversal",
+    "total_trades": 348,
+    "win_rate_pct": 20.69,
+    "avg_rr": 2.51,
+    "expectancy_pips": -4.55,
+    "sharpe_ratio": -3.15,
+    "max_drawdown_pct": -67.39,
+    "profit_factor": 0.62,
+    "total_pnl_pips": -1583.63,
+    "total_pnl_dollars": -65240.52,
+    "avg_win_pips": 41.8,
+    "avg_loss_pips": 16.64,
+    "max_consecutive_wins": 3,
+    "max_consecutive_losses": 18,
+    "avg_hold_time_minutes": 221.6,
+    "best_trade_pips": 133.0,
+    "worst_trade_pips": -87.62,
+    "best_trade_dollars": 3890.84,
+    "worst_trade_dollars": -1018.57,
+    "final_equity": 34759.48,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 194,
+        "win_rate": 21.649484536082475,
+        "total_pnl_pips": -1066.9327875983017
+      },
+      "OVERLAP": {
+        "trades": 154,
+        "win_rate": 19.480519480519483,
+        "total_pnl_pips": -516.6924885002354
+      }
+    },
+    "exit_reasons": {
+      "TP1+TP2+SL": 34,
+      "SL": 275,
+      "TP1+SL": 14,
+      "TIME": 2,
+      "TP3": 21,
+      "TP1+TIME": 2
+    }
+  },
+  "S2_USD_JPY": {
+    "pair": "USD_JPY",
+    "strategy_id": 2,
+    "strategy_name": "S2_Session_VWAP_Reversal",
+    "total_trades": 390,
+    "win_rate_pct": 22.82,
+    "avg_rr": 2.73,
+    "expectancy_pips": -1.67,
+    "sharpe_ratio": -2.57,
+    "max_drawdown_pct": -57.44,
+    "profit_factor": 0.68,
+    "total_pnl_pips": -651.03,
+    "total_pnl_dollars": -56630.21,
+    "avg_win_pips": 30.36,
+    "avg_loss_pips": 11.14,
+    "max_consecutive_wins": 2,
+    "max_consecutive_losses": 14,
+    "avg_hold_time_minutes": 198.3,
+    "best_trade_pips": 114.02,
+    "worst_trade_pips": -48.94,
+    "best_trade_dollars": 3811.58,
+    "worst_trade_dollars": -1000.0,
+    "final_equity": 43369.79,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 195,
+        "win_rate": 20.51282051282051,
+        "total_pnl_pips": -700.1751316941624
+      },
+      "OVERLAP": {
+        "trades": 195,
+        "win_rate": 25.128205128205128,
+        "total_pnl_pips": 49.14938750402993
+      }
+    },
+    "exit_reasons": {
+      "SL": 301,
+      "TP3": 21,
+      "TP1+TP2+SL": 46,
+      "TP1+SL": 17,
+      "TP1+TIME": 3,
+      "TIME": 2
+    }
+  },
+  "S3_GBP_JPY": {
+    "pair": "GBP_JPY",
+    "strategy_id": 3,
+    "strategy_name": "S3_Key_Level_Breakout",
+    "total_trades": 240,
+    "win_rate_pct": 32.92,
+    "avg_rr": 1.61,
+    "expectancy_pips": -3.72,
+    "sharpe_ratio": -1.7,
+    "max_drawdown_pct": -39.43,
+    "profit_factor": 0.79,
+    "total_pnl_pips": -891.83,
+    "total_pnl_dollars": -30785.68,
+    "avg_win_pips": 42.51,
+    "avg_loss_pips": 26.4,
+    "max_consecutive_wins": 5,
+    "max_consecutive_losses": 16,
+    "avg_hold_time_minutes": 539.0,
+    "best_trade_pips": 148.69,
+    "worst_trade_pips": -58.7,
+    "best_trade_dollars": 2942.64,
+    "worst_trade_dollars": -1114.55,
+    "final_equity": 69214.32,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 134,
+        "win_rate": 35.07462686567165,
+        "total_pnl_pips": 159.2481388390603
+      },
+      "OVERLAP": {
+        "trades": 106,
+        "win_rate": 30.18867924528302,
+        "total_pnl_pips": -1051.0783307839768
+      }
+    },
+    "exit_reasons": {
+      "SL": 161,
+      "TP1+TP2+SL": 32,
+      "TP3": 19,
+      "TP1+SL": 28
+    }
+  },
+  "S3_USD_JPY": {
+    "pair": "USD_JPY",
+    "strategy_id": 3,
+    "strategy_name": "S3_Key_Level_Breakout",
+    "total_trades": 220,
+    "win_rate_pct": 35.45,
+    "avg_rr": 1.6,
+    "expectancy_pips": -1.37,
+    "sharpe_ratio": -0.98,
+    "max_drawdown_pct": -26.12,
+    "profit_factor": 0.87,
+    "total_pnl_pips": -300.7,
+    "total_pnl_dollars": -17192.04,
+    "avg_win_pips": 28.66,
+    "avg_loss_pips": 17.86,
+    "max_consecutive_wins": 3,
+    "max_consecutive_losses": 10,
+    "avg_hold_time_minutes": 609.8,
+    "best_trade_pips": 111.53,
+    "worst_trade_pips": -60.24,
+    "best_trade_dollars": 3133.4,
+    "worst_trade_dollars": -1073.07,
+    "final_equity": 82807.96,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 116,
+        "win_rate": 37.06896551724138,
+        "total_pnl_pips": -213.5047343767306
+      },
+      "OVERLAP": {
+        "trades": 104,
+        "win_rate": 33.65384615384615,
+        "total_pnl_pips": -87.1917729201391
+      }
+    },
+    "exit_reasons": {
+      "SL": 142,
+      "TP3": 28,
+      "TP1+TP2+SL": 25,
+      "TP1+SL": 25
+    }
+  },
+  "S3_GBP_USD": {
+    "pair": "GBP_USD",
+    "strategy_id": 3,
+    "strategy_name": "S3_Key_Level_Breakout",
+    "total_trades": 263,
+    "win_rate_pct": 35.74,
+    "avg_rr": 1.62,
+    "expectancy_pips": -1.11,
+    "sharpe_ratio": -1.03,
+    "max_drawdown_pct": -24.24,
+    "profit_factor": 0.87,
+    "total_pnl_pips": -292.75,
+    "total_pnl_dollars": -19569.64,
+    "avg_win_pips": 29.26,
+    "avg_loss_pips": 18.01,
+    "max_consecutive_wins": 5,
+    "max_consecutive_losses": 9,
+    "avg_hold_time_minutes": 508.5,
+    "best_trade_pips": 76.7,
+    "worst_trade_pips": -44.48,
+    "best_trade_dollars": 2839.14,
+    "worst_trade_dollars": -1018.88,
+    "final_equity": 80430.36,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 156,
+        "win_rate": 37.82051282051282,
+        "total_pnl_pips": -14.815714514974356
+      },
+      "OVERLAP": {
+        "trades": 107,
+        "win_rate": 32.71028037383177,
+        "total_pnl_pips": -277.9365672732492
+      }
+    },
+    "exit_reasons": {
+      "SL": 169,
+      "TP1+TP2+SL": 31,
+      "TP1+SL": 36,
+      "TP3": 27
+    }
+  },
+  "S3_EUR_GBP": {
+    "pair": "EUR_GBP",
+    "strategy_id": 3,
+    "strategy_name": "S3_Key_Level_Breakout",
+    "total_trades": 271,
+    "win_rate_pct": 30.63,
+    "avg_rr": 1.12,
+    "expectancy_pips": -3.92,
+    "sharpe_ratio": -4.57,
+    "max_drawdown_pct": -61.97,
+    "profit_factor": 0.53,
+    "total_pnl_pips": -1061.0,
+    "total_pnl_dollars": -60956.93,
+    "avg_win_pips": 12.61,
+    "avg_loss_pips": 11.21,
+    "max_consecutive_wins": 4,
+    "max_consecutive_losses": 15,
+    "avg_hold_time_minutes": 514.5,
+    "best_trade_pips": 39.02,
+    "worst_trade_pips": -35.47,
+    "best_trade_dollars": 2132.49,
+    "worst_trade_dollars": -1026.77,
+    "final_equity": 39043.07,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 155,
+        "win_rate": 32.903225806451616,
+        "total_pnl_pips": -463.71181791149047
+      },
+      "OVERLAP": {
+        "trades": 116,
+        "win_rate": 27.586206896551722,
+        "total_pnl_pips": -597.2844041738382
+      }
+    },
+    "exit_reasons": {
+      "TP3": 19,
+      "SL": 188,
+      "TP1+TP2+SL": 25,
+      "TP1+SL": 39
+    }
+  },
+  "S4_GBP_AUD": {
+    "pair": "GBP_AUD",
+    "strategy_id": 4,
+    "strategy_name": "S4_EMA_Ribbon_Scalp",
+    "total_trades": 79,
+    "win_rate_pct": 34.18,
+    "avg_rr": 1.25,
+    "expectancy_pips": -2.46,
+    "sharpe_ratio": -4.02,
+    "max_drawdown_pct": -21.21,
+    "profit_factor": 0.59,
+    "total_pnl_pips": -194.5,
+    "total_pnl_dollars": -19363.47,
+    "avg_win_pips": 13.23,
+    "avg_loss_pips": 10.61,
+    "max_consecutive_wins": 4,
+    "max_consecutive_losses": 10,
+    "avg_hold_time_minutes": 36.8,
+    "best_trade_pips": 30.01,
+    "worst_trade_pips": -20.79,
+    "best_trade_dollars": 2060.18,
+    "worst_trade_dollars": -1017.88,
+    "final_equity": 80636.53,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 41,
+        "win_rate": 26.82926829268293,
+        "total_pnl_pips": -178.7168295102963
+      },
+      "OVERLAP": {
+        "trades": 38,
+        "win_rate": 42.10526315789473,
+        "total_pnl_pips": -15.785910522057456
+      }
+    },
+    "exit_reasons": {
+      "SL": 52,
+      "TP1+TP2+SL": 11,
+      "TP1+SL": 12,
+      "TP3": 4
+    }
+  },
+  "S4_EUR_AUD": {
+    "pair": "EUR_AUD",
+    "strategy_id": 4,
+    "strategy_name": "S4_EMA_Ribbon_Scalp",
+    "total_trades": 64,
+    "win_rate_pct": 39.06,
+    "avg_rr": 1.57,
+    "expectancy_pips": 0.03,
+    "sharpe_ratio": -1.44,
+    "max_drawdown_pct": -10.14,
+    "profit_factor": 0.82,
+    "total_pnl_pips": 2.01,
+    "total_pnl_dollars": -6615.42,
+    "avg_win_pips": 12.59,
+    "avg_loss_pips": 8.02,
+    "max_consecutive_wins": 3,
+    "max_consecutive_losses": 5,
+    "avg_hold_time_minutes": 46.2,
+    "best_trade_pips": 36.66,
+    "worst_trade_pips": -14.72,
+    "best_trade_dollars": 2401.09,
+    "worst_trade_dollars": -1017.5,
+    "final_equity": 93384.58,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 36,
+        "win_rate": 33.33333333333333,
+        "total_pnl_pips": -37.71266692845352
+      },
+      "OVERLAP": {
+        "trades": 28,
+        "win_rate": 46.42857142857143,
+        "total_pnl_pips": 39.72751125460139
+      }
+    },
+    "exit_reasons": {
+      "TP1+SL": 9,
+      "TP1+TP2+SL": 9,
+      "SL": 39,
+      "TP3": 7
+    }
+  },
+  "S4_EUR_GBP": {
+    "pair": "EUR_GBP",
+    "strategy_id": 4,
+    "strategy_name": "S4_EMA_Ribbon_Scalp",
+    "total_trades": 94,
+    "win_rate_pct": 32.98,
+    "avg_rr": 0.79,
+    "expectancy_pips": -2.28,
+    "sharpe_ratio": -7.33,
+    "max_drawdown_pct": -32.81,
+    "profit_factor": 0.38,
+    "total_pnl_pips": -214.69,
+    "total_pnl_dollars": -32530.68,
+    "avg_win_pips": 4.4,
+    "avg_loss_pips": 5.57,
+    "max_consecutive_wins": 4,
+    "max_consecutive_losses": 8,
+    "avg_hold_time_minutes": 35.6,
+    "best_trade_pips": 15.41,
+    "worst_trade_pips": -9.7,
+    "best_trade_dollars": 1819.36,
+    "worst_trade_dollars": -1004.2,
+    "final_equity": 67469.32,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 41,
+        "win_rate": 34.146341463414636,
+        "total_pnl_pips": -62.94165287269469
+      },
+      "OVERLAP": {
+        "trades": 53,
+        "win_rate": 32.075471698113205,
+        "total_pnl_pips": -151.75202233190254
+      }
+    },
+    "exit_reasons": {
+      "TP1+SL": 13,
+      "SL": 63,
+      "TP3": 12,
+      "TP1+TP2+SL": 6
+    }
+  },
+  "S5_GBP_AUD": {
+    "pair": "GBP_AUD",
+    "strategy_id": 5,
+    "strategy_name": "S5_Momentum_Exhaustion",
+    "total_trades": 264,
+    "win_rate_pct": 36.36,
+    "avg_rr": 1.5,
+    "expectancy_pips": -1.27,
+    "sharpe_ratio": -1.69,
+    "max_drawdown_pct": -39.48,
+    "profit_factor": 0.79,
+    "total_pnl_pips": -336.04,
+    "total_pnl_dollars": -27953.37,
+    "avg_win_pips": 21.26,
+    "avg_loss_pips": 14.15,
+    "max_consecutive_wins": 5,
+    "max_consecutive_losses": 13,
+    "avg_hold_time_minutes": 143.5,
+    "best_trade_pips": 66.05,
+    "worst_trade_pips": -26.36,
+    "best_trade_dollars": 2554.95,
+    "worst_trade_dollars": -1041.23,
+    "final_equity": 72046.63,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 148,
+        "win_rate": 37.83783783783784,
+        "total_pnl_pips": -55.194967048454885
+      },
+      "OVERLAP": {
+        "trades": 116,
+        "win_rate": 34.48275862068966,
+        "total_pnl_pips": -280.84359608526563
+      }
+    },
+    "exit_reasons": {
+      "SL": 168,
+      "TP1+TP2+SL": 35,
+      "TP1+SL": 44,
+      "TP3": 17
+    }
+  },
+  "S5_EUR_AUD": {
+    "pair": "EUR_AUD",
+    "strategy_id": 5,
+    "strategy_name": "S5_Momentum_Exhaustion",
+    "total_trades": 284,
+    "win_rate_pct": 31.34,
+    "avg_rr": 1.54,
+    "expectancy_pips": -2.48,
+    "sharpe_ratio": -3.15,
+    "max_drawdown_pct": -48.68,
+    "profit_factor": 0.65,
+    "total_pnl_pips": -704.74,
+    "total_pnl_dollars": -47670.21,
+    "avg_win_pips": 18.64,
+    "avg_loss_pips": 12.12,
+    "max_consecutive_wins": 5,
+    "max_consecutive_losses": 9,
+    "avg_hold_time_minutes": 129.8,
+    "best_trade_pips": 78.7,
+    "worst_trade_pips": -28.46,
+    "best_trade_dollars": 2740.9,
+    "worst_trade_dollars": -1007.73,
+    "final_equity": 52329.79,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 160,
+        "win_rate": 31.874999999999996,
+        "total_pnl_pips": -393.9153103944255
+      },
+      "OVERLAP": {
+        "trades": 124,
+        "win_rate": 30.64516129032258,
+        "total_pnl_pips": -310.82703073516905
+      }
+    },
+    "exit_reasons": {
+      "SL": 195,
+      "TP1+SL": 36,
+      "TP1+TP2+SL": 37,
+      "TP3": 16
+    }
+  },
+  "S5_EUR_GBP": {
+    "pair": "EUR_GBP",
+    "strategy_id": 5,
+    "strategy_name": "S5_Momentum_Exhaustion",
+    "total_trades": 278,
+    "win_rate_pct": 32.73,
+    "avg_rr": 0.9,
+    "expectancy_pips": -2.67,
+    "sharpe_ratio": -6.16,
+    "max_drawdown_pct": -66.51,
+    "profit_factor": 0.43,
+    "total_pnl_pips": -741.99,
+    "total_pnl_dollars": -66510.95,
+    "avg_win_pips": 6.35,
+    "avg_loss_pips": 7.06,
+    "max_consecutive_wins": 4,
+    "max_consecutive_losses": 14,
+    "avg_hold_time_minutes": 171.6,
+    "best_trade_pips": 32.1,
+    "worst_trade_pips": -22.25,
+    "best_trade_dollars": 1906.94,
+    "worst_trade_dollars": -1000.0,
+    "final_equity": 33489.05,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 138,
+        "win_rate": 36.95652173913043,
+        "total_pnl_pips": -327.8603639263469
+      },
+      "OVERLAP": {
+        "trades": 140,
+        "win_rate": 28.57142857142857,
+        "total_pnl_pips": -414.133370295348
+      }
+    },
+    "exit_reasons": {
+      "SL": 187,
+      "TP1+TP2+SL": 28,
+      "TP1+SL": 52,
+      "TP3": 11
+    }
+  },
+  "S5_GBP_CAD": {
+    "pair": "GBP_CAD",
+    "strategy_id": 5,
+    "strategy_name": "S5_Momentum_Exhaustion",
+    "total_trades": 240,
+    "win_rate_pct": 37.5,
+    "avg_rr": 1.35,
+    "expectancy_pips": -1.47,
+    "sharpe_ratio": -1.96,
+    "max_drawdown_pct": -35.07,
+    "profit_factor": 0.77,
+    "total_pnl_pips": -351.74,
+    "total_pnl_dollars": -29057.25,
+    "avg_win_pips": 16.9,
+    "avg_loss_pips": 12.49,
+    "max_consecutive_wins": 5,
+    "max_consecutive_losses": 7,
+    "avg_hold_time_minutes": 164.3,
+    "best_trade_pips": 52.72,
+    "worst_trade_pips": -40.66,
+    "best_trade_dollars": 2134.17,
+    "worst_trade_dollars": -1000.0,
+    "final_equity": 70942.75,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 138,
+        "win_rate": 34.05797101449276,
+        "total_pnl_pips": -269.5886460592775
+      },
+      "OVERLAP": {
+        "trades": 102,
+        "win_rate": 42.15686274509804,
+        "total_pnl_pips": -82.15130371285807
+      }
+    },
+    "exit_reasons": {
+      "SL": 150,
+      "TP1+SL": 37,
+      "TP3": 15,
+      "TP1+TP2+SL": 38
+    }
+  },
+  "S5_EUR_CAD": {
+    "pair": "EUR_CAD",
+    "strategy_id": 5,
+    "strategy_name": "S5_Momentum_Exhaustion",
+    "total_trades": 262,
+    "win_rate_pct": 29.77,
+    "avg_rr": 1.21,
+    "expectancy_pips": -3.7,
+    "sharpe_ratio": -4.54,
+    "max_drawdown_pct": -60.7,
+    "profit_factor": 0.53,
+    "total_pnl_pips": -968.64,
+    "total_pnl_dollars": -59937.17,
+    "avg_win_pips": 13.14,
+    "avg_loss_pips": 10.84,
+    "max_consecutive_wins": 5,
+    "max_consecutive_losses": 13,
+    "avg_hold_time_minutes": 144.8,
+    "best_trade_pips": 34.52,
+    "worst_trade_pips": -19.68,
+    "best_trade_dollars": 2175.61,
+    "worst_trade_dollars": -1019.37,
+    "final_equity": 40062.83,
+    "starting_equity": 100000.0,
+    "session_breakdown": {
+      "LONDON": {
+        "trades": 149,
+        "win_rate": 30.201342281879196,
+        "total_pnl_pips": -495.20084563028934
+      },
+      "OVERLAP": {
+        "trades": 113,
+        "win_rate": 29.20353982300885,
+        "total_pnl_pips": -473.4409758613806
+      }
+    },
+    "exit_reasons": {
+      "TP3": 17,
+      "SL": 184,
+      "TP1+SL": 36,
+      "TP1+TP2+SL": 25
+    }
+  }
+}

@@ -102,7 +102,7 @@ def fetch_candles_from_supabase(instrument, granularity, supabase_client, table)
     """
     print(f"Fetching {instrument} / {granularity} from Supabase...")
 
-    # Supabase JS-style pagination: fetch in pages of 1000
+    # Supabase pagination: fetch in pages of 1000
     all_rows = []
     page_size = 1000
     offset = 0
@@ -113,14 +113,14 @@ def fetch_candles_from_supabase(instrument, granularity, supabase_client, table)
             .eq("instrument", instrument)
             .eq("granularity", granularity)
             .order("time", desc=False)
-            .range(offset, offset + page_size - 1)
+            .range(offset, offset + page_size)
             .execute()
         )
         rows = resp.data or []
         all_rows.extend(rows)
         if len(rows) < page_size:
             break
-        offset += page_size
+        offset += len(rows)
 
     if not all_rows:
         print(f"  No data found for {instrument} / {granularity}.")

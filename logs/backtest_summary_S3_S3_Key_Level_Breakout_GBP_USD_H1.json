@@ -1,0 +1,45 @@
+{
+  "strategy_name": "S3_Key_Level_Breakout",
+  "strategy_key": "S3",
+  "instrument": "GBP_USD",
+  "granularity": "H1",
+  "run_time": "2026-02-17T12:46:20.546660+00:00",
+  "data_range": {
+    "start": "2023-10-22 21:00:00+00:00",
+    "end": "2023-12-19 11:00:00+00:00",
+    "bars": 998
+  },
+  "metrics": {
+    "starting_equity": 100000.0,
+    "total_return_pct": -0.0176,
+    "max_drawdown_pct": 0.0359,
+    "num_trades": 22,
+    "round_trips": 9,
+    "win_rate_pct": 11.11,
+    "sharpe_ratio": -15.8874,
+    "final_equity": 99982.38
+  },
+  "monthly_pnl": [
+    {
+      "month": "2023-10",
+      "start_equity": 100000.0,
+      "end_equity": 100002.25,
+      "pnl": 2.25,
+      "pnl_pct": 0.0023
+    },
+    {
+      "month": "2023-11",
+      "start_equity": 100002.25,
+      "end_equity": 99975.3,
+      "pnl": -26.95,
+      "pnl_pct": -0.027
+    },
+    {
+      "month": "2023-12",
+      "start_equity": 99975.3,
+      "end_equity": 99982.38,
+      "pnl": 7.08,
+      "pnl_pct": 0.0071
+    }
+  ]
+}

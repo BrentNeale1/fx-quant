@@ -1,0 +1,206 @@
+{
+  "strategy_name": "S2_Session_VWAP_Reversal",
+  "strategy_key": "S2",
+  "instrument": "GBP_USD",
+  "granularity": "M15",
+  "run_time": "2026-02-17T12:55:01.661422+00:00",
+  "data_range": {
+    "start": "2024-01-29 12:30:00+00:00",
+    "end": "2026-02-17 12:30:00+00:00",
+    "bars": 51059
+  },
+  "metrics": {
+    "starting_equity": 100000.0,
+    "total_return_pct": -0.0175,
+    "max_drawdown_pct": 0.0746,
+    "num_trades": 3032,
+    "round_trips": 895,
+    "win_rate_pct": 9.27,
+    "sharpe_ratio": -0.6121,
+    "final_equity": 99982.45
+  },
+  "monthly_pnl": [
+    {
+      "month": "2024-01",
+      "start_equity": 100000.0,
+      "end_equity": 100008.36,
+      "pnl": 8.36,
+      "pnl_pct": 0.0084
+    },
+    {
+      "month": "2024-02",
+      "start_equity": 100008.36,
+      "end_equity": 99987.56,
+      "pnl": -20.8,
+      "pnl_pct": -0.0208
+    },
+    {
+      "month": "2024-03",
+      "start_equity": 99987.56,
+      "end_equity": 99974.24,
+      "pnl": -13.32,
+      "pnl_pct": -0.0133
+    },
+    {
+      "month": "2024-04",
+      "start_equity": 99974.24,
+      "end_equity": 99955.18,
+      "pnl": -19.06,
+      "pnl_pct": -0.0191
+    },
+    {
+      "month": "2024-05",
+      "start_equity": 99955.18,
+      "end_equity": 99970.5,
+      "pnl": 15.32,
+      "pnl_pct": 0.0153
+    },
+    {
+      "month": "2024-06",
+      "start_equity": 99970.5,
+      "end_equity": 99963.24,
+      "pnl": -7.26,
+      "pnl_pct": -0.0073
+    },
+    {
+      "month": "2024-07",
+      "start_equity": 99963.24,
+      "end_equity": 99968.74,
+      "pnl": 5.5,
+      "pnl_pct": 0.0055
+    },
+    {
+      "month": "2024-08",
+      "start_equity": 99968.74,
+      "end_equity": 99978.34,
+      "pnl": 9.6,
+      "pnl_pct": 0.0096
+    },
+    {
+      "month": "2024-09",
+      "start_equity": 99978.34,
+      "end_equity": 100004.18,
+      "pnl": 25.84,
+      "pnl_pct": 0.0258
+    },
+    {
+      "month": "2024-10",
+      "start_equity": 100004.18,
+      "end_equity": 99996.73,
+      "pnl": -7.45,
+      "pnl_pct": -0.0074
+    },
+    {
+      "month": "2024-11",
+      "start_equity": 99996.73,
+      "end_equity": 99994.52,
+      "pnl": -2.21,
+      "pnl_pct": -0.0022
+    },
+    {
+      "month": "2024-12",
+      "start_equity": 99994.52,
+      "end_equity": 100021.04,
+      "pnl": 26.52,
+      "pnl_pct": 0.0265
+    },
+    {
+      "month": "2025-01",
+      "start_equity": 100021.04,
+      "end_equity": 99990.66,
+      "pnl": -30.39,
+      "pnl_pct": -0.0304
+    },
+    {
+      "month": "2025-02",
+      "start_equity": 99990.66,
+      "end_equity": 99986.37,
+      "pnl": -4.28,
+      "pnl_pct": -0.0043
+    },
+    {
+      "month": "2025-03",
+      "start_equity": 99986.37,
+      "end_equity": 99993.88,
+      "pnl": 7.5,
+      "pnl_pct": 0.0075
+    },
+    {
+      "month": "2025-04",
+      "start_equity": 99993.88,
+      "end_equity": 99977.31,
+      "pnl": -16.57,
+      "pnl_pct": -0.0166
+    },
+    {
+      "month": "2025-05",
+      "start_equity": 99977.31,
+      "end_equity": 100010.56,
+      "pnl": 33.25,
+      "pnl_pct": 0.0333
+    },
+    {
+      "month": "2025-06",
+      "start_equity": 100010.56,
+      "end_equity": 100012.66,
+      "pnl": 2.1,
+      "pnl_pct": 0.0021
+    },
+    {
+      "month": "2025-07",
+      "start_equity": 100012.66,
+      "end_equity": 100025.54,
+      "pnl": 12.88,
+      "pnl_pct": 0.0129
+    },
+    {
+      "month": "2025-08",
+      "start_equity": 100025.54,
+      "end_equity": 100014.54,
+      "pnl": -11.0,
+      "pnl_pct": -0.011
+    },
+    {
+      "month": "2025-09",
+      "start_equity": 100014.54,
+      "end_equity": 99999.94,
+      "pnl": -14.61,
+      "pnl_pct": -0.0146
+    },
+    {
+      "month": "2025-10",
+      "start_equity": 99999.94,
+      "end_equity": 100014.94,
+      "pnl": 15.0,
+      "pnl_pct": 0.015
+    },
+    {
+      "month": "2025-11",
+      "start_equity": 100014.94,
+      "end_equity": 100016.01,
+      "pnl": 1.07,
+      "pnl_pct": 0.0011
+    },
+    {
+      "month": "2025-12",
+      "start_equity": 100016.01,
+      "end_equity": 100010.9,
+      "pnl": -5.11,
+      "pnl_pct": -0.0051
+    },
+    {
+      "month": "2026-01",
+      "start_equity": 100010.9,
+      "end_equity": 99998.4,
+      "pnl": -12.51,
+      "pnl_pct": -0.0125
+    },
+    {
+      "month": "2026-02",
+      "start_equity": 99998.4,
+      "end_equity": 99982.45,
+      "pnl": -15.94,
+      "pnl_pct": -0.0159
+    }
+  ]
+}

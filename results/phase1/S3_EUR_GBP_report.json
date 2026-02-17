@@ -1,0 +1,43 @@
+{
+  "pair": "EUR_GBP",
+  "strategy_id": 3,
+  "strategy_name": "S3_Key_Level_Breakout",
+  "total_trades": 271,
+  "win_rate_pct": 30.63,
+  "avg_rr": 1.12,
+  "expectancy_pips": -3.92,
+  "sharpe_ratio": -4.57,
+  "max_drawdown_pct": -61.97,
+  "profit_factor": 0.53,
+  "total_pnl_pips": -1061.0,
+  "total_pnl_dollars": -60956.93,
+  "avg_win_pips": 12.61,
+  "avg_loss_pips": 11.21,
+  "max_consecutive_wins": 4,
+  "max_consecutive_losses": 15,
+  "avg_hold_time_minutes": 514.5,
+  "best_trade_pips": 39.02,
+  "worst_trade_pips": -35.47,
+  "best_trade_dollars": 2132.49,
+  "worst_trade_dollars": -1026.77,
+  "final_equity": 39043.07,
+  "starting_equity": 100000.0,
+  "session_breakdown": {
+    "LONDON": {
+      "trades": 155,
+      "win_rate": 32.903225806451616,
+      "total_pnl_pips": -463.71181791149047
+    },
+    "OVERLAP": {
+      "trades": 116,
+      "win_rate": 27.586206896551722,
+      "total_pnl_pips": -597.2844041738382
+    }
+  },
+  "exit_reasons": {
+    "TP3": 19,
+    "SL": 188,
+    "TP1+TP2+SL": 25,
+    "TP1+SL": 39
+  }
+}

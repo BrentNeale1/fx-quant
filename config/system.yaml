@@ -6,12 +6,22 @@ brokers:
   type: oanda_v20
   enabled: true
   instruments:
+  - GBP_AUD
+  - EUR_AUD
+  - EUR_CAD
+  - EUR_NZD
+  - GBP_USD
   - EUR_USD
+  - GBP_JPY
+  - USD_JPY
+  - EUR_GBP
+  - GBP_CAD
 data:
   candle_count: 200
   candle_granularities:
-  - M5
   - M15
+  - H1
+  - H4
   tick_export: false
 features:
   sma_windows:
@@ -19,12 +29,20 @@ features:
   - 20
   - 50
   - 100
+  - 200
   ema_windows:
   - 20
+  - 50
+  - 100
+  - 200
   rsi_period: 14
   atr_period: 14
   vwap_window: 20
   volatility_window: 20
+  macd: [12, 26, 9]
+  adx_period: 14
+  stochastic: [5, 3, 3]
+  session_vwap_bands: true
 ai:
   model: local-ensemble
   confidence_threshold: 0.75

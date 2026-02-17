@@ -1,0 +1,43 @@
+{
+  "pair": "EUR_AUD",
+  "strategy_id": 1,
+  "strategy_name": "S1_MA_Breakout_Retest",
+  "total_trades": 95,
+  "win_rate_pct": 45.26,
+  "avg_rr": 1.24,
+  "expectancy_pips": 0.19,
+  "sharpe_ratio": -0.28,
+  "max_drawdown_pct": -8.42,
+  "profit_factor": 0.96,
+  "total_pnl_pips": 18.43,
+  "total_pnl_dollars": -1952.89,
+  "avg_win_pips": 17.6,
+  "avg_loss_pips": 14.2,
+  "max_consecutive_wins": 5,
+  "max_consecutive_losses": 5,
+  "avg_hold_time_minutes": 202.3,
+  "best_trade_pips": 56.97,
+  "worst_trade_pips": -24.57,
+  "best_trade_dollars": 2281.5,
+  "worst_trade_dollars": -1061.56,
+  "final_equity": 98047.11,
+  "starting_equity": 100000.0,
+  "session_breakdown": {
+    "LONDON": {
+      "trades": 51,
+      "win_rate": 39.21568627450981,
+      "total_pnl_pips": -72.08655191531844
+    },
+    "OVERLAP": {
+      "trades": 44,
+      "win_rate": 52.27272727272727,
+      "total_pnl_pips": 90.52045431346279
+    }
+  },
+  "exit_reasons": {
+    "SL": 52,
+    "TP1+SL": 19,
+    "TP3": 9,
+    "TP1+TP2+SL": 15
+  }
+}

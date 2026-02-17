@@ -1,0 +1,45 @@
+{
+  "strategy_name": "S3_Key_Level_Breakout",
+  "strategy_key": "S3",
+  "instrument": "USD_JPY",
+  "granularity": "H1",
+  "run_time": "2026-02-17T12:46:18.341303+00:00",
+  "data_range": {
+    "start": "2023-10-22 21:00:00+00:00",
+    "end": "2023-12-19 11:00:00+00:00",
+    "bars": 998
+  },
+  "metrics": {
+    "starting_equity": 100000.0,
+    "total_return_pct": 0.0117,
+    "max_drawdown_pct": 0.008,
+    "num_trades": 18,
+    "round_trips": 6,
+    "win_rate_pct": 16.67,
+    "sharpe_ratio": 12.9054,
+    "final_equity": 100011.67
+  },
+  "monthly_pnl": [
+    {
+      "month": "2023-10",
+      "start_equity": 100000.0,
+      "end_equity": 99993.34,
+      "pnl": -6.66,
+      "pnl_pct": -0.0067
+    },
+    {
+      "month": "2023-11",
+      "start_equity": 99993.34,
+      "end_equity": 100019.64,
+      "pnl": 26.31,
+      "pnl_pct": 0.0263
+    },
+    {
+      "month": "2023-12",
+      "start_equity": 100019.64,
+      "end_equity": 100011.67,
+      "pnl": -7.98,
+      "pnl_pct": -0.008
+    }
+  ]
+}

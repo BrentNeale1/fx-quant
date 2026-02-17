@@ -1,0 +1,45 @@
+{
+  "pair": "GBP_JPY",
+  "strategy_id": 2,
+  "strategy_name": "S2_Session_VWAP_Reversal",
+  "total_trades": 348,
+  "win_rate_pct": 20.69,
+  "avg_rr": 2.51,
+  "expectancy_pips": -4.55,
+  "sharpe_ratio": -3.15,
+  "max_drawdown_pct": -67.39,
+  "profit_factor": 0.62,
+  "total_pnl_pips": -1583.63,
+  "total_pnl_dollars": -65240.52,
+  "avg_win_pips": 41.8,
+  "avg_loss_pips": 16.64,
+  "max_consecutive_wins": 3,
+  "max_consecutive_losses": 18,
+  "avg_hold_time_minutes": 221.6,
+  "best_trade_pips": 133.0,
+  "worst_trade_pips": -87.62,
+  "best_trade_dollars": 3890.84,
+  "worst_trade_dollars": -1018.57,
+  "final_equity": 34759.48,
+  "starting_equity": 100000.0,
+  "session_breakdown": {
+    "LONDON": {
+      "trades": 194,
+      "win_rate": 21.649484536082475,
+      "total_pnl_pips": -1066.9327875983017
+    },
+    "OVERLAP": {
+      "trades": 154,
+      "win_rate": 19.480519480519483,
+      "total_pnl_pips": -516.6924885002354
+    }
+  },
+  "exit_reasons": {
+    "TP1+TP2+SL": 34,
+    "SL": 275,
+    "TP1+SL": 14,
+    "TIME": 2,
+    "TP3": 21,
+    "TP1+TIME": 2
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "strategy_name": "S5_Momentum_Exhaustion",
+  "strategy_key": "S5",
+  "instrument": "GBP_AUD",
+  "granularity": "M15",
+  "run_time": "2026-02-17T12:46:30.534909+00:00",
+  "data_range": {
+    "start": "2024-01-29 12:15:00+00:00",
+    "end": "2024-02-12 21:45:00+00:00",
+    "bars": 998
+  },
+  "metrics": {
+    "starting_equity": 100000.0,
+    "total_return_pct": 0.008,
+    "max_drawdown_pct": 0.0034,
+    "num_trades": 47,
+    "round_trips": 8,
+    "win_rate_pct": 0.0,
+    "sharpe_ratio": 19.0639,
+    "final_equity": 100007.96
+  },
+  "monthly_pnl": [
+    {
+      "month": "2024-01",
+      "start_equity": 100000.0,
+      "end_equity": 100004.43,
+      "pnl": 4.43,
+      "pnl_pct": 0.0044
+    },
+    {
+      "month": "2024-02",
+      "start_equity": 100004.43,
+      "end_equity": 100007.96,
+      "pnl": 3.52,
+      "pnl_pct": 0.0035
+    }
+  ]
+}

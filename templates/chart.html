@@ -2,131 +2,613 @@
 {% block title %}Chart - fx-quant{% endblock %}
 
 {% block content %}
-<div class="row mb-3">
-  <div class="col">
-    <h4>Price Chart with Pivot Points</h4>
-  </div>
-  <div class="col-auto">
-    <form method="get" action="/chart" class="d-flex gap-2">
-      <select name="instrument" class="form-select form-select-sm" onchange="this.form.submit()">
+<style>
+  /* Dark chart container - scoped to chart page only */
+  .chart-wrapper {
+    background: #131722;
+    border-radius: 8px;
+    padding: 0;
+    overflow: hidden;
+  }
+  .chart-toolbar {
+    background: #1e222d;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #2a2e39;
+  }
+  .chart-toolbar label {
+    color: #787b86;
+    font-size: 0.8rem;
+    margin: 0;
+  }
+  .chart-toolbar select {
+    background: #2a2e39;
+    color: #d1d4dc;
+    border: 1px solid #363a45;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.82rem;
+    outline: none;
+  }
+  .chart-toolbar select:focus {
+    border-color: #2962ff;
+  }
+
+  /* Indicator dropdown */
+  .ind-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  .ind-btn {
+    background: #2a2e39;
+    color: #d1d4dc;
+    border: 1px solid #363a45;
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 0.82rem;
+    cursor: pointer;
+  }
+  .ind-btn:hover { border-color: #2962ff; }
+  .ind-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 100;
+    background: #1e222d;
+    border: 1px solid #363a45;
+    border-radius: 6px;
+    padding: 8px 0;
+    min-width: 220px;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .ind-panel.open { display: block; }
+  .ind-panel .ind-group {
+    padding: 4px 12px 2px;
+    color: #787b86;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .ind-panel label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    color: #d1d4dc;
+    font-size: 0.82rem;
+    cursor: pointer;
+    margin: 0;
+  }
+  .ind-panel label:hover { background: #2a2e39; }
+  .ind-panel input[type="checkbox"] {
+    accent-color: #2962ff;
+  }
+  .ind-sep {
+    border-top: 1px solid #2a2e39;
+    margin: 4px 0;
+  }
+
+  /* AVWAP anchor button */
+  .avwap-btn {
+    background: #2a2e39;
+    color: #d1d4dc;
+    border: 1px solid #363a45;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-size: 0.78rem;
+    cursor: pointer;
+    display: none;
+  }
+  .avwap-btn.active {
+    background: #2962ff;
+    border-color: #2962ff;
+    color: #fff;
+  }
+  .avwap-btn.visible { display: inline-block; }
+
+  /* Chart containers */
+  #main-chart-container { width: 100%; }
+  .sub-chart-container {
+    width: 100%;
+    border-top: 1px solid #2a2e39;
+  }
+  .sub-chart-label {
+    position: absolute;
+    top: 4px;
+    left: 8px;
+    color: #787b86;
+    font-size: 0.72rem;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .sub-chart-wrapper {
+    position: relative;
+    display: none;
+  }
+  .sub-chart-wrapper.visible { display: block; }
+
+  /* No-data message */
+  .no-data-msg {
+    color: #787b86;
+    text-align: center;
+    padding: 80px 20px;
+    font-size: 1.1rem;
+  }
+</style>
+
+<div class="chart-wrapper">
+  <!-- Toolbar -->
+  <div class="chart-toolbar">
+    <form method="get" action="/chart" class="d-flex gap-2 align-items-center" style="margin:0;">
+      <label>Instrument</label>
+      <select name="instrument" onchange="this.form.submit()">
         {% for inst in instruments %}
-        <option value="{{ inst }}" {% if inst == instrument %}selected{% endif %}>{{ inst }}</option>
+        <option value="{{ inst }}" {% if inst == instrument %}selected{% endif %}>{{ inst.replace('_', '/') }}</option>
         {% endfor %}
       </select>
-      <select name="granularity" class="form-select form-select-sm" onchange="this.form.submit()">
+      <label>Timeframe</label>
+      <select name="granularity" onchange="this.form.submit()">
         {% for g in granularities %}
         <option value="{{ g }}" {% if g == granularity %}selected{% endif %}>{{ g }}</option>
         {% endfor %}
       </select>
     </form>
+
+    <!-- Indicators dropdown -->
+    <div class="ind-dropdown">
+      <button type="button" class="ind-btn" id="ind-toggle">Indicators</button>
+      <div class="ind-panel" id="ind-panel">
+        <div class="ind-group">Overlays</div>
+        <label><input type="checkbox" data-ind="sma_3"> SMA 3</label>
+        <label><input type="checkbox" data-ind="sma_20"> SMA 20</label>
+        <label><input type="checkbox" data-ind="sma_50"> SMA 50</label>
+        <label><input type="checkbox" data-ind="sma_100"> SMA 100</label>
+        <div class="ind-sep"></div>
+        <label><input type="checkbox" data-ind="ema_20"> EMA 20</label>
+        <label><input type="checkbox" data-ind="ema_50"> EMA 50</label>
+        <label><input type="checkbox" data-ind="ema_100"> EMA 100</label>
+        <label><input type="checkbox" data-ind="ema_200"> EMA 200</label>
+        <div class="ind-sep"></div>
+        <label><input type="checkbox" data-ind="session_vwap"> Session VWAP</label>
+        <label><input type="checkbox" data-ind="anchored_vwap"> Anchored VWAP</label>
+        <div class="ind-sep"></div>
+        <div class="ind-group">Chart</div>
+        <label><input type="checkbox" data-ind="volume" checked> Volume</label>
+        <label><input type="checkbox" data-ind="pivots" checked> Pivot Points</label>
+        <div class="ind-sep"></div>
+        <div class="ind-group">Separate Panes</div>
+        <label><input type="checkbox" data-ind="rsi_14"> RSI 14</label>
+        <label><input type="checkbox" data-ind="atr_14"> ATR 14</label>
+      </div>
+    </div>
+
+    <button type="button" class="avwap-btn" id="avwap-btn" title="Click a candle to set AVWAP anchor">Set AVWAP Anchor</button>
   </div>
+
+  {% if error_msg %}
+  <div class="no-data-msg">{{ error_msg }}</div>
+  {% else %}
+  <!-- Main chart -->
+  <div id="main-chart-container"></div>
+
+  <!-- Sub-chart panes -->
+  <div class="sub-chart-wrapper" id="rsi-wrapper">
+    <div class="sub-chart-label">RSI 14</div>
+    <div class="sub-chart-container" id="rsi-chart-container"></div>
+  </div>
+  <div class="sub-chart-wrapper" id="atr-wrapper">
+    <div class="sub-chart-label">ATR 14</div>
+    <div class="sub-chart-container" id="atr-chart-container"></div>
+  </div>
+  {% endif %}
 </div>
 
-{% if error_msg %}
-<div class="alert alert-warning">{{ error_msg }}</div>
-{% endif %}
-
-<div class="card">
-  <div class="card-body p-2">
-    <div id="chart" style="width:100%; height:600px;"></div>
-  </div>
-</div>
-
-<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<script src="https://unpkg.com/lightweight-charts@4/dist/lightweight-charts.standalone.production.js"></script>
 <script>
 (function() {
-  var ohlc = {{ ohlc_json | safe }};
+  var ohlcRaw = {{ ohlc_json | safe }};
   var pivots = {{ pivot_json | safe }};
-  var smas = {{ sma_json | safe }};
+  var indicators = {{ indicators_json | safe }};
 
-  if (!ohlc || ohlc.length === 0) {
-    document.getElementById('chart').innerHTML =
-      '<p class="text-muted text-center mt-5">No candle data available for {{ instrument }} / {{ granularity }}.</p>';
+  if (!ohlcRaw || ohlcRaw.length === 0) {
+    var container = document.getElementById('main-chart-container');
+    if (container) container.innerHTML = '<div class="no-data-msg">No candle data available for {{ instrument }} / {{ granularity }}.</div>';
     return;
   }
 
-  var times  = ohlc.map(function(r) { return r.time; });
-  var opens  = ohlc.map(function(r) { return r.open; });
-  var highs  = ohlc.map(function(r) { return r.high; });
-  var lows   = ohlc.map(function(r) { return r.low; });
-  var closes = ohlc.map(function(r) { return r.close; });
+  // ---- Time conversion: ISO string -> Unix timestamp ----
+  function toUnix(isoStr) {
+    return Math.floor(new Date(isoStr).getTime() / 1000);
+  }
 
-  var traces = [{
-    x: times, open: opens, high: highs, low: lows, close: closes,
-    type: 'candlestick',
-    increasing: {line: {color: '#198754'}},
-    decreasing: {line: {color: '#dc3545'}},
-    name: '{{ instrument }}'
-  }];
-
-  // SMA overlay lines
-  var smaColors = {
-    'sma_3':   '#ff9800',
-    'sma_20':  '#9c27b0',
-    'sma_21':  '#673ab7',
-    'sma_50':  '#00bcd4',
-    'sma_100': '#e91e63'
-  };
-  Object.keys(smas).forEach(function(key) {
-    traces.push({
-      x: times,
-      y: smas[key],
-      type: 'scatter',
-      mode: 'lines',
-      name: key.toUpperCase().replace('_', ' '),
-      line: {color: smaColors[key] || '#999', width: 1.5},
-      connectgaps: false
-    });
+  // ---- Prepare OHLC data ----
+  var ohlcData = ohlcRaw.map(function(r) {
+    return { time: toUnix(r.time), open: r.open, high: r.high, low: r.low, close: r.close };
   });
 
-  // Pivot level lines
-  var levelDefs = [
-    {key: 'r3', color: '#b71c1c', label: 'R3'},
-    {key: 'r2', color: '#e53935', label: 'R2'},
-    {key: 'r1', color: '#ef9a9a', label: 'R1'},
-    {key: 'pivot', color: '#1565c0', label: 'Pivot'},
-    {key: 's1', color: '#a5d6a7', label: 'S1'},
-    {key: 's2', color: '#43a047', label: 'S2'},
-    {key: 's3', color: '#1b5e20', label: 'S3'}
+  // ---- Create main chart ----
+  var mainContainer = document.getElementById('main-chart-container');
+  var chartHeight = Math.max(500, window.innerHeight - 260);
+
+  var chart = LightweightCharts.createChart(mainContainer, {
+    width: mainContainer.clientWidth,
+    height: chartHeight,
+    layout: { background: { color: '#131722' }, textColor: '#d1d4dc' },
+    grid: { vertLines: { color: '#1e222d' }, horzLines: { color: '#1e222d' } },
+    crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+    rightPriceScale: { borderColor: '#2B2B43' },
+    timeScale: { borderColor: '#2B2B43', timeVisible: true, secondsVisible: false },
+  });
+
+  // Candlestick series
+  var candleSeries = chart.addCandlestickSeries({
+    upColor: '#26a69a',
+    downColor: '#ef5350',
+    borderUpColor: '#26a69a',
+    borderDownColor: '#ef5350',
+    wickUpColor: '#26a69a',
+    wickDownColor: '#ef5350',
+  });
+  candleSeries.setData(ohlcData);
+
+  // Current price line
+  var lastCandle = ohlcData[ohlcData.length - 1];
+  if (lastCandle) {
+    candleSeries.createPriceLine({
+      price: lastCandle.close,
+      color: lastCandle.close >= lastCandle.open ? '#26a69a' : '#ef5350',
+      lineWidth: 1,
+      lineStyle: LightweightCharts.LineStyle.Dotted,
+      axisLabelVisible: true,
+      title: '',
+    });
+  }
+
+  // ---- Series management ----
+  var activeSeries = new Map();
+
+  // Indicator colors
+  var indColors = {
+    sma_3: '#ff9800', sma_20: '#ab47bc', sma_50: '#00bcd4', sma_100: '#e91e63',
+    ema_20: '#ffeb3b', ema_50: '#4caf50', ema_100: '#2196f3', ema_200: '#ff5722',
+    session_vwap: '#00e5ff', anchored_vwap: '#ff4081',
+  };
+
+  function convertIndicatorData(dataArr) {
+    return dataArr.map(function(d) {
+      var obj = { time: toUnix(d.time), value: d.value };
+      if (d.color) obj.color = d.color;
+      return obj;
+    });
+  }
+
+  // ---- Volume series ----
+  var volumeSeries = null;
+  function addVolume() {
+    if (volumeSeries) return;
+    if (!indicators.volume) return;
+    volumeSeries = chart.addHistogramSeries({
+      priceFormat: { type: 'volume' },
+      priceScaleId: 'volume',
+    });
+    chart.priceScale('volume').applyOptions({
+      scaleMargins: { top: 0.8, bottom: 0 },
+    });
+    volumeSeries.setData(convertIndicatorData(indicators.volume));
+  }
+  function removeVolume() {
+    if (!volumeSeries) return;
+    chart.removeSeries(volumeSeries);
+    volumeSeries = null;
+  }
+
+  // ---- Pivot lines ----
+  var pivotLines = [];
+  var pivotDefs = [
+    { key: 'r3', color: '#b71c1c', label: 'R3' },
+    { key: 'r2', color: '#e53935', label: 'R2' },
+    { key: 'r1', color: '#ef9a9a', label: 'R1' },
+    { key: 'pivot', color: '#42a5f5', label: 'Pivot' },
+    { key: 's1', color: '#a5d6a7', label: 'S1' },
+    { key: 's2', color: '#43a047', label: 'S2' },
+    { key: 's3', color: '#1b5e20', label: 'S3' },
   ];
 
-  var shapes = [];
-  var annotations = [];
-
-  levelDefs.forEach(function(lv) {
-    var val = pivots[lv.key];
-    if (val == null) return;
-    shapes.push({
-      type: 'line',
-      x0: times[0], x1: times[times.length - 1],
-      y0: val, y1: val,
-      line: {color: lv.color, width: 1.5, dash: lv.key === 'pivot' ? 'solid' : 'dash'}
+  function addPivots() {
+    if (pivotLines.length > 0) return;
+    pivotDefs.forEach(function(lv) {
+      var val = pivots[lv.key];
+      if (val == null) return;
+      var line = candleSeries.createPriceLine({
+        price: val,
+        color: lv.color,
+        lineWidth: 1,
+        lineStyle: lv.key === 'pivot' ? LightweightCharts.LineStyle.Solid : LightweightCharts.LineStyle.Dashed,
+        axisLabelVisible: true,
+        title: lv.label,
+      });
+      pivotLines.push(line);
     });
-    annotations.push({
-      x: times[times.length - 1], y: val,
-      xanchor: 'left', yanchor: 'middle',
-      text: '  ' + lv.label + ' ' + val.toFixed(5),
-      showarrow: false,
-      font: {size: 11, color: lv.color}
+  }
+  function removePivots() {
+    pivotLines.forEach(function(line) {
+      candleSeries.removePriceLine(line);
+    });
+    pivotLines = [];
+  }
+
+  // ---- Overlay indicator (line on main chart) ----
+  function addOverlay(key) {
+    if (activeSeries.has(key)) return;
+    var data = indicators[key];
+    if (!data || data.length === 0) return;
+    var series = chart.addLineSeries({
+      color: indColors[key] || '#999',
+      lineWidth: 1.5,
+      priceLineVisible: false,
+      lastValueVisible: false,
+      crosshairMarkerVisible: false,
+    });
+    series.setData(convertIndicatorData(data));
+    activeSeries.set(key, series);
+  }
+  function removeOverlay(key) {
+    if (!activeSeries.has(key)) return;
+    chart.removeSeries(activeSeries.get(key));
+    activeSeries.delete(key);
+  }
+
+  // ---- Sub-chart panes (RSI, ATR) ----
+  var subCharts = {};
+
+  function createSubChart(key, containerId, wrapperId, options) {
+    if (subCharts[key]) return;
+    var wrapper = document.getElementById(wrapperId);
+    var container = document.getElementById(containerId);
+    wrapper.classList.add('visible');
+
+    var subChart = LightweightCharts.createChart(container, {
+      width: container.clientWidth,
+      height: 150,
+      layout: { background: { color: '#131722' }, textColor: '#d1d4dc' },
+      grid: { vertLines: { color: '#1e222d' }, horzLines: { color: '#1e222d' } },
+      crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+      rightPriceScale: { borderColor: '#2B2B43' },
+      timeScale: { borderColor: '#2B2B43', timeVisible: true, secondsVisible: false },
+    });
+
+    var series = subChart.addLineSeries({
+      color: options.color || '#7c4dff',
+      lineWidth: 1.5,
+      priceLineVisible: false,
+      lastValueVisible: true,
+    });
+
+    var data = indicators[key];
+    if (data) series.setData(convertIndicatorData(data));
+
+    // Add reference lines (e.g., overbought/oversold for RSI)
+    if (options.refLines) {
+      options.refLines.forEach(function(rl) {
+        series.createPriceLine({
+          price: rl.price,
+          color: rl.color || '#787b86',
+          lineWidth: 1,
+          lineStyle: LightweightCharts.LineStyle.Dashed,
+          axisLabelVisible: true,
+          title: rl.label || '',
+        });
+      });
+    }
+
+    // Sync time scale with main chart
+    chart.timeScale().subscribeVisibleLogicalRangeChange(function(range) {
+      if (range) subChart.timeScale().setVisibleLogicalRange(range);
+    });
+    subChart.timeScale().subscribeVisibleLogicalRangeChange(function(range) {
+      if (range) chart.timeScale().setVisibleLogicalRange(range);
+    });
+
+    // Sync crosshair
+    chart.subscribeCrosshairMove(function(param) {
+      if (param.time) {
+        subChart.setCrosshairPosition(NaN, param.time, series);
+      } else {
+        subChart.clearCrosshairPosition();
+      }
+    });
+    subChart.subscribeCrosshairMove(function(param) {
+      if (param.time) {
+        chart.setCrosshairPosition(NaN, param.time, candleSeries);
+      } else {
+        chart.clearCrosshairPosition();
+      }
+    });
+
+    subCharts[key] = { chart: subChart, series: series, wrapper: wrapper };
+  }
+
+  function removeSubChart(key) {
+    if (!subCharts[key]) return;
+    subCharts[key].chart.remove();
+    subCharts[key].wrapper.classList.remove('visible');
+    delete subCharts[key];
+  }
+
+  // ---- Anchored VWAP ----
+  var avwapActive = false;
+  var avwapSeries = null;
+
+  function computeAnchoredVWAP(anchorIndex) {
+    var result = [];
+    var cumPV = 0;
+    var cumVol = 0;
+    for (var i = anchorIndex; i < ohlcRaw.length; i++) {
+      var r = ohlcRaw[i];
+      var tp = (r.high + r.low + r.close) / 3.0;
+      var vol = r.volume || 0;
+      cumPV += tp * vol;
+      cumVol += vol;
+      if (cumVol > 0) {
+        result.push({ time: toUnix(r.time), value: cumPV / cumVol });
+      }
+    }
+    return result;
+  }
+
+  function handleAvwapClick(param) {
+    if (!avwapActive) return;
+    if (!param.time) return;
+
+    // Find the bar index
+    var targetTime = param.time;
+    var idx = -1;
+    for (var i = 0; i < ohlcRaw.length; i++) {
+      if (toUnix(ohlcRaw[i].time) === targetTime) { idx = i; break; }
+    }
+    if (idx < 0) return;
+
+    // Remove existing AVWAP
+    if (avwapSeries) {
+      chart.removeSeries(avwapSeries);
+      avwapSeries = null;
+    }
+
+    // Compute and draw
+    var avwapData = computeAnchoredVWAP(idx);
+    if (avwapData.length > 0) {
+      avwapSeries = chart.addLineSeries({
+        color: indColors.anchored_vwap,
+        lineWidth: 2,
+        priceLineVisible: false,
+        lastValueVisible: true,
+        crosshairMarkerVisible: false,
+      });
+      avwapSeries.setData(avwapData);
+    }
+
+    // Deactivate anchor mode
+    avwapActive = false;
+    document.getElementById('avwap-btn').classList.remove('active');
+  }
+
+  chart.subscribeCrosshairMove(function() {}); // ensure subscription exists
+  chart.subscribeClick(handleAvwapClick);
+
+  // ---- Indicator toggle logic ----
+  function toggleIndicator(key, enabled) {
+    switch(key) {
+      case 'volume':
+        enabled ? addVolume() : removeVolume();
+        break;
+      case 'pivots':
+        enabled ? addPivots() : removePivots();
+        break;
+      case 'rsi_14':
+        if (enabled) {
+          createSubChart('rsi_14', 'rsi-chart-container', 'rsi-wrapper', {
+            color: '#7c4dff',
+            refLines: [
+              { price: 70, color: '#ef5350', label: 'OB' },
+              { price: 30, color: '#26a69a', label: 'OS' },
+              { price: 50, color: '#787b86', label: '' },
+            ],
+          });
+        } else {
+          removeSubChart('rsi_14');
+        }
+        break;
+      case 'atr_14':
+        if (enabled) {
+          createSubChart('atr_14', 'atr-chart-container', 'atr-wrapper', {
+            color: '#ffab40',
+            refLines: [],
+          });
+        } else {
+          removeSubChart('atr_14');
+        }
+        break;
+      case 'anchored_vwap':
+        var btn = document.getElementById('avwap-btn');
+        if (enabled) {
+          btn.classList.add('visible');
+        } else {
+          btn.classList.remove('visible');
+          btn.classList.remove('active');
+          avwapActive = false;
+          if (avwapSeries) {
+            chart.removeSeries(avwapSeries);
+            avwapSeries = null;
+          }
+        }
+        break;
+      default:
+        // Overlay indicators (SMA, EMA, session VWAP)
+        enabled ? addOverlay(key) : removeOverlay(key);
+    }
+  }
+
+  // ---- Initialize defaults (volume + pivots on) ----
+  addVolume();
+  addPivots();
+
+  // ---- Wire up checkbox events ----
+  document.querySelectorAll('#ind-panel input[type="checkbox"]').forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      toggleIndicator(this.dataset.ind, this.checked);
     });
   });
 
-  var layout = {
-    title: '{{ instrument }}  {{ granularity }}',
-    xaxis: {
-      type: 'category',
-      rangeslider: {visible: false},
-      nticks: 12
-    },
-    yaxis: {title: 'Price'},
-    shapes: shapes,
-    annotations: annotations,
-    margin: {l: 60, r: 100, t: 40, b: 40},
-    paper_bgcolor: '#fff',
-    plot_bgcolor: '#f8f9fa'
-  };
+  // ---- Indicator dropdown toggle ----
+  var indToggle = document.getElementById('ind-toggle');
+  var indPanel = document.getElementById('ind-panel');
 
-  Plotly.newPlot('chart', traces, layout, {responsive: true});
+  indToggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    indPanel.classList.toggle('open');
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!indPanel.contains(e.target) && e.target !== indToggle) {
+      indPanel.classList.remove('open');
+    }
+  });
+
+  // Stop propagation inside panel so clicks don't close it
+  indPanel.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+
+  // ---- AVWAP anchor button ----
+  document.getElementById('avwap-btn').addEventListener('click', function() {
+    avwapActive = !avwapActive;
+    this.classList.toggle('active', avwapActive);
+  });
+
+  // ---- Responsive resize ----
+  function handleResize() {
+    var newWidth = mainContainer.clientWidth;
+    var newHeight = Math.max(500, window.innerHeight - 260);
+    chart.applyOptions({ width: newWidth, height: newHeight });
+
+    Object.keys(subCharts).forEach(function(key) {
+      var sc = subCharts[key];
+      sc.chart.applyOptions({ width: newWidth });
+    });
+  }
+
+  window.addEventListener('resize', handleResize);
+
+  // Fit content on load
+  chart.timeScale().fitContent();
+
 })();
 </script>
 {% endblock %}
