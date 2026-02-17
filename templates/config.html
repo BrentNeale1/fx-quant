@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block title %}fx-quant — Config{% endblock %}
+
+{% block content %}
+<h4 class="mb-3">Configuration Editor</h4>
+<form method="post">
+  <div class="row">
+
+    <!-- Instruments & Data -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header"><strong>Instruments & Data</strong></div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label">Instruments (comma-separated)</label>
+            <input type="text" class="form-control" name="instruments"
+                   value="{{ cfg.brokers[0].instruments | join(', ') }}">
+            <small class="text-muted">Valid: {{ valid_instruments[:8] | join(', ') }}, ...</small>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Granularities (comma-separated)</label>
+            <input type="text" class="form-control" name="granularities"
+                   value="{{ cfg.data.candle_granularities | join(', ') }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Candle Count</label>
+            <input type="number" class="form-control" name="candle_count"
+                   value="{{ cfg.data.candle_count }}" min="50" max="5000">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Strategy -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header"><strong>Strategy</strong></div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label">Rule</label>
+            <input type="text" class="form-control" name="strategy_rule"
+                   value="{{ cfg.strategy.rule }}">
+          </div>
+          <div class="row">
+            <div class="col-6 mb-3">
+              <label class="form-label">SMA Short</label>
+              <input type="number" class="form-control" name="sma_short"
+                     value="{{ cfg.strategy.params.short }}" min="1">
+            </div>
+            <div class="col-6 mb-3">
+              <label class="form-label">SMA Long</label>
+              <input type="number" class="form-control" name="sma_long"
+                     value="{{ cfg.strategy.params.long }}" min="2">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Trade Size (% of equity)</label>
+            <input type="number" class="form-control" name="trade_size_pct"
+                   value="{{ cfg.strategy.trade_size_pct_of_equity }}" step="0.001" min="0.001" max="0.1">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Max Drawdown (%)</label>
+            <input type="number" class="form-control" name="max_drawdown_pct"
+                   value="{{ cfg.strategy.max_drawdown_pct }}" step="0.01" min="0.01" max="0.5">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <!-- Features -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header"><strong>Features</strong></div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label">SMA Windows (comma-separated)</label>
+            <input type="text" class="form-control" name="sma_windows"
+                   value="{{ cfg.features.sma_windows | join(', ') }}">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">EMA Windows (comma-separated)</label>
+            <input type="text" class="form-control" name="ema_windows"
+                   value="{{ cfg.features.ema_windows | join(', ') }}">
+          </div>
+          <div class="row">
+            <div class="col-6 mb-3">
+              <label class="form-label">RSI Period</label>
+              <input type="number" class="form-control" name="rsi_period"
+                     value="{{ cfg.features.rsi_period }}" min="2">
+            </div>
+            <div class="col-6 mb-3">
+              <label class="form-label">ATR Period</label>
+              <input type="number" class="form-control" name="atr_period"
+                     value="{{ cfg.features.atr_period }}" min="2">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 mb-3">
+              <label class="form-label">VWAP Window</label>
+              <input type="number" class="form-control" name="vwap_window"
+                     value="{{ cfg.features.vwap_window }}" min="2">
+            </div>
+            <div class="col-6 mb-3">
+              <label class="form-label">Volatility Window</label>
+              <input type="number" class="form-control" name="volatility_window"
+                     value="{{ cfg.features.volatility_window }}" min="2">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Settings -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header"><strong>AI Settings</strong></div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label">Confidence Threshold</label>
+            <input type="number" class="form-control" name="confidence_threshold"
+                   value="{{ cfg.ai.confidence_threshold }}" step="0.01" min="0" max="1">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Ensemble Models (comma-separated)</label>
+            <input type="text" class="form-control" name="ensemble_models"
+                   value="{{ cfg.ai.ensemble_models | join(', ') }}">
+          </div>
+          <div class="row">
+            <div class="col-4 mb-3">
+              <label class="form-label">RSI Overbought</label>
+              <input type="number" class="form-control" name="rsi_overbought"
+                     value="{{ cfg.ai.sanity_checks.rsi_overbought }}" min="50" max="100">
+            </div>
+            <div class="col-4 mb-3">
+              <label class="form-label">RSI Oversold</label>
+              <input type="number" class="form-control" name="rsi_oversold"
+                     value="{{ cfg.ai.sanity_checks.rsi_oversold }}" min="0" max="50">
+            </div>
+            <div class="col-4 mb-3">
+              <label class="form-label">Vol Multiplier</label>
+              <input type="number" class="form-control" name="volatility_multiplier"
+                     value="{{ cfg.ai.sanity_checks.volatility_multiplier }}" step="0.1" min="1" max="10">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <!-- Execution -->
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header"><strong>Execution</strong></div>
+        <div class="card-body">
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" name="paper_mode" id="paper_mode"
+                   {{ "checked" if cfg.execution.paper_mode }}>
+            <label class="form-check-label" for="paper_mode">Paper Mode</label>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Canary Size (%)</label>
+            <input type="number" class="form-control" name="canary_size_pct"
+                   value="{{ cfg.execution.canary_size_pct }}" step="0.001" min="0.001" max="0.1">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Max Positions</label>
+            <input type="number" class="form-control" name="max_positions"
+                   value="{{ cfg.execution.max_positions }}" min="1" max="20">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Interval (seconds)</label>
+            <input type="number" class="form-control" name="interval_seconds"
+                   value="{{ cfg.execution.interval_seconds }}" min="10" max="3600">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-3 mb-4">
+    <button type="submit" class="btn btn-primary btn-lg">Save &amp; Signal Reload</button>
+    <a href="/config" class="btn btn-secondary btn-lg ms-2">Reset</a>
+  </div>
+</form>
+{% endblock %}

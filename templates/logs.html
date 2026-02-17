@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}fx-quant — Logs{% endblock %}
+
+{% block content %}
+<ul class="nav nav-tabs mb-3" role="tablist">
+  <li class="nav-item">
+    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#orders" type="button">
+      Order Log ({{ order_rows | length }})
+    </button>
+  </li>
+  <li class="nav-item">
+    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#ai" type="button">
+      AI Decisions ({{ ai_rows | length }})
+    </button>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <!-- Order Log -->
+  <div class="tab-pane fade show active" id="orders">
+    {% if order_rows %}
+    <div class="table-responsive">
+      <table class="table table-sm table-striped">
+        <thead>
+          <tr>{% for h in order_headers %}<th>{{ h }}</th>{% endfor %}</tr>
+        </thead>
+        <tbody>
+          {% for row in order_rows %}
+          <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="text-muted">No order log entries.</p>
+    {% endif %}
+  </div>
+
+  <!-- AI Decisions -->
+  <div class="tab-pane fade" id="ai">
+    {% if ai_rows %}
+    <div class="table-responsive">
+      <table class="table table-sm table-striped">
+        <thead>
+          <tr>{% for h in ai_headers %}<th>{{ h }}</th>{% endfor %}</tr>
+        </thead>
+        <tbody>
+          {% for row in ai_rows %}
+          <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="text-muted">No AI decision entries.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

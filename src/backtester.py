@@ -6,6 +6,7 @@ and produces P&L, drawdown, and trade log outputs.
 """
 
 import os
+import json
 import math
 from pathlib import Path
 
@@ -117,7 +118,7 @@ def run_backtest(df, strategy_cfg):
     trade_size_pct = strategy_cfg.get("trade_size_pct_of_equity", 0.01)
     max_dd_pct = strategy_cfg.get("max_drawdown_pct", 0.05)
 
-    starting_equity = 10_000.0
+    starting_equity = cfg_equity if (cfg_equity := strategy_cfg.get("starting_equity")) else 100_000.0
     equity = starting_equity
     peak_equity = equity
     position = 0  # 0 = flat, 1 = long
@@ -213,7 +214,7 @@ def run_backtest(df, strategy_cfg):
 # Metrics
 # ---------------------------------------------------------------------------
 
-def compute_metrics(equity_curve, trades, starting_equity=10_000.0):
+def compute_metrics(equity_curve, trades, starting_equity=100_000.0):
     """
     Compute summary metrics from equity curve and trade list.
     """
@@ -248,6 +249,7 @@ def compute_metrics(equity_curve, trades, starting_equity=10_000.0):
         sharpe = (eq_returns.mean() / eq_returns.std()) * math.sqrt(252 * 24 * 60)  # per-minute approx
 
     return {
+        "starting_equity": round(starting_equity, 2),
         "total_return_pct": round(total_return_pct, 4),
         "max_drawdown_pct": round(max_drawdown_pct, 4),
         "num_trades": num_trades,
@@ -262,20 +264,48 @@ def compute_metrics(equity_curve, trades, starting_equity=10_000.0):
 # Results output
 # ---------------------------------------------------------------------------
 
-def save_results(instrument, granularity, trades, metrics):
+def compute_monthly_pnl(equity_curve, starting_equity=100_000.0):
     """
-    Save trade log CSV and print summary metrics.
+    Compute P&L for each calendar month from the equity curve.
+    Returns list of dicts with month, start_equity, end_equity, pnl, pnl_pct.
+    """
+    monthly = []
+    # Group by year-month
+    grouped = equity_curve.groupby(equity_curve.index.to_period("M"))
+    prev_end = starting_equity
+
+    for period, group in grouped:
+        end_eq = group.iloc[-1]
+        pnl = end_eq - prev_end
+        pnl_pct = (pnl / prev_end * 100) if prev_end != 0 else 0.0
+        monthly.append({
+            "month": str(period),
+            "start_equity": round(prev_end, 2),
+            "end_equity": round(end_eq, 2),
+            "pnl": round(pnl, 2),
+            "pnl_pct": round(pnl_pct, 4),
+        })
+        prev_end = end_eq
+
+    return monthly
+
+
+def save_results(instrument, granularity, results, metrics):
+    """
+    Save trade log CSV, monthly P&L, and a JSON summary for the dashboard.
     """
     root = get_project_root()
     logs_dir = root / "logs"
     logs_dir.mkdir(exist_ok=True)
+
+    trades = results["trades"]
+    equity_curve = results["equity_curve"]
 
     # Trade log CSV
     if trades:
         trade_df = pd.DataFrame(trades)
         trade_df["instrument"] = instrument
         trade_df["granularity"] = granularity
-        # Reorder columns
         cols = ["time", "instrument", "granularity", "side", "price",
                 "position_size", "equity", "drawdown"]
         trade_df = trade_df[cols]
@@ -285,6 +315,28 @@ def save_results(instrument, granularity, trades, metrics):
     else:
         print("  No trades to log.")
 
+    # Monthly P&L
+    starting_equity = metrics.get("starting_equity", 100_000.0)
+    monthly = compute_monthly_pnl(equity_curve, starting_equity)
+
+    # Save JSON summary for dashboard
+    summary = {
+        "instrument": instrument,
+        "granularity": granularity,
+        "run_time": pd.Timestamp.now(tz="UTC").isoformat(),
+        "data_range": {
+            "start": str(equity_curve.index[0]) if len(equity_curve) > 0 else "",
+            "end": str(equity_curve.index[-1]) if len(equity_curve) > 0 else "",
+            "bars": len(equity_curve),
+        },
+        "metrics": metrics,
+        "monthly_pnl": monthly,
+    }
+    json_path = logs_dir / f"backtest_summary_{instrument}_{granularity}.json"
+    with open(json_path, "w") as f:
+        json.dump(summary, f, indent=2, default=str)
+    print(f"  Summary saved: {json_path}")
+
     # Console summary
     print(f"\n  --- {instrument} / {granularity} Summary ---")
     print(f"  Total return:   {metrics['total_return_pct']:.4f}%")
@@ -293,6 +345,14 @@ def save_results(instrument, granularity, trades, metrics):
     print(f"  Win rate:       {metrics['win_rate_pct']:.2f}%")
     print(f"  Sharpe ratio:   {metrics['sharpe_ratio']:.4f}")
     print(f"  Final equity:   ${metrics['final_equity']:,.2f}")
+
+    # Monthly P&L table
+    print(f"\n  Monthly P&L:")
+    print(f"  {'Month':<10} {'Start':>12} {'End':>12} {'P&L':>10} {'%':>8}")
+    print(f"  {'-'*54}")
+    for m in monthly:
+        sign = "+" if m["pnl"] >= 0 else ""
+        print(f"  {m['month']:<10} ${m['start_equity']:>11,.2f} ${m['end_equity']:>11,.2f} {sign}${m['pnl']:>8,.2f} {sign}{m['pnl_pct']:.2f}%")
     print()
 
 
@@ -334,7 +394,7 @@ def main():
                 continue
 
             results = run_backtest(df, strategy_cfg)
-            save_results(instrument, granularity, results["trades"], results["metrics"])
+            save_results(instrument, granularity, results, results["metrics"])
 
     print("Backtesting complete.")
 

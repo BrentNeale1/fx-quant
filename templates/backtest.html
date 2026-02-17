@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}fx-quant — Backtest Results{% endblock %}
+
+{% block content %}
+<h4 class="mb-4">Backtest Results</h4>
+
+{% if not summaries %}
+<div class="alert alert-info">No backtest results found. Run the backtester first.</div>
+{% endif %}
+
+{% for s in summaries %}
+<div class="card mb-4">
+  <div class="card-header">
+    <strong>{{ s.instrument }} / {{ s.granularity }}</strong>
+    <span class="text-muted float-end">Run: {{ s.run_time[:19] }} | {{ s.data_range.bars | default(0) }} bars ({{ s.data_range.start[:10] }} to {{ s.data_range.end[:10] }})</span>
+  </div>
+  <div class="card-body">
+    <!-- Summary Metrics -->
+    <div class="row mb-3">
+      <div class="col-md-2 text-center">
+        <div class="text-muted small">Starting Equity</div>
+        <div class="fs-5">${{ "{:,.2f}".format(s.metrics.starting_equity) }}</div>
+      </div>
+      <div class="col-md-2 text-center">
+        <div class="text-muted small">Final Equity</div>
+        <div class="fs-5 {% if s.metrics.final_equity >= s.metrics.starting_equity %}text-success{% else %}text-danger{% endif %}">
+          ${{ "{:,.2f}".format(s.metrics.final_equity) }}
+        </div>
+      </div>
+      <div class="col-md-2 text-center">
+        <div class="text-muted small">Total Return</div>
+        <div class="fs-5 {% if s.metrics.total_return_pct >= 0 %}text-success{% else %}text-danger{% endif %}">
+          {{ "{:+.2f}".format(s.metrics.total_return_pct) }}%
+        </div>
+      </div>
+      <div class="col-md-2 text-center">
+        <div class="text-muted small">Max Drawdown</div>
+        <div class="fs-5 text-danger">{{ "{:.2f}".format(s.metrics.max_drawdown_pct) }}%</div>
+      </div>
+      <div class="col-md-2 text-center">
+        <div class="text-muted small">Win Rate</div>
+        <div class="fs-5">{{ "{:.1f}".format(s.metrics.win_rate_pct) }}%</div>
+      </div>
+      <div class="col-md-2 text-center">
+        <div class="text-muted small">Sharpe</div>
+        <div class="fs-5">{{ "{:.2f}".format(s.metrics.sharpe_ratio) }}</div>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <span class="text-muted small">Trades:</span> {{ s.metrics.num_trades }} ({{ s.metrics.round_trips }} round-trips)
+      </div>
+    </div>
+
+    <!-- Monthly P&L Table -->
+    <h6>Monthly P&L</h6>
+    <div class="table-responsive">
+      <table class="table table-sm table-striped">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th class="text-end">Start Equity</th>
+            <th class="text-end">End Equity</th>
+            <th class="text-end">P&L ($)</th>
+            <th class="text-end">P&L (%)</th>
+            <th style="width:30%">Performance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in s.monthly_pnl %}
+          <tr>
+            <td><strong>{{ m.month }}</strong></td>
+            <td class="text-end">${{ "{:,.2f}".format(m.start_equity) }}</td>
+            <td class="text-end">${{ "{:,.2f}".format(m.end_equity) }}</td>
+            <td class="text-end {% if m.pnl >= 0 %}text-success{% else %}text-danger{% endif %}">
+              {{ "{:+,.2f}".format(m.pnl) }}
+            </td>
+            <td class="text-end {% if m.pnl_pct >= 0 %}text-success{% else %}text-danger{% endif %}">
+              {{ "{:+.2f}".format(m.pnl_pct) }}%
+            </td>
+            <td>
+              {% set bar_width = [m.pnl_pct | abs * 10, 100] | min %}
+              {% if m.pnl >= 0 %}
+              <div class="progress" style="height: 18px;">
+                <div class="progress-bar bg-success" style="width: {{ bar_width }}%"></div>
+              </div>
+              {% else %}
+              <div class="progress" style="height: 18px;">
+                <div class="progress-bar bg-danger" style="width: {{ bar_width }}%"></div>
+              </div>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

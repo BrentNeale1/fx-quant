@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}fx-quant — Status{% endblock %}
+
+{% block content %}
+<div class="row">
+  <!-- Mode & Kill Switch -->
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header"><strong>Trading Status</strong></div>
+      <div class="card-body">
+        <table class="table table-borderless mb-3">
+          <tr>
+            <td>Mode</td>
+            <td><strong>{{ "PAPER" if cfg.execution.paper_mode else "LIVE" }}</strong></td>
+          </tr>
+          <tr>
+            <td>Strategy</td>
+            <td>{{ cfg.strategy.rule }} ({{ cfg.strategy.params.short }}/{{ cfg.strategy.params.long }})</td>
+          </tr>
+          <tr>
+            <td>Instruments</td>
+            <td>{{ cfg.brokers[0].instruments | join(", ") }}</td>
+          </tr>
+          <tr>
+            <td>Granularity</td>
+            <td>{{ cfg.data.candle_granularities | join(", ") }}</td>
+          </tr>
+          <tr>
+            <td>Loop Interval</td>
+            <td>{{ cfg.execution.interval_seconds }}s</td>
+          </tr>
+          <tr>
+            <td>Max Positions</td>
+            <td>{{ cfg.execution.max_positions }}</td>
+          </tr>
+          <tr>
+            <td>AI Confidence</td>
+            <td>{{ cfg.ai.confidence_threshold }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kill Switch -->
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header"><strong>Kill Switch</strong></div>
+      <div class="card-body text-center">
+        {% if kill_active %}
+          <p class="kill-active d-inline-block mb-3">KILL SWITCH ACTIVE</p>
+          <form method="post" action="/killswitch">
+            <input type="hidden" name="action" value="deactivate">
+            <button class="btn btn-success btn-lg" onclick="return confirm('Resume trading?')">
+              Deactivate Kill Switch
+            </button>
+          </form>
+        {% else %}
+          <p class="kill-inactive d-inline-block mb-3">Trading Active</p>
+          <form method="post" action="/killswitch">
+            <input type="hidden" name="action" value="activate">
+            <button class="btn btn-danger btn-lg" onclick="return confirm('STOP ALL TRADING?')">
+              Activate Kill Switch
+            </button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="card mt-3">
+  <div class="card-header"><strong>Recent Activity</strong> (last 10 orders)</div>
+  <div class="card-body p-0">
+    {% if recent_orders %}
+    <table class="table table-sm table-striped mb-0">
+      <thead>
+        <tr>
+          <th>Time</th><th>Instrument</th><th>Side</th><th>Units</th>
+          <th>Price</th><th>Mode</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in recent_orders | reverse %}
+        <tr>
+          <td>{{ row[0][:19] }}</td>
+          <td>{{ row[1] }}</td>
+          <td>{{ row[2] }}</td>
+          <td>{{ row[3] }}</td>
+          <td>{{ row[4] }}</td>
+          <td>{{ row[6] }}</td>
+          <td>{{ row[7] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="p-3 text-muted mb-0">No orders yet.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

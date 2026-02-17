@@ -5,7 +5,21 @@ services:
     env_file:
       - config/.env
     volumes:
-      - ./config/system.yaml:/app/config/system.yaml:ro
+      - ./config:/app/config
       - ./logs:/app/logs
       - ./models:/app/models
+    restart: unless-stopped
+
+  dashboard:
+    build: .
+    container_name: fx-quant-dashboard
+    command: python src/dashboard.py
+    env_file:
+      - config/.env
+    volumes:
+      - ./config:/app/config
+      - ./logs:/app/logs:ro
+      - ./templates:/app/templates:ro
+    ports:
+      - "5000:5000"
     restart: unless-stopped

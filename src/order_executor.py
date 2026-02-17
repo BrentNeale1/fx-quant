@@ -465,6 +465,18 @@ if __name__ == "__main__":
         print(f"Running on {interval}s loop. Press Ctrl+C to stop.\n")
         while True:
             try:
+                # Check for config reload signal from dashboard
+                reload_signal = get_project_root() / "RELOAD_CONFIG"
+                if reload_signal.exists():
+                    print("\n*** CONFIG RELOAD REQUESTED ***")
+                    try:
+                        reload_signal.unlink()
+                    except OSError:
+                        pass
+                    cfg = load_config()
+                    interval = cfg.get("execution", {}).get("interval_seconds", 60)
+                    print(f"Config reloaded. Interval now {interval}s.\n")
+
                 main()
                 print(f"\nSleeping {interval}s until next run...\n")
                 time.sleep(interval)

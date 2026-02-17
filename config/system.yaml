@@ -1,57 +1,57 @@
 general:
-  project_name: "fx-quant"
-  timezone: "UTC"
-
+  project_name: fx-quant
+  timezone: UTC
 brokers:
-  - name: "oanda"
-    type: "oanda_v20"
-    enabled: true
-    instruments:
-      - "EUR_USD"
-      - "USD_JPY"
-
+- name: oanda
+  type: oanda_v20
+  enabled: true
+  instruments:
+  - EUR_USD
 data:
   candle_count: 200
   candle_granularities:
-    - "M1"
-    - "M5"
-  tick_export: false # true to capture raw ticks
-
+  - M5
+  - M15
+  tick_export: false
 features:
-  sma_windows: [3, 20]
-  ema_windows: [20]
+  sma_windows:
+  - 3
+  - 20
+  - 21
+  - 50
+  ema_windows:
+  - 20
   rsi_period: 14
   atr_period: 14
   vwap_window: 20
   volatility_window: 20
-
 ai:
-  model: "local-ensemble"
-  confidence_threshold: 0.85
+  model: local-ensemble
+  confidence_threshold: 0.75
   retriever_enabled: true
-  retriever_source: "supabase"
-  ensemble_models: ["logistic_regression", "random_forest", "gradient_boosting"]
+  retriever_source: supabase
+  ensemble_models:
+  - logistic_regression
+  - random_forest
+  - gradient_boosting
   backtest_validation_window: 50
   sanity_checks:
-    rsi_overbought: 80
-    rsi_oversold: 20
+    rsi_overbought: 90
+    rsi_oversold: 10
     volatility_multiplier: 3.0
-
 strategy:
-  rule: "sma_cross" # human-readable name of the rule
+  rule: sma_cross
   params:
-    short: 3
-    long: 20
-  trade_size_pct_of_equity: 0.01
+    short: 21
+    long: 50
+  trade_size_pct_of_equity: 0.025
   max_drawdown_pct: 0.05
-
 execution:
   paper_mode: true
   canary_size_pct: 0.01
-  max_positions: 3
+  max_positions: 5
   interval_seconds: 60
-
 supabase:
-  url: "https://<your>.supabase.co"
-  key_env_name: "SUPABASE_KEY" # key stored in .env
-  table: "fx_candles"
+  url: https://<your>.supabase.co
+  key_env_name: SUPABASE_KEY
+  table: fx_candles
