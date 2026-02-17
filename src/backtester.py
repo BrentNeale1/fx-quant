@@ -70,7 +70,7 @@ def fetch_candles_from_supabase(instrument, granularity, supabase_client, table)
 # Signal generation
 # ---------------------------------------------------------------------------
 
-def generate_signals(df, strategy_cfg):
+def generate_signals(df, strategy_cfg, ai_cfg=None):
     """
     Generate trading signals based on strategy config.
     Currently supports 'sma_cross' rule only.
@@ -78,7 +78,9 @@ def generate_signals(df, strategy_cfg):
     Signal logic (long-only / flat):
       sma_short > sma_long  →  signal = 1  (long)
       sma_short < sma_long  →  signal = 0  (flat)
-    Position changes only when signal changes.
+
+    If ai_cfg is provided, applies RSI overbought/oversold filtering
+    to block entries at extreme levels.
     """
     rule = strategy_cfg["rule"]
     if rule != "sma_cross":
@@ -99,6 +101,26 @@ def generate_signals(df, strategy_cfg):
 
     # Signal: 1 when short SMA above long SMA, else 0
     df["signal"] = np.where(df[sma_short_col] > df[sma_long_col], 1, 0)
+
+    # Apply RSI filter if configured
+    if ai_cfg:
+        sanity = ai_cfg.get("sanity_checks", {})
+        rsi_ob = sanity.get("rsi_overbought")
+        rsi_os = sanity.get("rsi_oversold")
+
+        # Find the RSI column
+        rsi_col = None
+        for col in df.columns:
+            if col.startswith("rsi_"):
+                rsi_col = col
+                break
+
+        if rsi_col and (rsi_ob or rsi_os):
+            rsi_vals = df[rsi_col]
+            if rsi_ob is not None:
+                df.loc[(df["signal"] == 1) & (rsi_vals > rsi_ob), "signal"] = 0
+            if rsi_os is not None:
+                df.loc[(df["signal"] == 1) & (rsi_vals < rsi_os), "signal"] = 0
 
     # Position changes only on crossover (detect changes)
     df["position"] = df["signal"]
@@ -372,10 +394,14 @@ def main():
     table = cfg.get("supabase", {}).get("table", "fx_candles")
 
     strategy_cfg = cfg["strategy"]
+    ai_cfg = cfg.get("ai", {})
     instruments = cfg["brokers"][0]["instruments"]
     granularities = cfg["data"]["candle_granularities"]
 
+    rsi_ob = ai_cfg.get("sanity_checks", {}).get("rsi_overbought", "off")
+    rsi_os = ai_cfg.get("sanity_checks", {}).get("rsi_oversold", "off")
     print(f"Backtesting strategy: {strategy_cfg['rule']}")
+    print(f"RSI filter: overbought={rsi_ob}, oversold={rsi_os}")
     print(f"Instruments: {instruments}")
     print(f"Granularities: {granularities}\n")
 
@@ -388,7 +414,7 @@ def main():
                 print("  Skipping — no data.\n")
                 continue
 
-            df = generate_signals(df, strategy_cfg)
+            df = generate_signals(df, strategy_cfg, ai_cfg=ai_cfg)
             if df.empty:
                 print("  Skipping — no valid rows after warmup.\n")
                 continue

@@ -17,8 +17,8 @@ features:
   sma_windows:
   - 3
   - 20
-  - 21
   - 50
+  - 100
   ema_windows:
   - 20
   rsi_period: 14
@@ -36,14 +36,14 @@ ai:
   - gradient_boosting
   backtest_validation_window: 50
   sanity_checks:
-    rsi_overbought: 90
-    rsi_oversold: 10
+    rsi_overbought: 80
+    rsi_oversold: 20
     volatility_multiplier: 3.0
 strategy:
   rule: sma_cross
   params:
-    short: 21
-    long: 50
+    short: 50
+    long: 100
   trade_size_pct_of_equity: 0.025
   max_drawdown_pct: 0.05
 execution:
