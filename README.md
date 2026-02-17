@@ -30,6 +30,7 @@ Required variables in `config/.env`:
 | `OANDA_ACCOUNT_ID` | OANDA account ID |
 | `OANDA_ENV` | `practice` or `live` (default: practice) |
 | `DASHBOARD_PASSWORD` | Password for web dashboard login |
+| `TRADING_ECONOMICS_API_KEY` | Trading Economics API key (for economic calendar) |
 
 ### 3. Verify connectivity
 
@@ -80,6 +81,7 @@ fx-quant/
     dashboard.py         # Flask web dashboard
     chart_trades.py      # Matplotlib/mplfinance trade visualization
     get_candles.py       # Fetch candles from OANDA API
+    economic_calendar.py # Economic calendar fetch/upload pipeline
     historical_loader.py # Bulk historical data loader
     supabase_upload.py   # Upload candle data to Supabase
     param_sweep.py       # Strategy parameter optimization
@@ -175,6 +177,27 @@ Create `STOP_ALL_TRADING` in the project root to halt all trading immediately. T
 touch STOP_ALL_TRADING   # activate
 rm STOP_ALL_TRADING      # deactivate
 ```
+
+## Economic Calendar
+
+Filters trade entries near high-impact economic events (NFP, CPI, rate decisions, etc.) to reduce slippage and false signals. Uses the [Trading Economics API](https://tradingeconomics.com/api/).
+
+**Setup:**
+1. Subscribe to a Trading Economics API plan that includes Calendar data ([pricing](https://tradingeconomics.com/api/pricing.aspx))
+2. Add your API key to `config/.env`: `TRADING_ECONOMICS_API_KEY=your-key-here`
+3. Create the Supabase table: run `sql/create_economic_calendar.sql` in the SQL Editor
+4. Fetch events: `python src/economic_calendar.py` (full load) or `python src/economic_calendar.py --incremental`
+
+**Config** (`config/system.yaml` → `economic_calendar`):
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `enabled` | `true` | Toggle calendar filter on/off |
+| `impact_threshold` | `High` | Minimum impact level to block entries (`Low`, `Medium`, `High`) |
+| `event_buffer_minutes` | `30` | Block entries within this many minutes of an event |
+| `days_back` | `400` | How far back to fetch on full load |
+
+**Status:** Table created in Supabase. Awaiting Trading Economics API key (subscription request pending). Once the key is obtained, run the loader and the backtester will automatically filter entries near high-impact events.
 
 ## Running the Bot
 
