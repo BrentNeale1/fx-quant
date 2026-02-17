@@ -19,6 +19,78 @@ from data_engine import detect_engulfing, add_pivot_points
 
 
 # ---------------------------------------------------------------------------
+# Economic calendar helpers
+# ---------------------------------------------------------------------------
+
+def fetch_calendar_for_backtest(instrument, supabase_client, cfg):
+    """
+    Load calendar events from Supabase filtered by the currencies in
+    the instrument and the configured impact threshold.
+    Returns a DataFrame or None if calendar is disabled/empty.
+    """
+    from economic_calendar import fetch_calendar_from_supabase
+
+    cal_cfg = cfg.get("economic_calendar", {})
+    if not cal_cfg.get("enabled", False):
+        return None
+
+    table = cal_cfg.get("table", "economic_calendar")
+    threshold = cal_cfg.get("impact_threshold", "High")
+    impact_map = {"Low": 1, "Medium": 2, "High": 3}
+    impact_min = impact_map.get(threshold, 3)
+
+    # Derive currencies from instrument (e.g. EUR_USD -> [EUR, USD])
+    currencies = instrument.split("_")
+
+    print(f"  Loading economic calendar events (currencies={currencies}, impact>={threshold})...")
+    cal_df = fetch_calendar_from_supabase(
+        supabase_client,
+        table=table,
+        currencies=currencies,
+        impact_min=impact_min,
+    )
+    if cal_df.empty:
+        print("  No calendar events found.")
+        return None
+
+    print(f"  Loaded {len(cal_df)} calendar events.")
+    return cal_df
+
+
+def is_near_event(bar_time, calendar_df, buffer_minutes=30):
+    """
+    O(log n) check whether bar_time is within buffer_minutes of any
+    calendar event, using DatetimeIndex slicing.
+    """
+    if calendar_df is None or calendar_df.empty:
+        return False
+
+    # Ensure we have a DatetimeIndex for fast slicing
+    if not isinstance(calendar_df.index, pd.DatetimeIndex):
+        return False
+
+    bar_ts = pd.Timestamp(bar_time, tz="UTC")
+    window_start = bar_ts - pd.Timedelta(minutes=buffer_minutes)
+    window_end = bar_ts + pd.Timedelta(minutes=buffer_minutes)
+
+    nearby = calendar_df.loc[window_start:window_end]
+    return len(nearby) > 0
+
+
+def _prepare_calendar_index(calendar_df):
+    """
+    Set event_datetime as a sorted DatetimeIndex for O(log n) lookups.
+    Returns the prepared DataFrame or None.
+    """
+    if calendar_df is None or calendar_df.empty:
+        return None
+    cal = calendar_df.copy()
+    cal["event_datetime"] = pd.to_datetime(cal["event_datetime"], utc=True)
+    cal = cal.set_index("event_datetime").sort_index()
+    return cal
+
+
+# ---------------------------------------------------------------------------
 # Data fetching
 # ---------------------------------------------------------------------------
 
@@ -314,7 +386,8 @@ def _find_tp_levels_short(level_values, entry_lv_idx):
 # Dual take-profit backtest engine
 # ---------------------------------------------------------------------------
 
-def run_backtest_dual_tp(df, strategy_cfg):
+def run_backtest_dual_tp(df, strategy_cfg, calendar_df=None,
+                         event_buffer_minutes=30):
     """
     Backtest engine supporting per-trade SL/TP with partial closes.
 
@@ -323,6 +396,9 @@ def run_backtest_dual_tp(df, strategy_cfg):
     - On TP1 hit: close 50%, move SL to breakeven (entry price).
     - On TP2 hit: close remaining 50%.
     - On SL hit: close full remaining position.
+
+    If calendar_df is provided, entries within event_buffer_minutes of a
+    high-impact event are blocked.
 
     Returns dict with equity_curve, trades, metrics (same interface as run_backtest).
     """
@@ -343,6 +419,10 @@ def run_backtest_dual_tp(df, strategy_cfg):
     tp2_price = 0.0
     position_size = 0.0
     half_closed = False
+
+    # Calendar event filter
+    cal_indexed = _prepare_calendar_index(calendar_df)
+    blocked_by_calendar = 0
 
     equity_curve = []
     trades = []
@@ -494,6 +574,11 @@ def run_backtest_dual_tp(df, strategy_cfg):
         if not in_position and not stopped:
             sig = signals[i]
             if sig in (1, -1) and not np.isnan(sl_col[i]):
+                # Block entry if near a high-impact economic event
+                if is_near_event(bar_time, cal_indexed, event_buffer_minutes):
+                    blocked_by_calendar += 1
+                    equity_curve.append(equity)
+                    continue
                 direction = sig
                 entry_price = bar_close
                 sl_price = sl_col[i]
@@ -546,6 +631,10 @@ def run_backtest_dual_tp(df, strategy_cfg):
     equity_series = pd.Series(equity_curve, index=df.index, name="equity")
     metrics = compute_metrics(equity_series, trades, starting_equity)
 
+    if blocked_by_calendar > 0:
+        print(f"  Calendar filter blocked {blocked_by_calendar} trade entries.")
+        metrics["blocked_by_calendar"] = blocked_by_calendar
+
     return {
         "equity_curve": equity_series,
         "trades": trades,
@@ -557,9 +646,11 @@ def run_backtest_dual_tp(df, strategy_cfg):
 # Backtest engine (SMA cross — original)
 # ---------------------------------------------------------------------------
 
-def run_backtest(df, strategy_cfg):
+def run_backtest(df, strategy_cfg, calendar_df=None, event_buffer_minutes=30):
     """
     Walk through bars, track position, equity, trades.
+    If calendar_df is provided, entries within event_buffer_minutes of a
+    high-impact event are blocked.
     Returns dict with equity_curve (Series), trades (list of dicts), metrics (dict).
     """
     trade_size_pct = strategy_cfg.get("trade_size_pct_of_equity", 0.01)
@@ -571,6 +662,10 @@ def run_backtest(df, strategy_cfg):
     position = 0  # 0 = flat, 1 = long
     position_size = 0.0
     stopped = False
+
+    # Calendar event filter
+    cal_indexed = _prepare_calendar_index(calendar_df)
+    blocked_by_calendar = 0
 
     equity_curve = []
     trades = []
@@ -622,6 +717,11 @@ def run_backtest(df, strategy_cfg):
         # Position change
         if sig != position:
             if sig == 1 and position == 0:
+                # Block entry if near a high-impact economic event
+                if is_near_event(bar_time, cal_indexed, event_buffer_minutes):
+                    blocked_by_calendar += 1
+                    equity_curve.append(equity)
+                    continue
                 # Enter long
                 position_size = equity * trade_size_pct
                 trades.append({
@@ -649,6 +749,10 @@ def run_backtest(df, strategy_cfg):
 
     equity_series = pd.Series(equity_curve, index=df.index, name="equity")
     metrics = compute_metrics(equity_series, trades, starting_equity)
+
+    if blocked_by_calendar > 0:
+        print(f"  Calendar filter blocked {blocked_by_calendar} trade entries.")
+        metrics["blocked_by_calendar"] = blocked_by_calendar
 
     return {
         "equity_curve": equity_series,
@@ -840,7 +944,17 @@ def main():
     print(f"Instruments: {instruments}")
     print(f"Granularities: {granularities}\n")
 
+    # Economic calendar config
+    cal_cfg = cfg.get("economic_calendar", {})
+    cal_enabled = cal_cfg.get("enabled", False)
+    event_buffer_minutes = cal_cfg.get("event_buffer_minutes", 30)
+
     for instrument in instruments:
+        # Load calendar data once per instrument (shared across granularities)
+        calendar_df = None
+        if cal_enabled:
+            calendar_df = fetch_calendar_for_backtest(instrument, sb, cfg)
+
         for granularity in granularities:
             print(f"=== {instrument} / {granularity} ===")
 
@@ -860,9 +974,17 @@ def main():
                 continue
 
             if strategy_cfg["rule"] == "pivot_retest_engulfing":
-                results = run_backtest_dual_tp(df, strategy_cfg)
+                results = run_backtest_dual_tp(
+                    df, strategy_cfg,
+                    calendar_df=calendar_df,
+                    event_buffer_minutes=event_buffer_minutes,
+                )
             else:
-                results = run_backtest(df, strategy_cfg)
+                results = run_backtest(
+                    df, strategy_cfg,
+                    calendar_df=calendar_df,
+                    event_buffer_minutes=event_buffer_minutes,
+                )
             save_results(instrument, granularity, results, results["metrics"])
 
     print("Backtesting complete.")

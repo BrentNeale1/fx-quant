@@ -14,3 +14,4 @@ python-dotenv>=1.0
 PyYAML>=6.0
 flask>=3.0
 flask-httpauth>=4.8
+tradingeconomics

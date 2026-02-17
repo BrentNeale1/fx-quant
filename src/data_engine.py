@@ -159,11 +159,113 @@ def add_pivot_points(df):
     return df
 
 
-def build_all_features(df, config=None):
+def add_calendar_features(df, calendar_df, cfg=None):
+    """
+    Add economic calendar feature columns to a candle DataFrame using merge_asof.
+
+    Columns added:
+    - minutes_to_next_event: minutes until the next event of any impact
+    - minutes_to_next_high_impact: minutes until the next High-impact event
+    - upcoming_high_impact_event: boolean, True if within buffer window of a High event
+    - minutes_since_last_event: minutes since the most recent event
+
+    Parameters
+    ----------
+    df : DataFrame with DatetimeIndex (candle bars)
+    calendar_df : DataFrame with 'event_datetime' and 'impact_numeric' columns
+    cfg : dict, optional economic_calendar config section
+    """
+    if cfg is None:
+        cfg = {}
+
+    buffer_minutes = cfg.get("event_buffer_minutes", 30)
+
+    if calendar_df is None or calendar_df.empty:
+        df["minutes_to_next_event"] = np.nan
+        df["minutes_to_next_high_impact"] = np.nan
+        df["upcoming_high_impact_event"] = False
+        df["minutes_since_last_event"] = np.nan
+        return df
+
+    # Prepare calendar: ensure sorted datetime index
+    cal = calendar_df[["event_datetime"]].copy()
+    cal["event_datetime"] = pd.to_datetime(cal["event_datetime"], utc=True)
+    cal = cal.drop_duplicates(subset=["event_datetime"]).sort_values("event_datetime")
+
+    cal_high = calendar_df.loc[
+        calendar_df["impact_numeric"] >= 3, ["event_datetime"]
+    ].copy()
+    cal_high["event_datetime"] = pd.to_datetime(cal_high["event_datetime"], utc=True)
+    cal_high = cal_high.drop_duplicates(subset=["event_datetime"]).sort_values("event_datetime")
+
+    # Prepare candle times
+    candle_times = df.index.to_series().dt.tz_localize("UTC") if df.index.tz is None else df.index.to_series()
+    candle_times = candle_times.reset_index(drop=True)
+
+    # --- Forward merge: next event after each candle ---
+    candle_frame = pd.DataFrame({"candle_time": candle_times})
+
+    # Next event (any impact)
+    merged_fwd = pd.merge_asof(
+        candle_frame.sort_values("candle_time"),
+        cal.rename(columns={"event_datetime": "next_event_time"}),
+        left_on="candle_time",
+        right_on="next_event_time",
+        direction="forward",
+    )
+    df["minutes_to_next_event"] = (
+        (merged_fwd["next_event_time"] - merged_fwd["candle_time"])
+        .dt.total_seconds()
+        .values / 60.0
+    )
+
+    # Next high-impact event
+    if not cal_high.empty:
+        merged_high = pd.merge_asof(
+            candle_frame.sort_values("candle_time"),
+            cal_high.rename(columns={"event_datetime": "next_high_time"}),
+            left_on="candle_time",
+            right_on="next_high_time",
+            direction="forward",
+        )
+        df["minutes_to_next_high_impact"] = (
+            (merged_high["next_high_time"] - merged_high["candle_time"])
+            .dt.total_seconds()
+            .values / 60.0
+        )
+    else:
+        df["minutes_to_next_high_impact"] = np.nan
+
+    # Upcoming high impact: True if within buffer_minutes of a High event
+    df["upcoming_high_impact_event"] = (
+        df["minutes_to_next_high_impact"].notna()
+        & (df["minutes_to_next_high_impact"] <= buffer_minutes)
+    )
+
+    # --- Backward merge: last event before each candle ---
+    merged_bwd = pd.merge_asof(
+        candle_frame.sort_values("candle_time"),
+        cal.rename(columns={"event_datetime": "prev_event_time"}),
+        left_on="candle_time",
+        right_on="prev_event_time",
+        direction="backward",
+    )
+    df["minutes_since_last_event"] = (
+        (merged_bwd["candle_time"] - merged_bwd["prev_event_time"])
+        .dt.total_seconds()
+        .values / 60.0
+    )
+
+    return df
+
+
+def build_all_features(df, config=None, calendar_df=None):
     """
     Run a standard set of features. config is optional dict matching the
     'features' section of system.yaml.  Supports lists of windows for
     SMA and EMA so multiple columns are produced (e.g. sma_3, sma_20).
+
+    If calendar_df is provided, also adds economic calendar features.
 
     Returns DataFrame with new columns.
     """
@@ -195,5 +297,10 @@ def build_all_features(df, config=None):
 
     # Drop intermediate helper columns
     df.drop(columns=["pv", "typical_price", "tr"], inplace=True, errors="ignore")
+
+    # Economic calendar features (optional)
+    if calendar_df is not None:
+        cal_cfg = config.get("economic_calendar", {}) if config else {}
+        df = add_calendar_features(df, calendar_df, cfg=cal_cfg)
 
     return df

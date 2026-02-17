@@ -62,6 +62,24 @@ execution:
   canary_size_pct: 0.01
   max_positions: 5
   interval_seconds: 60
+economic_calendar:
+  enabled: true
+  table: economic_calendar
+  days_back: 400
+  chunk_days: 28
+  sleep_between_chunks: 1.0
+  impact_threshold: "High"
+  event_buffer_minutes: 30
+  feature_lookforward_minutes: 240
+  currency_country_map:
+    EUR: "euro area"
+    USD: "united states"
+    GBP: "united kingdom"
+    JPY: "japan"
+    AUD: "australia"
+    CAD: "canada"
+    CHF: "switzerland"
+    NZD: "new zealand"
 supabase:
   url: https://<your>.supabase.co
   key_env_name: SUPABASE_KEY
