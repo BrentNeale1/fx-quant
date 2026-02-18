@@ -1,0 +1,733 @@
+{% extends "base.html" %}
+{% block title %}Backtest Chart - fx-quant{% endblock %}
+
+{% block content %}
+<style>
+  .bt-chart-wrapper {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #e1e3e6;
+  }
+  .bt-toolbar {
+    background: #f8f9fa;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #e1e3e6;
+  }
+  .bt-toolbar label {
+    color: #555;
+    font-size: 0.8rem;
+    margin: 0;
+  }
+  .bt-toolbar select, .bt-toolbar input {
+    background: #fff;
+    color: #191919;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 0.85rem;
+  }
+  .bt-toolbar button {
+    background: #2196f3;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 16px;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .bt-toolbar button:hover { background: #1976d2; }
+  #bt-chart-container { width: 100%; height: 700px; position: relative; }
+  #bt-resize-handle {
+    height: 7px;
+    cursor: ns-resize;
+    background: linear-gradient(to bottom, #e1e3e6, #f0f0f0);
+    border-top: 1px solid #d1d4dc;
+    position: relative;
+  }
+  #bt-resize-handle::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 2px;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    border-radius: 2px;
+    background: #bbb;
+  }
+  #bt-resize-handle:hover { background: linear-gradient(to bottom, #d1d4dc, #e8e8e8); }
+  #bt-resize-handle:hover::after { background: #888; }
+  #bt-loading {
+    display: none;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.1rem;
+    color: #888;
+    z-index: 10;
+  }
+  #bt-error {
+    display: none;
+    padding: 12px 16px;
+    background: #fff3cd;
+    color: #856404;
+    border-bottom: 1px solid #ffc107;
+    font-size: 0.9rem;
+  }
+
+  /* Trade popup */
+  .trade-popup {
+    display: none;
+    position: absolute;
+    z-index: 100;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    padding: 14px 16px;
+    min-width: 260px;
+    max-width: 340px;
+    font-size: 0.85rem;
+    color: #191919;
+  }
+  .trade-popup .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .trade-popup .popup-close {
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #999;
+    line-height: 1;
+  }
+  .trade-popup .popup-close:hover { color: #333; }
+  .trade-popup .badge-win {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .trade-popup .badge-win.win { background: #26a69a; }
+  .trade-popup .badge-win.loss { background: #ef5350; }
+  .trade-popup table { width: 100%; }
+  .trade-popup td { padding: 2px 0; vertical-align: top; }
+  .trade-popup td:first-child { color: #787b86; padding-right: 10px; white-space: nowrap; }
+  .tp-hit { color: #26a69a; font-weight: 600; }
+  .tp-miss { color: #bbb; }
+  .sl-hit { color: #ef5350; font-weight: 600; }
+  .popup-divider { border-top: 1px solid #eee; padding-top: 4px !important; }
+  .key-levels-hint { margin-top: 6px; font-size: 0.78rem; color: #ff9800; }
+</style>
+
+<h4 class="mb-3">Backtest Trade Visualization</h4>
+
+<div class="bt-chart-wrapper">
+  <!-- Toolbar -->
+  <div class="bt-toolbar">
+    <label>Strategy / Pair</label>
+    <select id="bt-combo">
+      {% for c in combos %}
+      <option value="{{ c.strategy }}|{{ c.pair }}">{{ c.label }}</option>
+      {% endfor %}
+    </select>
+    <label>Start</label>
+    <input type="date" id="bt-start">
+    <label>End</label>
+    <input type="date" id="bt-end">
+    <button id="bt-load-btn">Load</button>
+  </div>
+
+  <div id="bt-error"></div>
+
+  <!-- Chart -->
+  <div id="bt-chart-container">
+    <div id="bt-loading">Loading chart data...</div>
+  </div>
+  <div id="bt-resize-handle" title="Drag to resize chart height"></div>
+
+  <!-- Trade popup -->
+  <div class="trade-popup" id="trade-popup">
+    <div class="popup-header">
+      <span id="popup-title"></span>
+      <span class="popup-close" id="popup-close">&times;</span>
+    </div>
+    <div id="popup-body"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
+<script>
+(function() {
+  // ─── State ───
+  let chart = null;
+  let candleSeries = null;
+  let emaLines = {};
+  let currentTrades = [];
+  let tradeBoxPrimitive = null;
+  let activePriceLines = [];
+
+  // ─── Canvas Label Drawing ───
+  function drawLabel(ctx, x, y, text, bg, fg, pr, fontSize) {
+    const fs = Math.round(fontSize * pr);
+    ctx.font = '600 ' + fs + 'px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';
+    const tw = ctx.measureText(text).width;
+    const ph = Math.round(7 * pr), pv = Math.round(4 * pr);
+    const w = tw + ph * 2, h = fs + pv * 2, r = Math.round(3 * pr);
+    const rx = Math.round(x), ry = Math.round(y - h / 2);
+    ctx.fillStyle = bg;
+    ctx.beginPath();
+    ctx.moveTo(rx + r, ry);
+    ctx.arcTo(rx + w, ry, rx + w, ry + h, r);
+    ctx.arcTo(rx + w, ry + h, rx, ry + h, r);
+    ctx.arcTo(rx, ry + h, rx, ry, r);
+    ctx.arcTo(rx, ry, rx + w, ry, r);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = fg;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, rx + ph, Math.round(y));
+    return w;
+  }
+
+  function drawCenteredLabel(ctx, cx, y, lines, bg, fg, pr, fontSize) {
+    const fs = Math.round(fontSize * pr);
+    ctx.font = '600 ' + fs + 'px -apple-system,BlinkMacSystemFont,Segoe UI,sans-serif';
+    const lineH = Math.round(fs * 1.4);
+    const ph = Math.round(10 * pr), pv = Math.round(5 * pr);
+    let maxW = 0;
+    lines.forEach(l => { maxW = Math.max(maxW, ctx.measureText(l).width); });
+    const w = maxW + ph * 2, h = lines.length * lineH + pv * 2, r = Math.round(4 * pr);
+    const rx = Math.round(cx - w / 2), ry = Math.round(y - h / 2);
+    ctx.fillStyle = bg;
+    ctx.beginPath();
+    ctx.moveTo(rx + r, ry);
+    ctx.arcTo(rx + w, ry, rx + w, ry + h, r);
+    ctx.arcTo(rx + w, ry + h, rx, ry + h, r);
+    ctx.arcTo(rx, ry + h, rx, ry, r);
+    ctx.arcTo(rx, ry, rx + w, ry, r);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = fg;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    lines.forEach((line, i) => {
+      ctx.fillText(line, Math.round(cx), ry + pv + Math.round(lineH * (i + 0.5)));
+    });
+  }
+
+  function toPips(diff, ref) {
+    return (Math.abs(diff) / (ref > 10 ? 0.01 : 0.0001)).toFixed(1);
+  }
+
+  // ─── Lightweight Charts v4 Series Primitive ───
+  class TradeBoxPrimitive {
+    constructor(trades, series, chart) {
+      this._trades = trades;
+      this._series = series;
+      this._chart = chart;
+      this._requestUpdate = null;
+      this._selectedIdx = -1;
+    }
+    updateAllViews() { return this; }
+    attached({ requestUpdate }) { this._requestUpdate = requestUpdate; }
+    detached() { this._requestUpdate = null; }
+    select(idx) {
+      this._selectedIdx = idx;
+      if (this._requestUpdate) this._requestUpdate();
+    }
+    paneViews() {
+      return [new TradeBoxPaneView(this), new TradeLabelPaneView(this)];
+    }
+  }
+
+  // ─── Trade Boxes: SL/TP zones drawn behind candles ───
+  class TradeBoxPaneView {
+    constructor(source) { this._source = source; }
+    zOrder() { return 'bottom'; }
+    renderer() {
+      const source = this._source;
+      return { draw(target) {
+        target.useBitmapCoordinateSpace(({ context: ctx, horizontalPixelRatio: hpr, verticalPixelRatio: vpr }) => {
+          const series = source._series;
+          const timeScale = source._chart.timeScale();
+          const trades = source._trades;
+          const selIdx = source._selectedIdx;
+
+          for (let i = 0; i < trades.length; i++) {
+            const t = trades[i];
+            const entryTs = dateToChartTime(t.timestamp);
+            const exitTs = t.exit_time ? dateToChartTime(t.exit_time) : entryTs;
+            const x1Raw = timeScale.timeToCoordinate(entryTs);
+            const x2Raw = timeScale.timeToCoordinate(exitTs);
+            if (x1Raw === null || x2Raw === null) continue;
+
+            const x1 = Math.round(x1Raw * hpr);
+            const x2 = Math.max(Math.round(x2Raw * hpr), x1 + 6 * hpr);
+            const entryY = series.priceToCoordinate(t.entry_price);
+            const slY = series.priceToCoordinate(t.sl_price);
+            const tp3Y = series.priceToCoordinate(t.tp3_price);
+            if (entryY === null || slY === null) continue;
+
+            const isSel = (i === selIdx);
+            const entryPx = Math.round(entryY * vpr);
+            const slPx = Math.round(slY * vpr);
+
+            // SL zone
+            const slTop = Math.min(entryPx, slPx), slBot = Math.max(entryPx, slPx);
+            ctx.fillStyle = 'rgba(239,83,80,' + (isSel ? 0.20 : 0.10) + ')';
+            ctx.fillRect(x1, slTop, x2 - x1, slBot - slTop);
+
+            // TP zone
+            if (tp3Y !== null) {
+              const tp3Px = Math.round(tp3Y * vpr);
+              const tpTop = Math.min(entryPx, tp3Px), tpBot = Math.max(entryPx, tp3Px);
+              ctx.fillStyle = 'rgba(38,166,154,' + (isSel ? 0.20 : 0.10) + ')';
+              ctx.fillRect(x1, tpTop, x2 - x1, tpBot - tpTop);
+            }
+
+            // Entry line
+            ctx.setLineDash([]);
+            ctx.lineWidth = (isSel ? 2 : 1.5) * hpr;
+            ctx.strokeStyle = isSel ? 'rgba(33,150,243,1)' : 'rgba(33,150,243,0.5)';
+            ctx.beginPath(); ctx.moveTo(x1, entryPx); ctx.lineTo(x2, entryPx); ctx.stroke();
+
+            // TP dashed lines
+            const exitParts = (t.exit_reason || '').split('+');
+            ctx.lineWidth = 1 * hpr;
+            [{ p: t.tp1_price, k: 'TP1' }, { p: t.tp2_price, k: 'TP2' }, { p: t.tp3_price, k: 'TP3' }].forEach(tp => {
+              const y = series.priceToCoordinate(tp.p);
+              if (y === null) return;
+              const yPx = Math.round(y * vpr);
+              const hit = exitParts.includes(tp.k);
+              ctx.setLineDash(hit ? [6*hpr, 2*hpr] : [3*hpr, 4*hpr]);
+              ctx.strokeStyle = hit ? 'rgba(38,166,154,0.8)' : 'rgba(38,166,154,0.25)';
+              ctx.beginPath(); ctx.moveTo(x1, yPx); ctx.lineTo(x2, yPx); ctx.stroke();
+            });
+
+            // SL dashed line
+            ctx.setLineDash([4*hpr, 3*hpr]);
+            ctx.strokeStyle = exitParts.includes('SL') ? 'rgba(239,83,80,0.8)' : 'rgba(239,83,80,0.3)';
+            ctx.beginPath(); ctx.moveTo(x1, slPx); ctx.lineTo(x2, slPx); ctx.stroke();
+
+            // Exit vertical line
+            if (t.exit_time) {
+              const exitX = Math.round(x2Raw * hpr);
+              const allPx = [slPx, entryPx];
+              if (tp3Y !== null) allPx.push(Math.round(tp3Y * vpr));
+              ctx.setLineDash([2*hpr, 2*hpr]);
+              ctx.strokeStyle = t.win ? 'rgba(38,166,154,0.5)' : 'rgba(239,83,80,0.5)';
+              ctx.lineWidth = 1 * hpr;
+              ctx.beginPath(); ctx.moveTo(exitX, Math.min(...allPx)); ctx.lineTo(exitX, Math.max(...allPx)); ctx.stroke();
+            }
+            ctx.setLineDash([]);
+          }
+        });
+      }};
+    }
+  }
+
+  // ─── Trade Labels: TradingView-style banners (on top of candles, selected only) ───
+  class TradeLabelPaneView {
+    constructor(source) { this._source = source; }
+    zOrder() { return 'top'; }
+    renderer() {
+      const source = this._source;
+      return { draw(target) {
+        target.useBitmapCoordinateSpace(({ context: ctx, bitmapSize, horizontalPixelRatio: hpr, verticalPixelRatio: vpr }) => {
+          const idx = source._selectedIdx;
+          if (idx < 0 || idx >= source._trades.length) return;
+          const t = source._trades[idx];
+          const series = source._series;
+          const ts = source._chart.timeScale();
+
+          const entryTs = dateToChartTime(t.timestamp);
+          const exitTs = t.exit_time ? dateToChartTime(t.exit_time) : entryTs;
+          const x1Raw = ts.timeToCoordinate(entryTs);
+          const x2Raw = ts.timeToCoordinate(exitTs);
+          if (x1Raw === null || x2Raw === null) return;
+
+          const x1 = Math.round(x1Raw * hpr);
+          const x2 = Math.max(Math.round(x2Raw * hpr), x1 + 6 * hpr);
+          const midX = (x1 + x2) / 2;
+
+          const entryY = series.priceToCoordinate(t.entry_price);
+          const exitY = series.priceToCoordinate(t.exit_price);
+          const slY = series.priceToCoordinate(t.sl_price);
+          if (entryY === null || slY === null) return;
+
+          const entryPx = Math.round(entryY * vpr);
+          const exitPx = exitY !== null ? Math.round(exitY * vpr) : entryPx;
+          const slPx = Math.round(slY * vpr);
+          const exitParts = (t.exit_reason || '').split('+');
+
+          // ── Entry dot (blue) ──
+          ctx.beginPath();
+          ctx.arc(x1, entryPx, 5 * hpr, 0, Math.PI * 2);
+          ctx.fillStyle = '#2196f3';
+          ctx.fill();
+          ctx.strokeStyle = '#fff';
+          ctx.lineWidth = 2 * hpr;
+          ctx.stroke();
+
+          // ── Exit dot (green/red) ──
+          const exitDotX = Math.round(x2Raw * hpr);
+          ctx.beginPath();
+          ctx.arc(exitDotX, exitPx, 5 * hpr, 0, Math.PI * 2);
+          ctx.fillStyle = t.win ? '#26a69a' : '#ef5350';
+          ctx.fill();
+          ctx.strokeStyle = '#fff';
+          ctx.lineWidth = 2 * hpr;
+          ctx.stroke();
+
+          // ── Labels to the right of the trade box ──
+          const labelX = x2 + 10 * hpr;
+
+          // SL label
+          const slHit = exitParts.includes('SL');
+          const slPips = toPips(t.entry_price - t.sl_price, t.entry_price);
+          drawLabel(ctx, labelX, slPx,
+            'Stop: ' + t.sl_price + '  (' + slPips + 'p)' + (slHit ? '  HIT' : ''),
+            slHit ? 'rgba(239,83,80,0.92)' : 'rgba(239,83,80,0.50)',
+            '#fff', hpr, 10.5);
+
+          // TP labels at each level
+          [{ p: t.tp1_price, k: 'TP1' }, { p: t.tp2_price, k: 'TP2' }, { p: t.tp3_price, k: 'TP3' }].forEach(tp => {
+            const y = series.priceToCoordinate(tp.p);
+            if (y === null) return;
+            const yPx = Math.round(y * vpr);
+            const hit = exitParts.includes(tp.k);
+            const pips = toPips(t.entry_price - tp.p, t.entry_price);
+            drawLabel(ctx, labelX, yPx,
+              tp.k + ': ' + tp.p + '  (' + pips + 'p)  ' + (hit ? '\u2713' : '\u2014'),
+              hit ? 'rgba(38,166,154,0.92)' : 'rgba(160,160,160,0.50)',
+              '#fff', hpr, 10.5);
+          });
+
+          // ── PnL info label (centered in the trade box) ──
+          const pnlSign = t.pnl_pips >= 0 ? '+' : '';
+          const isLong = t.direction === 'LONG';
+          const infoOffsetDir = isLong ? -1 : 1;
+          const infoY = entryPx + infoOffsetDir * 28 * vpr;
+          drawCenteredLabel(ctx, midX, infoY,
+            [
+              'Closed P&L: ' + pnlSign + t.pnl_pips + 'p / $' + t.pnl_dollars.toFixed(2),
+              formatHoldTime(t.hold_time_minutes) + '  \u2502  Score ' + t.confluence_score + '  \u2502  ' + t.session,
+            ],
+            t.win ? 'rgba(38,166,154,0.92)' : 'rgba(239,83,80,0.92)',
+            '#fff', hpr, 10.5);
+        });
+      }};
+    }
+  }
+
+  // ─── Helpers ───
+  function dateToChartTime(dateStr) {
+    const d = new Date(dateStr + 'Z');
+    return Math.floor(d.getTime() / 1000);
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('bt-error');
+    el.textContent = msg;
+    el.style.display = 'block';
+  }
+  function hideError() {
+    document.getElementById('bt-error').style.display = 'none';
+  }
+
+  function formatHoldTime(mins) {
+    if (mins < 60) return mins + 'm';
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return m > 0 ? h + 'h ' + m + 'm' : h + 'h';
+  }
+
+  // ─── Key Level Price Lines ───
+  function showKeyLevels(trade) {
+    clearKeyLevels();
+    if (!trade.key_levels || !trade.key_levels.length || !candleSeries) return;
+    trade.key_levels.forEach(kl => {
+      const line = candleSeries.createPriceLine({
+        price: kl.price,
+        color: '#ff9800',
+        lineWidth: 1,
+        lineStyle: LightweightCharts.LineStyle.Dashed,
+        axisLabelVisible: true,
+        title: 'S/R (' + kl.touches + ')',
+      });
+      activePriceLines.push(line);
+    });
+  }
+
+  function clearKeyLevels() {
+    activePriceLines.forEach(line => {
+      try { candleSeries.removePriceLine(line); } catch(e) {}
+    });
+    activePriceLines = [];
+  }
+
+  // ─── Select / Deselect Trade ───
+  function selectTrade(idx, point) {
+    if (tradeBoxPrimitive) tradeBoxPrimitive.select(idx);
+    showKeyLevels(currentTrades[idx]);
+    // Position popup
+    const popup = document.getElementById('trade-popup');
+    const trade = currentTrades[idx];
+    const dir = trade.direction;
+    const exitParts = (trade.exit_reason || '').split('+');
+    const pnlColor = trade.pnl_pips >= 0 ? '#26a69a' : '#ef5350';
+    const pnlSign = trade.pnl_pips >= 0 ? '+' : '';
+    const badgeClass = trade.win ? 'win' : 'loss';
+    let outcomeHtml = '';
+    ['TP1','TP2','TP3'].forEach(k => {
+      const hit = exitParts.includes(k);
+      outcomeHtml += '<span class="' + (hit ? 'tp-hit' : 'tp-miss') + '">' + k + ' ' + (hit ? '&#10003;' : '&mdash;') + '</span> &nbsp;';
+    });
+    if (exitParts.includes('SL')) outcomeHtml += '<span class="sl-hit">&rarr; SL</span>';
+    document.getElementById('popup-title').innerHTML =
+      dir + ' <span class="badge-win ' + badgeClass + '">' + (trade.win ? 'WIN' : 'LOSS') + '</span>';
+    document.getElementById('popup-body').innerHTML =
+      '<table>' +
+      '<tr><td>Entry</td><td>' + trade.entry_price + '</td></tr>' +
+      '<tr><td>Exit</td><td>' + trade.exit_price + '</td></tr>' +
+      '<tr><td>Outcome</td><td>' + outcomeHtml + '</td></tr>' +
+      '<tr><td colspan="2" class="popup-divider"></td></tr>' +
+      '<tr><td>PnL</td><td style="color:' + pnlColor + ';font-weight:600">' + pnlSign + trade.pnl_pips + ' pips / $' + trade.pnl_dollars.toFixed(2) + '</td></tr>' +
+      '<tr><td>Hold Time</td><td>' + formatHoldTime(trade.hold_time_minutes) + '</td></tr>' +
+      '<tr><td>Confluence</td><td>' + trade.confluence_score + '</td></tr>' +
+      '<tr><td>Session</td><td>' + trade.session + '</td></tr>' +
+      '</table>' +
+      (trade.key_levels && trade.key_levels.length ? '<div class="key-levels-hint">' + trade.key_levels.length + ' S/R key levels shown on chart</div>' : '');
+    const container = document.getElementById('bt-chart-container');
+    const rect = container.getBoundingClientRect();
+    let left = point.x + 16, top = point.y + 16;
+    if (left + 320 > rect.width) left = point.x - 300;
+    if (top + 260 > rect.height) top = point.y - 240;
+    if (left < 0) left = 8;
+    if (top < 0) top = 8;
+    popup.style.left = left + 'px';
+    popup.style.top = top + 'px';
+    popup.style.display = 'block';
+  }
+
+  function deselectTrade() {
+    if (tradeBoxPrimitive) tradeBoxPrimitive.select(-1);
+    document.getElementById('trade-popup').style.display = 'none';
+    clearKeyLevels();
+  }
+
+  document.getElementById('popup-close').addEventListener('click', deselectTrade);
+  document.addEventListener('click', function(e) {
+    const popup = document.getElementById('trade-popup');
+    if (popup.style.display === 'block' && !popup.contains(e.target)) {
+      const container = document.getElementById('bt-chart-container');
+      if (!container.contains(e.target)) deselectTrade();
+    }
+  });
+
+  // ─── Build Chart ───
+  function initChart() {
+    if (chart) { chart.remove(); chart = null; }
+    clearKeyLevels();
+
+    const container = document.getElementById('bt-chart-container');
+    chart = LightweightCharts.createChart(container, {
+      width: container.clientWidth,
+      height: container.clientHeight,
+      layout: {
+        background: { type: 'solid', color: '#ffffff' },
+        textColor: '#191919',
+      },
+      grid: {
+        vertLines: { color: '#e1e3e6' },
+        horzLines: { color: '#e1e3e6' },
+      },
+      crosshair: { mode: LightweightCharts.CrosshairMode.Normal },
+      rightPriceScale: { borderColor: '#d1d4dc' },
+      timeScale: {
+        borderColor: '#d1d4dc',
+        timeVisible: true,
+        secondsVisible: false,
+      },
+    });
+
+    candleSeries = chart.addCandlestickSeries({
+      upColor: '#26a69a', downColor: '#ef5350',
+      borderUpColor: '#26a69a', borderDownColor: '#ef5350',
+      wickUpColor: '#26a69a', wickDownColor: '#ef5350',
+    });
+
+    emaLines = {
+      ema_50: chart.addLineSeries({ color: '#000000', lineWidth: 1, title: 'EMA 50', priceLineVisible: false }),
+      ema_100: chart.addLineSeries({ color: '#2196f3', lineWidth: 1, title: 'EMA 100', priceLineVisible: false }),
+      ema_200: chart.addLineSeries({ color: '#ef5350', lineWidth: 1, title: 'EMA 200', priceLineVisible: false }),
+    };
+
+    // ─── Click handler: markers + trade box zone detection ───
+    chart.subscribeClick((param) => {
+      if (!param || !param.point) { deselectTrade(); return; }
+
+      // 1) Check marker click
+      if (param.hoveredObjectId) {
+        const id = param.hoveredObjectId;
+        if (typeof id === 'string' && id.startsWith('trade_')) {
+          const idx = parseInt(id.replace('trade_', ''), 10);
+          if (idx >= 0 && idx < currentTrades.length) {
+            selectTrade(idx, param.point);
+            return;
+          }
+        }
+      }
+
+      // 2) Check if click is inside any trade box zone
+      const px = param.point.x, py = param.point.y;
+      for (let i = 0; i < currentTrades.length; i++) {
+        const t = currentTrades[i];
+        const entryTs = dateToChartTime(t.timestamp);
+        const exitTs = t.exit_time ? dateToChartTime(t.exit_time) : entryTs;
+        const cx1 = chart.timeScale().timeToCoordinate(entryTs);
+        const cx2 = chart.timeScale().timeToCoordinate(exitTs);
+        if (cx1 === null || cx2 === null) continue;
+        const entryCoord = candleSeries.priceToCoordinate(t.entry_price);
+        const slCoord = candleSeries.priceToCoordinate(t.sl_price);
+        const tp3Coord = candleSeries.priceToCoordinate(t.tp3_price);
+        if (entryCoord === null || slCoord === null) continue;
+        const minX = Math.min(cx1, cx2), maxX = Math.max(cx1, cx2);
+        const coords = [entryCoord, slCoord];
+        if (tp3Coord !== null) coords.push(tp3Coord);
+        const minY = Math.min(...coords), maxY = Math.max(...coords);
+        if (px >= minX && px <= maxX && py >= minY && py <= maxY) {
+          selectTrade(i, param.point);
+          return;
+        }
+      }
+
+      // 3) Click outside all trades
+      deselectTrade();
+    });
+
+    const resizeObserver = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        chart.applyOptions({ width: entry.contentRect.width });
+      }
+    });
+    resizeObserver.observe(container);
+  }
+
+  // ─── Vertical Resize Handle ───
+  (function() {
+    const handle = document.getElementById('bt-resize-handle');
+    const container = document.getElementById('bt-chart-container');
+    let dragging = false, startY = 0, startH = 0;
+
+    handle.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      dragging = true;
+      startY = e.clientY;
+      startH = container.clientHeight;
+      document.body.style.cursor = 'ns-resize';
+      document.body.style.userSelect = 'none';
+    });
+    document.addEventListener('mousemove', function(e) {
+      if (!dragging) return;
+      const newH = Math.max(300, Math.min(1400, startH + (e.clientY - startY)));
+      container.style.height = newH + 'px';
+      if (chart) chart.applyOptions({ height: newH });
+    });
+    document.addEventListener('mouseup', function() {
+      if (!dragging) return;
+      dragging = false;
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    });
+  })();
+
+  // ─── Load Data ───
+  async function loadData() {
+    hideError();
+    deselectTrade();
+    const combo = document.getElementById('bt-combo').value;
+    if (!combo) { showError('Select a strategy/pair'); return; }
+
+    const [strategy, pair] = combo.split('|');
+    const start = document.getElementById('bt-start').value;
+    const end = document.getElementById('bt-end').value;
+
+    const params = new URLSearchParams({ strategy, pair, timeframe: 'M15' });
+    if (start) params.set('start', start);
+    if (end) params.set('end', end);
+
+    const loading = document.getElementById('bt-loading');
+    loading.style.display = 'block';
+
+    try {
+      const url = window.location.origin + '/api/backtest-chart-data?' + params.toString();
+      const resp = await fetch(url);
+      const data = await resp.json();
+
+      if (!resp.ok) {
+        showError(data.error || 'Failed to load data');
+        loading.style.display = 'none';
+        return;
+      }
+
+      initChart();
+
+      const ohlc = data.ohlc.map(d => ({
+        time: dateToChartTime(d.time), open: d.open, high: d.high, low: d.low, close: d.close,
+      }));
+      candleSeries.setData(ohlc);
+
+      for (const key of ['ema_50', 'ema_100', 'ema_200']) {
+        if (data.indicators[key]) {
+          emaLines[key].setData(data.indicators[key].map(d => ({
+            time: dateToChartTime(d.time), value: d.value,
+          })));
+        }
+      }
+
+      currentTrades = data.trades || [];
+
+      if (currentTrades.length > 0) {
+        const markers = currentTrades.map((t, i) => ({
+          time: dateToChartTime(t.timestamp),
+          position: t.direction === 'LONG' ? 'belowBar' : 'aboveBar',
+          color: t.direction === 'LONG' ? '#26a69a' : '#ef5350',
+          shape: t.direction === 'LONG' ? 'arrowUp' : 'arrowDown',
+          id: 'trade_' + i,
+          text: t.direction[0] + (t.win ? '+' : '-'),
+        }));
+        markers.sort((a, b) => a.time - b.time);
+        candleSeries.setMarkers(markers);
+
+        tradeBoxPrimitive = new TradeBoxPrimitive(currentTrades, candleSeries, chart);
+        candleSeries.attachPrimitive(tradeBoxPrimitive);
+      }
+
+      chart.timeScale().fitContent();
+      loading.style.display = 'none';
+
+    } catch (err) {
+      showError('Network error: ' + err.message);
+      loading.style.display = 'none';
+    }
+  }
+
+  document.getElementById('bt-load-btn').addEventListener('click', loadData);
+  if (document.getElementById('bt-combo').options.length > 0) loadData();
+})();
+</script>
+{% endblock %}

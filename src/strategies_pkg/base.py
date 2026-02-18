@@ -7,6 +7,9 @@ class BaseStrategy:
     strategy_id: int = 0
     name: str = "BaseStrategy"
 
+    def __init__(self):
+        self.htf_data = None
+
     def check_signal(self, data: pd.DataFrame, idx: int,
                      current: pd.Series,
                      htf_row: Optional[pd.Series] = None) -> Optional[dict]:

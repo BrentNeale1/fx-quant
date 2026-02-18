@@ -290,6 +290,143 @@ def killswitch():
     return redirect(url_for("index"))
 
 
+@app.route("/backtest-chart")
+@requires_auth
+def backtest_chart():
+    """Backtest trade visualization chart — scans available trade CSVs."""
+    results_dir = APP_ROOT / "results" / "phase1"
+    combos = []
+    if results_dir.exists():
+        for f in sorted(results_dir.glob("*_trades.csv")):
+            # e.g. S1_GBP_AUD_trades.csv -> strategy=S1, pair=GBP_AUD
+            parts = f.stem.replace("_trades", "").split("_", 1)
+            if len(parts) == 2:
+                combos.append({"strategy": parts[0], "pair": parts[1],
+                               "label": f"{parts[0]} / {parts[1].replace('_', '/')}"})
+    return render_template("backtest_chart.html", combos=combos)
+
+
+@app.route("/api/backtest-chart-data")
+@requires_auth
+def api_backtest_chart_data():
+    """Return OHLC + indicators + trades as JSON for the backtest chart."""
+    strategy = request.args.get("strategy", "")
+    pair = request.args.get("pair", "")
+    timeframe = request.args.get("timeframe", "M15")
+    start = request.args.get("start", "")
+    end = request.args.get("end", "")
+
+    # Validate
+    if not strategy or not pair:
+        return jsonify({"error": "strategy and pair are required"}), 400
+
+    # Load OHLC
+    ohlc_path = APP_ROOT / "data" / "processed" / f"{pair}_{timeframe}.csv"
+    if not ohlc_path.exists():
+        return jsonify({"error": f"OHLC file not found: {pair}_{timeframe}.csv"}), 404
+
+    df = pd.read_csv(ohlc_path, parse_dates=["timestamp"], index_col="timestamp")
+    for col in ["open", "high", "low", "close"]:
+        df[col] = df[col].astype(float)
+    df["volume"] = pd.to_numeric(df.get("volume", 0), errors="coerce").fillna(0)
+
+    # Date filter
+    if start:
+        df = df[df.index >= pd.Timestamp(start, tz="UTC")]
+    if end:
+        df = df[df.index <= pd.Timestamp(end, tz="UTC")]
+
+    if df.empty:
+        return jsonify({"error": "No OHLC data in selected range"}), 404
+
+    # Compute indicators
+    from indicators.technical import compute_all_indicators, identify_key_levels
+    df = compute_all_indicators(df)
+
+    # Build OHLC list (round to 5 decimals)
+    time_strings = df.index.strftime("%Y-%m-%dT%H:%M:%S").tolist()
+    ohlc_data = []
+    for i, (idx, row) in enumerate(df.iterrows()):
+        ohlc_data.append({
+            "time": time_strings[i],
+            "open": round(row["open"], 5),
+            "high": round(row["high"], 5),
+            "low": round(row["low"], 5),
+            "close": round(row["close"], 5),
+        })
+
+    # Build EMA indicator series
+    indicators = {}
+    for key in ["ema_50", "ema_100", "ema_200"]:
+        if key in df.columns:
+            series_data = []
+            for i, (idx, row) in enumerate(df.iterrows()):
+                val = row[key]
+                if pd.notna(val):
+                    series_data.append({"time": time_strings[i], "value": round(float(val), 5)})
+            indicators[key] = series_data
+
+    # Load trades
+    trades_path = APP_ROOT / "results" / "phase1" / f"{strategy}_{pair}_trades.csv"
+    trades = []
+    if trades_path.exists():
+        tdf = pd.read_csv(trades_path, parse_dates=["timestamp"])
+        if "exit_time" in tdf.columns:
+            tdf["exit_time"] = pd.to_datetime(tdf["exit_time"])
+        # Apply date filter to trades
+        if start:
+            tdf = tdf[tdf["timestamp"] >= pd.Timestamp(start, tz="UTC")]
+        if end:
+            tdf = tdf[tdf["timestamp"] <= pd.Timestamp(end, tz="UTC")]
+
+        for _, trow in tdf.iterrows():
+            trade = {
+                "timestamp": trow["timestamp"].strftime("%Y-%m-%dT%H:%M:%S"),
+                "direction": trow.get("signal_direction", ""),
+                "entry_price": round(float(trow.get("entry_price", 0)), 5),
+                "sl_price": round(float(trow.get("sl_price", 0)), 5),
+                "tp1_price": round(float(trow.get("tp1_price", 0)), 5),
+                "tp2_price": round(float(trow.get("tp2_price", 0)), 5),
+                "tp3_price": round(float(trow.get("tp3_price", 0)), 5),
+                "exit_price": round(float(trow.get("exit_price", 0)), 5),
+                "exit_reason": str(trow.get("exit_reason", "")),
+                "pnl_pips": round(float(trow.get("pnl_pips", 0)), 1),
+                "pnl_dollars": round(float(trow.get("pnl_dollars", 0)), 2),
+                "hold_time_minutes": int(trow.get("hold_time_minutes", 0)),
+                "confluence_score": int(trow.get("confluence_score", 0)),
+                "session": str(trow.get("session", "")),
+                "win": bool(trow.get("win", False)),
+            }
+            if pd.notna(trow.get("exit_time")):
+                trade["exit_time"] = trow["exit_time"].strftime("%Y-%m-%dT%H:%M:%S")
+
+            # Key S/R levels only for strategies that use them (S3, S5)
+            trade["key_levels"] = []
+            if strategy in ("S3", "S5"):
+                entry_ts = trow["timestamp"]
+                pre_entry = df[df.index <= entry_ts].tail(500)
+                if len(pre_entry) >= 30:
+                    levels = identify_key_levels(pre_entry, min_touches=2)
+                    trade["key_levels"] = [
+                        {"price": round(float(p), 5), "touches": int(t)}
+                        for p, t in levels[:6]
+                    ]
+
+            # For all strategies: include the EMA values at entry as reference
+            entry_ts = trow["timestamp"]
+            entry_row = df[df.index <= entry_ts].iloc[-1] if len(df[df.index <= entry_ts]) > 0 else None
+            if entry_row is not None:
+                trade["ema_at_entry"] = {
+                    "ema_50": round(float(entry_row.get("ema_50", 0)), 5),
+                    "ema_100": round(float(entry_row.get("ema_100", 0)), 5),
+                    "ema_200": round(float(entry_row.get("ema_200", 0)), 5),
+                }
+
+            trades.append(trade)
+
+    return jsonify({"ohlc": ohlc_data, "indicators": indicators, "trades": trades})
+
+
 @app.route("/chart")
 @requires_auth
 def chart():

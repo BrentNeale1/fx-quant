@@ -17,7 +17,25 @@
       "Bash(docker-compose down:*)",
       "Bash(docker-compose logs:*)",
       "Bash(echo:*)",
-      "Bash(docker exec:*)"
+      "Bash(docker exec:*)",
+      "Bash(wc:*)",
+      "WebSearch",
+      "WebFetch(domain:tradingview.github.io)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(ls:*)",
+      "Bash(curl:*)",
+      "Bash(start http://admin:changeme@127.0.0.1:5000/backtest-chart)",
+      "Bash(start \"\" \"C:/Users/brent/Documents/fx-quant/results/phase1/S1_GBP_AUD_trades.pdf\")",
+      "Bash(start \"\" \"C:/Users/brent/Documents/fx-quant/results/phase1/S1_EUR_AUD_trades.pdf\")",
+      "Bash(start \"\" \"C:/Users/brent/Documents/fx-quant/results/phase1/S3_GBP_JPY_trades.pdf\")",
+      "Bash(start \"\" \"C:/Users/brent/Documents/fx-quant/results/phase1/S3_USD_JPY_trades.pdf\")",
+      "Bash(start \"\" \"C:/Users/brent/Documents/fx-quant/results/phase1/S3_GBP_USD_trades.pdf\")",
+      "Bash(node:*)",
+      "Bash(printf:*)",
+      "Bash(test:*)",
+      "Bash(reg query:*)",
+      "Bash(powershell -Command \"[Environment]::GetEnvironmentVariable\\(''NODE_OPTIONS'', ''User''\\)\")"
     ]
   }
 }

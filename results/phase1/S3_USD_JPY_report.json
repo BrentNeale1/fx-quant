@@ -2,42 +2,42 @@
   "pair": "USD_JPY",
   "strategy_id": 3,
   "strategy_name": "S3_Key_Level_Breakout",
-  "total_trades": 220,
-  "win_rate_pct": 35.45,
-  "avg_rr": 1.6,
-  "expectancy_pips": -1.37,
-  "sharpe_ratio": -0.98,
-  "max_drawdown_pct": -26.12,
-  "profit_factor": 0.87,
-  "total_pnl_pips": -300.7,
-  "total_pnl_dollars": -17192.04,
-  "avg_win_pips": 28.66,
-  "avg_loss_pips": 17.86,
-  "max_consecutive_wins": 3,
-  "max_consecutive_losses": 10,
-  "avg_hold_time_minutes": 609.8,
-  "best_trade_pips": 111.53,
-  "worst_trade_pips": -60.24,
-  "best_trade_dollars": 3133.4,
-  "worst_trade_dollars": -1073.07,
-  "final_equity": 82807.96,
+  "total_trades": 138,
+  "win_rate_pct": 52.9,
+  "avg_rr": 0.92,
+  "expectancy_pips": 0.48,
+  "sharpe_ratio": -0.03,
+  "max_drawdown_pct": -9.84,
+  "profit_factor": 1.0,
+  "total_pnl_pips": 65.99,
+  "total_pnl_dollars": -308.86,
+  "avg_win_pips": 31.02,
+  "avg_loss_pips": 33.82,
+  "max_consecutive_wins": 6,
+  "max_consecutive_losses": 8,
+  "avg_hold_time_minutes": 855.7,
+  "best_trade_pips": 104.35,
+  "worst_trade_pips": -98.96,
+  "best_trade_dollars": 2569.09,
+  "worst_trade_dollars": -1065.4,
+  "final_equity": 99691.14,
   "starting_equity": 100000.0,
   "session_breakdown": {
     "LONDON": {
-      "trades": 116,
-      "win_rate": 37.06896551724138,
-      "total_pnl_pips": -213.5047343767306
+      "trades": 61,
+      "win_rate": 50.81967213114754,
+      "total_pnl_pips": -136.57319126130915
     },
     "OVERLAP": {
-      "trades": 104,
-      "win_rate": 33.65384615384615,
-      "total_pnl_pips": -87.1917729201391
+      "trades": 77,
+      "win_rate": 54.54545454545454,
+      "total_pnl_pips": 202.56094377341014
     }
   },
   "exit_reasons": {
-    "SL": 142,
+    "SL": 65,
     "TP3": 28,
-    "TP1+TP2+SL": 25,
-    "TP1+SL": 25
+    "TP1+SL": 23,
+    "TP1+TP2+SL": 22
   }
 }

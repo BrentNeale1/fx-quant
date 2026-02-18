@@ -24,6 +24,7 @@ class S5_Momentum_Exhaustion(BaseStrategy):
     name = "S5_Momentum_Exhaustion"
 
     def __init__(self):
+        super().__init__()
         self._cached_levels = None
         self._cache_idx = -1
 
@@ -33,9 +34,9 @@ class S5_Momentum_Exhaustion(BaseStrategy):
         if idx < 50:
             return None
 
-        # Session filter
+        # Session filter: London + NY overlap (08:00-16:00 UTC)
         hour = current.name.hour if hasattr(current.name, 'hour') else 0
-        if hour < 8 or hour >= 17:
+        if hour < 8 or hour >= 16:
             return None
 
         atr_val = current.get("atr_14", 0)
@@ -65,20 +66,23 @@ class S5_Momentum_Exhaustion(BaseStrategy):
 
         confluence = 4  # All mandatory met
 
-        # Booster: declining volume (required for entry - reduces false signals)
-        if not self._volume_declining(data, idx):
+        # Booster: declining volume
+        if self._volume_declining(data, idx):
+            confluence = 5
+
+        # Require minimum confluence of 3
+        if confluence < 3:
             return None
-        confluence = 5
 
         close = current["close"]
         if divergence == "bullish":
-            sl = current["low"] - 0.5 * atr_val  # Tight SL for reversal
+            sl = close - 1.5 * atr_val
             tp1 = close + 1.5 * atr_val
             tp2 = close + 2.5 * atr_val
             tp3 = close + 4.0 * atr_val
             direction = "LONG"
         else:
-            sl = current["high"] + 0.5 * atr_val  # Tight SL for reversal
+            sl = close + 1.5 * atr_val
             tp1 = close - 1.5 * atr_val
             tp2 = close - 2.5 * atr_val
             tp3 = close - 4.0 * atr_val
@@ -88,6 +92,7 @@ class S5_Momentum_Exhaustion(BaseStrategy):
             "direction": direction,
             "sl": sl, "tp1": tp1, "tp2": tp2, "tp3": tp3,
             "confluence": confluence,
+            "entry_pattern": "momentum_exhaustion",
             "tp_splits": (0.40, 0.40, 0.20),
             "trail_atr_mult": 1.5,
             "max_bars": 120,

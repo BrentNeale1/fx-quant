@@ -1,0 +1,46 @@
+{
+  "pair": "GBP_USD",
+  "strategy_id": 6,
+  "strategy_name": "S6_EMA_Bounce_Continuation",
+  "total_trades": 231,
+  "win_rate_pct": 58.44,
+  "avg_rr": 0.6,
+  "expectancy_pips": -2.33,
+  "sharpe_ratio": -1.38,
+  "max_drawdown_pct": -15.44,
+  "profit_factor": 0.83,
+  "total_pnl_pips": -537.15,
+  "total_pnl_dollars": -14066.56,
+  "avg_win_pips": 21.52,
+  "avg_loss_pips": 35.86,
+  "max_consecutive_wins": 8,
+  "max_consecutive_losses": 8,
+  "avg_hold_time_minutes": 615.3,
+  "best_trade_pips": 70.01,
+  "worst_trade_pips": -128.84,
+  "best_trade_dollars": 1236.8,
+  "worst_trade_dollars": -1014.61,
+  "final_equity": 85933.44,
+  "starting_equity": 100000.0,
+  "session_breakdown": {
+    "LONDON": {
+      "trades": 142,
+      "win_rate": 55.633802816901415,
+      "total_pnl_pips": -703.7672995443588
+    },
+    "OVERLAP": {
+      "trades": 89,
+      "win_rate": 62.92134831460674,
+      "total_pnl_pips": 166.62131025516283
+    }
+  },
+  "exit_reasons": {
+    "TP1+SL": 41,
+    "TP1+TP2+SL": 44,
+    "SL": 84,
+    "TP3": 34,
+    "TP1+TIME": 7,
+    "TIME": 17,
+    "TP1+TP2+TIME": 4
+  }
+}

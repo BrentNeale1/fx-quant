@@ -1,43 +1,43 @@
 {
   "pair": "GBP_AUD",
   "strategy_id": 1,
-  "strategy_name": "S1_MA_Breakout_Retest",
-  "total_trades": 122,
-  "win_rate_pct": 39.34,
-  "avg_rr": 1.36,
-  "expectancy_pips": -1.19,
-  "sharpe_ratio": -1.55,
-  "max_drawdown_pct": -17.01,
-  "profit_factor": 0.81,
-  "total_pnl_pips": -145.24,
-  "total_pnl_dollars": -12339.87,
-  "avg_win_pips": 22.33,
-  "avg_loss_pips": 16.45,
-  "max_consecutive_wins": 4,
-  "max_consecutive_losses": 9,
-  "avg_hold_time_minutes": 237.3,
-  "best_trade_pips": 44.83,
-  "worst_trade_pips": -26.92,
-  "best_trade_dollars": 2242.77,
-  "worst_trade_dollars": -1000.0,
-  "final_equity": 87660.13,
+  "strategy_name": "S1_Trendline_Breakout_Retest",
+  "total_trades": 34,
+  "win_rate_pct": 35.29,
+  "avg_rr": 0.9,
+  "expectancy_pips": -5.66,
+  "sharpe_ratio": -6.23,
+  "max_drawdown_pct": -15.94,
+  "profit_factor": 0.4,
+  "total_pnl_pips": -192.44,
+  "total_pnl_dollars": -12502.09,
+  "avg_win_pips": 15.51,
+  "avg_loss_pips": 17.21,
+  "max_consecutive_wins": 3,
+  "max_consecutive_losses": 7,
+  "avg_hold_time_minutes": 114.3,
+  "best_trade_pips": 52.77,
+  "worst_trade_pips": -42.38,
+  "best_trade_dollars": 3239.32,
+  "worst_trade_dollars": -1022.39,
+  "final_equity": 87497.91,
   "starting_equity": 100000.0,
   "session_breakdown": {
     "LONDON": {
-      "trades": 58,
-      "win_rate": 41.37931034482759,
-      "total_pnl_pips": -22.01687471378051
+      "trades": 21,
+      "win_rate": 38.095238095238095,
+      "total_pnl_pips": -24.36960397938039
     },
     "OVERLAP": {
-      "trades": 64,
-      "win_rate": 37.5,
-      "total_pnl_pips": -123.2260709958683
+      "trades": 13,
+      "win_rate": 30.76923076923077,
+      "total_pnl_pips": -168.06717463446904
     }
   },
   "exit_reasons": {
-    "SL": 74,
-    "TP1+SL": 21,
-    "TP1+TP2+SL": 17,
-    "TP3": 10
+    "SL": 22,
+    "TP3": 2,
+    "TP1+TP2+SL": 3,
+    "TP1+SL": 7
   }
 }

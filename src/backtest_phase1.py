@@ -20,9 +20,12 @@ from src.indicators.technical import compute_all_indicators
 from src.backtester.engine import Backtester
 from src.strategies_pkg import (
     STRATEGIES, STRATEGY_PAIRS, STRATEGY_TIMEFRAMES,
-    S1_MA_Breakout, S2_VWAP_Reversal, S3_KeyLevel_Breakout,
+    S1_MA_Breakout, S3_KeyLevel_Breakout,
     S4_EMA_Ribbon, S5_Momentum_Exhaustion,
+    S6_EMA_Bounce,
 )
+from src.trade_pdf_report import generate_trade_pdf
+# S2_VWAP_Reversal disabled — needs full redesign
 
 PROCESSED_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "processed")
 RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "results", "phase1")
@@ -87,7 +90,7 @@ def run_strategy_backtest(strategy_id: int, pair: str):
     # Get trade log
     trade_log = bt.get_trade_log_df()
 
-    return report, trade_log
+    return report, trade_log, data, htf_data
 
 
 def save_results(strategy_id: int, strategy_name: str, pair: str,
@@ -168,9 +171,14 @@ def main():
                 print(f"    SKIPPED (data not available)")
                 continue
 
-            report, trade_log = result
+            report, trade_log, data, htf_data = result
             save_results(strategy_id, strat_name, pair, report, trade_log)
             print_report_summary(report)
+
+            # Generate per-trade PDF report
+            if len(trade_log) > 0:
+                generate_trade_pdf(strategy_id, pair, report, trade_log,
+                                   data, htf_data)
 
             total_trades = report.get("total_trades", 0)
             strategy_trades_total += total_trades

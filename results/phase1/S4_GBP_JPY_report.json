@@ -1,0 +1,46 @@
+{
+  "pair": "GBP_JPY",
+  "strategy_id": 4,
+  "strategy_name": "S4_EMA_Ribbon_Scalp",
+  "total_trades": 500,
+  "win_rate_pct": 42.4,
+  "avg_rr": 1.18,
+  "expectancy_pips": -1.9,
+  "sharpe_ratio": -1.69,
+  "max_drawdown_pct": -47.49,
+  "profit_factor": 0.79,
+  "total_pnl_pips": -949.03,
+  "total_pnl_dollars": -41679.0,
+  "avg_win_pips": 29.68,
+  "avg_loss_pips": 25.14,
+  "max_consecutive_wins": 9,
+  "max_consecutive_losses": 10,
+  "avg_hold_time_minutes": 298.9,
+  "best_trade_pips": 153.57,
+  "worst_trade_pips": -102.66,
+  "best_trade_dollars": 2100.21,
+  "worst_trade_dollars": -1010.43,
+  "final_equity": 58321.0,
+  "starting_equity": 100000.0,
+  "session_breakdown": {
+    "LONDON": {
+      "trades": 335,
+      "win_rate": 40.8955223880597,
+      "total_pnl_pips": -865.0529088630541
+    },
+    "OVERLAP": {
+      "trades": 165,
+      "win_rate": 45.45454545454545,
+      "total_pnl_pips": -83.98119338088975
+    }
+  },
+  "exit_reasons": {
+    "SL": 281,
+    "TP1+SL": 75,
+    "TP1+TP2+SL": 66,
+    "TP1+TIME": 4,
+    "TP3": 55,
+    "TP1+TP2+TIME": 9,
+    "TIME": 10
+  }
+}

@@ -2,42 +2,42 @@
   "pair": "EUR_AUD",
   "strategy_id": 5,
   "strategy_name": "S5_Momentum_Exhaustion",
-  "total_trades": 284,
-  "win_rate_pct": 31.34,
-  "avg_rr": 1.54,
-  "expectancy_pips": -2.48,
-  "sharpe_ratio": -3.15,
-  "max_drawdown_pct": -48.68,
-  "profit_factor": 0.65,
-  "total_pnl_pips": -704.74,
-  "total_pnl_dollars": -47670.21,
-  "avg_win_pips": 18.64,
-  "avg_loss_pips": 12.12,
-  "max_consecutive_wins": 5,
+  "total_trades": 680,
+  "win_rate_pct": 47.65,
+  "avg_rr": 0.77,
+  "expectancy_pips": -3.51,
+  "sharpe_ratio": -2.72,
+  "max_drawdown_pct": -68.29,
+  "profit_factor": 0.68,
+  "total_pnl_pips": -2384.67,
+  "total_pnl_dollars": -67383.67,
+  "avg_win_pips": 17.33,
+  "avg_loss_pips": 22.47,
+  "max_consecutive_wins": 9,
   "max_consecutive_losses": 9,
-  "avg_hold_time_minutes": 129.8,
-  "best_trade_pips": 78.7,
-  "worst_trade_pips": -28.46,
-  "best_trade_dollars": 2740.9,
-  "worst_trade_dollars": -1007.73,
-  "final_equity": 52329.79,
+  "avg_hold_time_minutes": 202.8,
+  "best_trade_pips": 78.23,
+  "worst_trade_pips": -49.08,
+  "best_trade_dollars": 1199.92,
+  "worst_trade_dollars": -1013.3,
+  "final_equity": 32616.33,
   "starting_equity": 100000.0,
   "session_breakdown": {
     "LONDON": {
-      "trades": 160,
-      "win_rate": 31.874999999999996,
-      "total_pnl_pips": -393.9153103944255
+      "trades": 459,
+      "win_rate": 46.84095860566449,
+      "total_pnl_pips": -1784.298599856944
     },
     "OVERLAP": {
-      "trades": 124,
-      "win_rate": 30.64516129032258,
-      "total_pnl_pips": -310.82703073516905
+      "trades": 221,
+      "win_rate": 49.321266968325794,
+      "total_pnl_pips": -600.3694128375001
     }
   },
   "exit_reasons": {
-    "SL": 195,
-    "TP1+SL": 36,
-    "TP1+TP2+SL": 37,
-    "TP3": 16
+    "SL": 356,
+    "TP1+TP2+SL": 107,
+    "TP1+SL": 148,
+    "TP3": 69
   }
 }

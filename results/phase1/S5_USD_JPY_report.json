@@ -1,0 +1,43 @@
+{
+  "pair": "USD_JPY",
+  "strategy_id": 5,
+  "strategy_name": "S5_Momentum_Exhaustion",
+  "total_trades": 679,
+  "win_rate_pct": 49.63,
+  "avg_rr": 0.76,
+  "expectancy_pips": -2.05,
+  "sharpe_ratio": -2.84,
+  "max_drawdown_pct": -68.24,
+  "profit_factor": 0.67,
+  "total_pnl_pips": -1391.9,
+  "total_pnl_dollars": -65278.72,
+  "avg_win_pips": 12.01,
+  "avg_loss_pips": 15.9,
+  "max_consecutive_wins": 7,
+  "max_consecutive_losses": 7,
+  "avg_hold_time_minutes": 201.2,
+  "best_trade_pips": 68.1,
+  "worst_trade_pips": -51.88,
+  "best_trade_dollars": 1151.83,
+  "worst_trade_dollars": -1000.0,
+  "final_equity": 34721.28,
+  "starting_equity": 100000.0,
+  "session_breakdown": {
+    "LONDON": {
+      "trades": 451,
+      "win_rate": 50.554323725055426,
+      "total_pnl_pips": -695.5523597839677
+    },
+    "OVERLAP": {
+      "trades": 228,
+      "win_rate": 47.80701754385965,
+      "total_pnl_pips": -696.3500369065823
+    }
+  },
+  "exit_reasons": {
+    "SL": 342,
+    "TP1+SL": 159,
+    "TP1+TP2+SL": 102,
+    "TP3": 76
+  }
+}

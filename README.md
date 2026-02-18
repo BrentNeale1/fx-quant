@@ -96,9 +96,53 @@ fx-quant/
   requirements.docker.txt# Docker-specific deps
 ```
 
-## Strategies
+## Phase 1: Strategy Backtesting Status
 
-### 1. SMA Cross (original)
+Backtested 6 strategy families across 10 currency pairs on 2021-2024 data. Full results in `results/phase1/`, detailed learnings in `results/STRATEGY_LEARNINGS.md`.
+
+### Working Strategies
+
+**S3 — Key Level Momentum Breakout** (H1 timeframe) — Best performer
+| Pair | Trades | Win Rate | PF | PnL (pips) | Max DD |
+|------|--------|----------|-----|------------|--------|
+| GBP_JPY | 155 | 52.3% | 0.99 | +408 | -13.5% |
+| GBP_USD | 179 | 53.1% | 1.02 | +97 | -10.2% |
+| USD_JPY | 138 | 52.9% | 1.00 | +66 | -9.8% |
+
+Breakout of horizontal S/R levels (3+ touch clusters) with volume confirmation, strong candle close, MACD alignment, and ADX > 20. Simple, 4-filter approach on H1. Needs SL/TP tuning to push PF above 1.0 consistently.
+
+### Strategies With Potential (Need Tweaks)
+
+**S4-F — EMA Ribbon Trend Context** (EUR_AUD only): 95 trades, 45.3% WR, PF 1.06, +173 pips. Only profitable on EUR_AUD. Needs pair-specific tuning and SL/TP restructuring.
+
+**S6 — EMA Bounce** (EUR_AUD/GBP_USD): 59-60% win rate but PF 0.83-0.84. Win rate is strong — needs tighter SL or trailing stop to fix risk/reward.
+
+### Strategies Retired
+
+| Strategy | Issue | Status |
+|----------|-------|--------|
+| S1 — MA Breakout | 35-47% WR, PF 0.40-0.88 | No edge |
+| S2 — VWAP Reversal | 20-25% WR, 26 consecutive losses | Disabled |
+| S4 — EMA Ribbon (6 variants) | Extensively tested D/E/F/F-v2/G/G-Minimal. Only EUR_AUD S4-F marginal. | Exhausted |
+| S5 — Momentum Exhaustion | High trade count but PF 0.43-0.77 | Too much noise |
+
+### Key Learnings
+1. **Momentum + mean-reversion filters are contradictory** — don't combine in one strategy
+2. **3-4 hard filters max** — more gates compound multiplicatively and kill trade count
+3. **Always validate thresholds against data distributions** before running backtests
+4. **Simple strategies beat complex ones** — S3 (4 filters) outperforms S4 (7+ filters)
+5. **H1 timeframe has natural edge** — lower timeframes (M5/M15) struggle with noise
+
+Full filter analysis and design principles in [`results/STRATEGY_LEARNINGS.md`](results/STRATEGY_LEARNINGS.md).
+
+### Next Phase
+Moving to Smart Money / institutional flow strategies. Will also revisit S3 (SL/TP tuning, expanded pairs) and S6 (risk/reward restructuring).
+
+---
+
+## Strategies (Legacy Reference)
+
+### SMA Cross (original)
 
 Long-only strategy. Goes long when short SMA > long SMA, flat otherwise.
 
@@ -110,7 +154,7 @@ strategy:
     long: 100
 ```
 
-### 2. Pivot Retest + Engulfing (current)
+### Pivot Retest + Engulfing
 
 Long/short strategy with dual take-profit and ATR-based stop loss.
 

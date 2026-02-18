@@ -4,12 +4,14 @@ Strategy 3: Key Level Momentum Breakout.
 Entry TF: H1. Key levels identified from swing point clusters.
 
 Entry conditions (LONG):
-  - H1 candle closes above a key level (horizontal S/R with 2+ touches)
+  - H1 candle closes above a key level (horizontal S/R with 3+ touches)
+  - Volume spike: current volume > 1.5x 20-bar average
+  - Strong close: candle body > 50% of range (conviction candle)
   - MACD histogram same sign as direction
-  - ADX > 15
-  - Candle body > 30% of range (conviction candle)
+  - ADX > 20 (trending market)
+  - Session: London + NY overlap (08:00-16:00 UTC)
 
-SL: Back inside key level + 1x ATR buffer
+SL: Back inside key level — level_price -/+ 0.5x ATR
 TP1: 1.5x ATR, TP2: 2.5x ATR, TP3: 4x ATR
 """
 from typing import Optional
@@ -24,6 +26,7 @@ class S3_KeyLevel_Breakout(BaseStrategy):
     name = "S3_Key_Level_Breakout"
 
     def __init__(self):
+        super().__init__()
         self._cached_levels = None
         self._cache_idx = -1
 
@@ -33,42 +36,49 @@ class S3_KeyLevel_Breakout(BaseStrategy):
         if idx < 100:
             return None
 
-        # Session filter: London/NY only (08:00-17:00 UTC)
+        # Session filter: London + NY overlap (08:00-16:00 UTC)
         hour = current.name.hour if hasattr(current.name, 'hour') else 0
-        if hour < 8 or hour >= 17:
+        if hour < 8 or hour >= 16:
             return None
 
         atr_val = current.get("atr_14", 0)
         if atr_val <= 0 or np.isnan(atr_val):
             return None
 
+        # ADX filter: require trending market
+        adx_val = current.get("adx_14", 0)
+        if adx_val < 20:
+            return None
+
+        # Strong close: candle body > 50% of range
+        close = current["close"]
+        body = abs(close - current["open"])
+        full_range = current["high"] - current["low"]
+        if full_range <= 0 or body / full_range < 0.50:
+            return None
+
+        # Volume spike: current volume > 1.5x 20-bar average
+        vol = current.get("volume", 0)
+        if vol > 0 and idx >= 20:
+            vol_avg = data["volume"].iloc[idx - 20:idx].mean()
+            if vol_avg > 0 and vol < 1.5 * vol_avg:
+                return None
+
+        prev_close = data.iloc[idx - 1]["close"]
+
+        # MACD
+        macd_h = current.get("macd_hist", 0)
+
         # Recalculate key levels every 20 bars using larger lookback
         if self._cached_levels is None or idx - self._cache_idx >= 20:
             start = max(0, idx - 1000)
             window = data.iloc[start:idx]  # exclude current bar
             self._cached_levels = identify_key_levels(
-                window, lookback=5, tolerance_atr_mult=0.75, min_touches=2
+                window, lookback=5, tolerance_atr_mult=0.75, min_touches=3
             )
             self._cache_idx = idx
 
         if not self._cached_levels:
-            return None
-
-        close = current["close"]
-        prev_close = data.iloc[idx - 1]["close"]
-
-        # Candle body filter
-        body = abs(close - current["open"])
-        full_range = current["high"] - current["low"]
-        if full_range <= 0 or body / full_range < 0.3:
-            return None
-
-        # MACD
-        macd_h = current.get("macd_hist", 0)
-
-        # ADX
-        adx_val = current.get("adx_14", 0)
-        if adx_val < 15:
             return None
 
         for level_price, touch_count in self._cached_levels:
@@ -85,9 +95,10 @@ class S3_KeyLevel_Breakout(BaseStrategy):
                 if ema_50 and ema_200 and ema_50 <= ema_200:
                     continue
 
-                confluence = self._calc_confluence(current, data, idx, "LONG", touch_count)
+                confluence = self._calc_confluence(current, data, idx,
+                                                   "LONG", touch_count, vol)
 
-                sl = level_price - 0.3 * atr_val  # Tight SL just inside key level
+                sl = level_price - 0.5 * atr_val
                 tp1 = close + 1.5 * atr_val
                 tp2 = close + 2.5 * atr_val
                 tp3 = close + 4.0 * atr_val
@@ -96,6 +107,7 @@ class S3_KeyLevel_Breakout(BaseStrategy):
                     "direction": "LONG",
                     "sl": sl, "tp1": tp1, "tp2": tp2, "tp3": tp3,
                     "confluence": confluence,
+                    "entry_pattern": "key_level_break",
                     "tp_splits": (0.40, 0.40, 0.20),
                     "trail_atr_mult": 2.0,
                     "max_bars": 150,
@@ -112,9 +124,10 @@ class S3_KeyLevel_Breakout(BaseStrategy):
                 if ema_50 and ema_200 and ema_50 >= ema_200:
                     continue
 
-                confluence = self._calc_confluence(current, data, idx, "SHORT", touch_count)
+                confluence = self._calc_confluence(current, data, idx,
+                                                   "SHORT", touch_count, vol)
 
-                sl = level_price + 0.3 * atr_val  # Tight SL just inside key level
+                sl = level_price + 0.5 * atr_val
                 tp1 = close - 1.5 * atr_val
                 tp2 = close - 2.5 * atr_val
                 tp3 = close - 4.0 * atr_val
@@ -123,6 +136,7 @@ class S3_KeyLevel_Breakout(BaseStrategy):
                     "direction": "SHORT",
                     "sl": sl, "tp1": tp1, "tp2": tp2, "tp3": tp3,
                     "confluence": confluence,
+                    "entry_pattern": "key_level_break",
                     "tp_splits": (0.40, 0.40, 0.20),
                     "trail_atr_mult": 2.0,
                     "max_bars": 150,
@@ -130,7 +144,7 @@ class S3_KeyLevel_Breakout(BaseStrategy):
 
         return None
 
-    def _calc_confluence(self, current, data, idx, direction, touch_count):
+    def _calc_confluence(self, current, data, idx, direction, touch_count, vol):
         confluence = 1  # breakout confirmed
 
         # More touches = stronger level
@@ -139,18 +153,16 @@ class S3_KeyLevel_Breakout(BaseStrategy):
         if touch_count >= 5:
             confluence += 1
 
+        # Volume spike strength (>2x avg = extra point)
+        if vol > 0 and idx >= 20:
+            vol_avg = data["volume"].iloc[idx - 20:idx].mean()
+            if vol_avg > 0 and vol > 2.0 * vol_avg:
+                confluence += 1
+
         rsi = current.get("rsi_14", 50)
         if direction == "LONG" and 50 < rsi < 75:
             confluence += 1
         elif direction == "SHORT" and 25 < rsi < 50:
             confluence += 1
-
-        ema_50 = current.get("ema_50", 0)
-        ema_200 = current.get("ema_200", 0)
-        if ema_50 and ema_200:
-            if direction == "LONG" and ema_50 > ema_200:
-                confluence += 1
-            elif direction == "SHORT" and ema_50 < ema_200:
-                confluence += 1
 
         return min(confluence, 5)

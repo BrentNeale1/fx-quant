@@ -1,0 +1,42 @@
+{
+  "pair": "GBP_AUD",
+  "strategy_id": 6,
+  "strategy_name": "S6B_EMA_Bounce_TwoCheckpoint",
+  "total_trades": 12,
+  "win_rate_pct": 25.0,
+  "avg_rr": 1.66,
+  "expectancy_pips": -13.81,
+  "sharpe_ratio": -3.28,
+  "max_drawdown_pct": -6.48,
+  "profit_factor": 0.63,
+  "total_pnl_pips": -165.76,
+  "total_pnl_dollars": -4434.92,
+  "avg_win_pips": 68.25,
+  "avg_loss_pips": 41.17,
+  "max_consecutive_wins": 1,
+  "max_consecutive_losses": 5,
+  "avg_hold_time_minutes": 747.5,
+  "best_trade_pips": 100.57,
+  "worst_trade_pips": -59.75,
+  "best_trade_dollars": 3404.87,
+  "worst_trade_dollars": -1525.18,
+  "final_equity": 95565.08,
+  "starting_equity": 100000.0,
+  "session_breakdown": {
+    "LONDON": {
+      "trades": 4,
+      "win_rate": 25.0,
+      "total_pnl_pips": -59.27411551788354
+    },
+    "OVERLAP": {
+      "trades": 8,
+      "win_rate": 25.0,
+      "total_pnl_pips": -106.48180090610904
+    }
+  },
+  "exit_reasons": {
+    "SL": 9,
+    "TP1+TP2+TIME": 1,
+    "TP1+TP2+SL": 2
+  }
+}

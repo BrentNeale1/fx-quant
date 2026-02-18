@@ -1,0 +1,46 @@
+{
+  "pair": "EUR_AUD",
+  "strategy_id": 6,
+  "strategy_name": "S6_EMA_Bounce_Continuation",
+  "total_trades": 209,
+  "win_rate_pct": 59.81,
+  "avg_rr": 0.6,
+  "expectancy_pips": -1.82,
+  "sharpe_ratio": -1.27,
+  "max_drawdown_pct": -15.08,
+  "profit_factor": 0.84,
+  "total_pnl_pips": -380.16,
+  "total_pnl_dollars": -12076.19,
+  "avg_win_pips": 26.06,
+  "avg_loss_pips": 43.3,
+  "max_consecutive_wins": 6,
+  "max_consecutive_losses": 4,
+  "avg_hold_time_minutes": 576.6,
+  "best_trade_pips": 80.94,
+  "worst_trade_pips": -88.33,
+  "best_trade_dollars": 940.57,
+  "worst_trade_dollars": -1000.8,
+  "final_equity": 87923.81,
+  "starting_equity": 100000.0,
+  "session_breakdown": {
+    "LONDON": {
+      "trades": 113,
+      "win_rate": 58.4070796460177,
+      "total_pnl_pips": -337.2512402356659
+    },
+    "OVERLAP": {
+      "trades": 96,
+      "win_rate": 61.458333333333336,
+      "total_pnl_pips": -42.90548846242625
+    }
+  },
+  "exit_reasons": {
+    "SL": 84,
+    "TP1+TP2+SL": 45,
+    "TP1+SL": 32,
+    "TP3": 41,
+    "TP1+TIME": 3,
+    "TIME": 3,
+    "TP1+TP2+TIME": 1
+  }
+}

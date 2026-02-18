@@ -244,6 +244,79 @@ def is_bearish_engulfing(df: pd.DataFrame, i: int) -> bool:
 # RSI Divergence Detection
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Trendline Fitting (Linear Regression with Outlier Pruning)
+# ---------------------------------------------------------------------------
+
+def fit_trendline(timestamps: np.ndarray, prices: np.ndarray):
+    """
+    Fit a trendline via linear regression with outlier pruning.
+
+    Args:
+        timestamps: Numeric indices (e.g. bar indices) for x-axis.
+        prices: Price values for y-axis.
+
+    Returns:
+        dict with {slope, intercept, r_squared, touch_count, ref_idx}
+        or None if insufficient quality (R² < 0.80 or < 3 points).
+    """
+    if len(timestamps) < 3 or len(prices) < 3:
+        return None
+
+    x = np.asarray(timestamps, dtype=float)
+    y = np.asarray(prices, dtype=float)
+
+    # First fit
+    coeffs = np.polyfit(x, y, 1)
+    slope, intercept = coeffs[0], coeffs[1]
+
+    # Outlier pruning: remove points > 2 std dev from fit
+    predicted = slope * x + intercept
+    residuals = y - predicted
+    std_res = np.std(residuals)
+    if std_res > 0:
+        mask = np.abs(residuals) <= 2.0 * std_res
+        x_clean = x[mask]
+        y_clean = y[mask]
+    else:
+        x_clean = x
+        y_clean = y
+
+    if len(x_clean) < 3:
+        return None
+
+    # Refit on cleaned data
+    coeffs = np.polyfit(x_clean, y_clean, 1)
+    slope, intercept = coeffs[0], coeffs[1]
+
+    # Compute R²
+    predicted = slope * x_clean + intercept
+    ss_res = np.sum((y_clean - predicted) ** 2)
+    ss_tot = np.sum((y_clean - np.mean(y_clean)) ** 2)
+    r_squared = 1.0 - (ss_res / ss_tot) if ss_tot > 0 else 0.0
+
+    if r_squared < 0.80:
+        return None
+
+    return {
+        "slope": slope,
+        "intercept": intercept,
+        "r_squared": r_squared,
+        "touch_count": len(x_clean),
+        "ref_idx": int(x_clean[0]),
+    }
+
+
+def project_trendline(slope: float, intercept: float, ref_idx: int,
+                       target_idx: int) -> float:
+    """Project trendline price at any bar index."""
+    return slope * (target_idx - ref_idx) + intercept
+
+
+# ---------------------------------------------------------------------------
+# RSI Divergence Detection
+# ---------------------------------------------------------------------------
+
 def detect_rsi_divergence(df: pd.DataFrame, rsi_col: str, lookback: int = 20,
                           i: int = None) -> str:
     """
@@ -296,7 +369,7 @@ def compute_all_indicators(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()
 
     # Moving Averages
-    for period in [20, 50, 100, 200]:
+    for period in [8, 13, 21, 34, 55, 20, 50, 100, 200]:
         df[f"ema_{period}"] = ema(df["close"], period)
     df["sma_200"] = sma(df["close"], 200)
 
@@ -312,8 +385,10 @@ def compute_all_indicators(df: pd.DataFrame) -> pd.DataFrame:
     # ADX
     df["adx_14"] = adx(df, 14)
 
-    # Stochastic
+    # Stochastic (5-period default)
     df["stoch_k"], df["stoch_d"] = stochastic(df)
+    # Stochastic 14-period
+    df["stoch_k_14"], df["stoch_d_14"] = stochastic(df, k_period=14)
 
     # Session VWAP (only meaningful for intraday timeframes)
     if len(df) > 0 and hasattr(df.index, "hour"):

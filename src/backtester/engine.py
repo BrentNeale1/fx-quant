@@ -68,6 +68,7 @@ class Position:
     confluence_score: int = 0
     signal_features: dict = field(default_factory=dict)
     realized_pnl: float = 0.0  # Tracks PnL from partial closes
+    no_breakeven: bool = False  # When True, don't move SL to breakeven after TP1
 
 
 @dataclass
@@ -99,6 +100,7 @@ class TradeRecord:
     candle_body_ratio: float = 0.0
     hour_of_day: int = 0
     day_of_week: int = 0
+    entry_pattern: str = ""
     exit_price: float = 0.0
     exit_reason: str = ""
     exit_time: pd.Timestamp = None
@@ -168,12 +170,12 @@ class Backtester:
         return False
 
     def _calculate_position_size(self, sl_distance: float,
-                                 confluence_score: int) -> float:
-        """Fixed 1% risk position sizing."""
+                                 confluence_score: int,
+                                 risk_pct: float = 0.01) -> float:
+        """Risk-based position sizing (default 1%, strategies can override)."""
         if sl_distance <= 0:
             return 0.0
 
-        risk_pct = 0.01  # Flat 1% risk for consistency
         risk_amount = self.equity * risk_pct
         # Position size = risk_amount / SL distance in price
         position_size = risk_amount / sl_distance
@@ -238,14 +240,19 @@ class Backtester:
                     close_size = pos.initial_size * pos.tp_splits[0]
                     self._partial_close(pos, pos.tp1_price, close_size, "TP1", candle)
                     pos.tp1_hit = True
-                    # Move SL to breakeven after TP1
-                    pos.trailing_sl = pos.entry_price
+                    if not pos.no_breakeven:
+                        # Move SL to breakeven after TP1
+                        pos.trailing_sl = pos.entry_price
 
                 # Check TP2
                 if not pos.tp2_hit and pos.tp1_hit and high >= pos.tp2_price:
                     close_size = pos.initial_size * pos.tp_splits[1]
-                    self._partial_close(pos, pos.tp2_price, close_size, "TP2", candle)
+                    if close_size > 0:
+                        self._partial_close(pos, pos.tp2_price, close_size, "TP2", candle)
                     pos.tp2_hit = True
+                    # If no breakeven was set, start trailing from original SL
+                    if pos.trailing_sl is None:
+                        pos.trailing_sl = pos.sl_price
 
                 # Check TP3
                 if not pos.tp3_hit and pos.tp2_hit and high >= pos.tp3_price:
@@ -271,13 +278,17 @@ class Backtester:
                     close_size = pos.initial_size * pos.tp_splits[0]
                     self._partial_close(pos, pos.tp1_price, close_size, "TP1", candle)
                     pos.tp1_hit = True
-                    pos.trailing_sl = pos.entry_price
+                    if not pos.no_breakeven:
+                        pos.trailing_sl = pos.entry_price
 
                 # Check TP2
                 if not pos.tp2_hit and pos.tp1_hit and low <= pos.tp2_price:
                     close_size = pos.initial_size * pos.tp_splits[1]
-                    self._partial_close(pos, pos.tp2_price, close_size, "TP2", candle)
+                    if close_size > 0:
+                        self._partial_close(pos, pos.tp2_price, close_size, "TP2", candle)
                     pos.tp2_hit = True
+                    if pos.trailing_sl is None:
+                        pos.trailing_sl = pos.sl_price
 
                 # Check TP3
                 if not pos.tp3_hit and pos.tp2_hit and low <= pos.tp3_price:
@@ -391,6 +402,7 @@ class Backtester:
             candle_body_ratio=features.get("candle_body_ratio", 0),
             hour_of_day=features.get("hour_of_day", 0),
             day_of_week=features.get("day_of_week", 0),
+            entry_pattern=features.get("entry_pattern", ""),
             exit_price=exit_price,
             exit_reason=exit_detail,
             exit_time=exit_time,
@@ -433,6 +445,9 @@ class Backtester:
 
     def run(self) -> dict:
         """Run the backtest. Returns performance report dict."""
+        # Give the strategy access to full HTF data (strategy filters by timestamp)
+        self.strategy.htf_data = self.htf_data
+
         # Need at least 200 bars for indicators to warm up
         warmup = 200
 
@@ -479,12 +494,14 @@ class Backtester:
             tp_splits = signal.get("tp_splits", (0.40, 0.40, 0.20))
             trail_mult = signal.get("trail_atr_mult", 1.5)
             max_bars = signal.get("max_bars", 200)
+            no_breakeven = signal.get("no_breakeven", False)
+            risk_pct = signal.get("risk_pct", 0.01)
 
-            # Minimum 1.5:1 RR check (TP1 vs SL distance)
+            # Minimum RR check (TP1 vs SL distance)
             entry = candle["close"]
             sl_dist = abs(entry - sl)
             tp1_dist = abs(tp1 - entry)
-            if sl_dist == 0 or tp1_dist / sl_dist < 1.5:
+            if sl_dist == 0 or tp1_dist / sl_dist < 0.5:
                 continue
 
             # Apply spread and slippage to entry
@@ -498,12 +515,13 @@ class Backtester:
                 continue
 
             # Position sizing
-            size = self._calculate_position_size(sl_dist_adj, confluence)
+            size = self._calculate_position_size(sl_dist_adj, confluence, risk_pct)
             if size <= 0:
                 continue
 
             # Build features for logging
             features = self._build_signal_features(candle, i)
+            features["entry_pattern"] = signal.get("entry_pattern", "")
 
             # Open position
             pos = Position(
@@ -522,6 +540,7 @@ class Backtester:
                 strategy_id=self.strategy.strategy_id,
                 confluence_score=confluence,
                 signal_features=features,
+                no_breakeven=no_breakeven,
             )
             self.open_positions.append(pos)
 

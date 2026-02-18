@@ -9,10 +9,11 @@ M15 Entry (LONG):
   - EMA ribbon compressed (EMAs within 1.0x ATR)
   - Ribbon re-expanding (current width > prev width)
   - Stochastic turning from oversold
-  - Session filter: London/NY (08:00-17:00 UTC)
+  - Session filter: London/NY (08:00-16:00 UTC)
 
-SL: Below compression low - 0.5x ATR
-TP1: 1x ATR, TP2: 1.5x ATR, TP3: 2.5x ATR
+SL: Below compression zone low/high - 0.5x ATR (capped at 1.5x ATR from entry)
+TP1: 2x ATR, TP2: 3x ATR, TP3: 5x ATR
+Min RR: 1.0:1 at entry (TP1 dist >= SL dist)
 """
 from typing import Optional
 import numpy as np
@@ -30,9 +31,9 @@ class S4_EMA_Ribbon(BaseStrategy):
         if idx < 50:
             return None
 
-        # Session filter
+        # Session filter: London + NY overlap (08:00-16:00 UTC)
         hour = current.name.hour if hasattr(current.name, 'hour') else 0
-        if hour < 8 or hour >= 17:
+        if hour < 8 or hour >= 16:
             return None
 
         atr_val = current.get("atr_14", 0)
@@ -64,7 +65,7 @@ class S4_EMA_Ribbon(BaseStrategy):
             return None
 
         ribbon_width = max(ema_20, ema_50, ema_100) - min(ema_20, ema_50, ema_100)
-        compression_threshold = 1.0 * atr_val  # relaxed from 0.5x
+        compression_threshold = 1.0 * atr_val
 
         # Check for recent compression (look back 5-20 bars)
         was_compressed = False
@@ -106,20 +107,28 @@ class S4_EMA_Ribbon(BaseStrategy):
 
             confluence = self._calc_confluence(data, idx, current, atr_val, "LONG")
 
-            # Use tighter SL: max of (compression_low, close - 0.8*ATR)
-            sl_compression = compression_low - 0.3 * atr_val
-            sl_atr = current["close"] - 0.8 * atr_val
-            sl = max(sl_compression, sl_atr)
-            tp1 = current["close"] + 1.0 * atr_val
-            tp2 = current["close"] + 1.5 * atr_val
-            tp3 = current["close"] + 2.5 * atr_val
+            # SL: below compression zone low with 0.5x ATR buffer, capped at 1.5 ATR
+            sl_natural = compression_low - 0.5 * atr_val
+            sl_max = current["close"] - 1.5 * atr_val
+            sl = max(sl_natural, sl_max)
+
+            tp1 = current["close"] + 2.0 * atr_val
+            tp2 = current["close"] + 3.0 * atr_val
+            tp3 = current["close"] + 5.0 * atr_val
+
+            # Min 1:1 RR gate
+            sl_dist = current["close"] - sl
+            tp1_dist = tp1 - current["close"]
+            if sl_dist <= 0 or tp1_dist / sl_dist < 1.0:
+                return None
 
             return {
                 "direction": "LONG",
                 "sl": sl, "tp1": tp1, "tp2": tp2, "tp3": tp3,
                 "confluence": confluence,
-                "tp_splits": (0.50, 0.30, 0.20),
-                "trail_atr_mult": 1.0,
+                "entry_pattern": "ribbon_expansion",
+                "tp_splits": (0.40, 0.30, 0.30),
+                "trail_atr_mult": 2.5,
                 "max_bars": 60,
             }
 
@@ -131,19 +140,28 @@ class S4_EMA_Ribbon(BaseStrategy):
 
             confluence = self._calc_confluence(data, idx, current, atr_val, "SHORT")
 
-            sl_compression = compression_high + 0.3 * atr_val
-            sl_atr = current["close"] + 0.8 * atr_val
-            sl = min(sl_compression, sl_atr)
-            tp1 = current["close"] - 1.0 * atr_val
-            tp2 = current["close"] - 1.5 * atr_val
-            tp3 = current["close"] - 2.5 * atr_val
+            # SL: above compression zone high with 0.5x ATR buffer, capped at 1.5 ATR
+            sl_natural = compression_high + 0.5 * atr_val
+            sl_max = current["close"] + 1.5 * atr_val
+            sl = min(sl_natural, sl_max)
+
+            tp1 = current["close"] - 2.0 * atr_val
+            tp2 = current["close"] - 3.0 * atr_val
+            tp3 = current["close"] - 5.0 * atr_val
+
+            # Min 1:1 RR gate
+            sl_dist = sl - current["close"]
+            tp1_dist = current["close"] - tp1
+            if sl_dist <= 0 or tp1_dist / sl_dist < 1.0:
+                return None
 
             return {
                 "direction": "SHORT",
                 "sl": sl, "tp1": tp1, "tp2": tp2, "tp3": tp3,
                 "confluence": confluence,
-                "tp_splits": (0.50, 0.30, 0.20),
-                "trail_atr_mult": 1.0,
+                "entry_pattern": "ribbon_expansion",
+                "tp_splits": (0.40, 0.30, 0.30),
+                "trail_atr_mult": 2.5,
                 "max_bars": 60,
             }
 
