@@ -267,9 +267,9 @@ class LiveEngine:
 
     def _print_summary(self):
         """Print a compact status summary."""
-        print(f"\n{'─'*50}")
+        print(f"\n{'-'*50}")
         print(f"{'Slot':<18} {'Equity':>10} {'Open':>5} {'Trades':>7}")
-        print(f"{'─'*50}")
+        print(f"{'-'*50}")
         for slot in self.slots:
             if not slot.enabled:
                 continue
@@ -278,4 +278,4 @@ class LiveEngine:
             print(f"{label:<18} {pm.get_equity():>10,.0f} "
                   f"{len(pm.get_open_positions()):>5} "
                   f"{len(pm.closed_trades):>7}")
-        print(f"{'─'*50}")
+        print(f"{'-'*50}")
