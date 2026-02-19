@@ -1,0 +1,46 @@
+{
+  "timestamp": "2026-02-19T04:53:38.005855+00:00",
+  "cycle": 3,
+  "slots": [
+    {
+      "name": "S7_Tight",
+      "pair": "GBP_JPY",
+      "equity": 100000,
+      "open_positions": 0,
+      "closed_trades": 0,
+      "enabled": true
+    },
+    {
+      "name": "S9",
+      "pair": "GBP_USD",
+      "equity": 100000,
+      "open_positions": 0,
+      "closed_trades": 0,
+      "enabled": true
+    },
+    {
+      "name": "S9_Filtered",
+      "pair": "GBP_AUD",
+      "equity": 100000,
+      "open_positions": 0,
+      "closed_trades": 0,
+      "enabled": true
+    },
+    {
+      "name": "S4F",
+      "pair": "EUR_AUD",
+      "equity": 100000,
+      "open_positions": 0,
+      "closed_trades": 0,
+      "enabled": true
+    },
+    {
+      "name": "S3",
+      "pair": "GBP_JPY",
+      "equity": 100000,
+      "open_positions": 0,
+      "closed_trades": 0,
+      "enabled": true
+    }
+  ]
+}
