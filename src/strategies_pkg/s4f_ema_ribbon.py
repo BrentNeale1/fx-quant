@@ -21,6 +21,13 @@ class S4F_EMA_Ribbon(BaseStrategy):
     strategy_id = 4
     name = "S4F_Trend_Context"
 
+    # Tunable parameters (defaults match original hardcoded values)
+    SL_ATR_MULT = 2.0
+    TP_ATR_MULT = 3.0
+    VOLUME_MULT = 1.2
+    COMPRESSION_ATR_MULT = 1.0
+    HTF_EMA_DIST_ATR = 1.5
+
     def check_signal(self, data: pd.DataFrame, idx: int,
                      current: pd.Series,
                      htf_row: Optional[pd.Series] = None) -> Optional[dict]:
@@ -67,7 +74,7 @@ class S4F_EMA_Ribbon(BaseStrategy):
 
         # ------- PRICE WITHIN 1.5 ATR OF 1H 50 EMA -------
         price = current["close"]
-        if abs(price - htf_ema50) > 1.5 * atr_val:
+        if abs(price - htf_ema50) > self.HTF_EMA_DIST_ATR * atr_val:
             return None
 
         # ------- M15 RIBBON COMPRESSION -> EXPANSION -------
@@ -78,7 +85,7 @@ class S4F_EMA_Ribbon(BaseStrategy):
             return None
 
         ribbon_width = max(ema_20, ema_50, ema_100) - min(ema_20, ema_50, ema_100)
-        compression_threshold = 1.0 * atr_val
+        compression_threshold = self.COMPRESSION_ATR_MULT * atr_val
 
         was_compressed = False
         min_compression_width = float('inf')
@@ -119,16 +126,16 @@ class S4F_EMA_Ribbon(BaseStrategy):
             return None
         vol = current["volume"]
         vol_avg = data["volume"].iloc[max(0, idx - 20):idx].mean()
-        if vol_avg <= 0 or vol <= 1.2 * vol_avg:
+        if vol_avg <= 0 or vol <= self.VOLUME_MULT * vol_avg:
             return None
 
         # ------- EXIT LEVELS -------
         if direction == "LONG":
-            sl = price - 2.0 * atr_val
-            tp1 = price + 3.0 * atr_val
+            sl = price - self.SL_ATR_MULT * atr_val
+            tp1 = price + self.TP_ATR_MULT * atr_val
         else:
-            sl = price + 2.0 * atr_val
-            tp1 = price - 3.0 * atr_val
+            sl = price + self.SL_ATR_MULT * atr_val
+            tp1 = price - self.TP_ATR_MULT * atr_val
 
         return {
             "direction": direction,

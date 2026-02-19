@@ -25,6 +25,17 @@ class S3_KeyLevel_Breakout(BaseStrategy):
     strategy_id = 3
     name = "S3_Key_Level_Breakout"
 
+    # Tunable parameters (defaults match original hardcoded values)
+    BODY_RATIO_MIN = 0.50
+    VOLUME_MULT = 1.5
+    SL_ATR_MULT = 0.5
+    TP1_ATR_MULT = 1.5
+    TP2_ATR_MULT = 2.5
+    TP3_ATR_MULT = 4.0
+    MIN_ADX = 20
+    KEY_LEVEL_TOLERANCE = 0.75
+    KEY_LEVEL_MIN_TOUCHES = 3
+
     def __init__(self):
         super().__init__()
         self._cached_levels = None
@@ -47,21 +58,21 @@ class S3_KeyLevel_Breakout(BaseStrategy):
 
         # ADX filter: require trending market
         adx_val = current.get("adx_14", 0)
-        if adx_val < 20:
+        if adx_val < self.MIN_ADX:
             return None
 
         # Strong close: candle body > 50% of range
         close = current["close"]
         body = abs(close - current["open"])
         full_range = current["high"] - current["low"]
-        if full_range <= 0 or body / full_range < 0.50:
+        if full_range <= 0 or body / full_range < self.BODY_RATIO_MIN:
             return None
 
         # Volume spike: current volume > 1.5x 20-bar average
         vol = current.get("volume", 0)
         if vol > 0 and idx >= 20:
             vol_avg = data["volume"].iloc[idx - 20:idx].mean()
-            if vol_avg > 0 and vol < 1.5 * vol_avg:
+            if vol_avg > 0 and vol < self.VOLUME_MULT * vol_avg:
                 return None
 
         prev_close = data.iloc[idx - 1]["close"]
@@ -74,7 +85,9 @@ class S3_KeyLevel_Breakout(BaseStrategy):
             start = max(0, idx - 1000)
             window = data.iloc[start:idx]  # exclude current bar
             self._cached_levels = identify_key_levels(
-                window, lookback=5, tolerance_atr_mult=0.75, min_touches=3
+                window, lookback=5,
+                tolerance_atr_mult=self.KEY_LEVEL_TOLERANCE,
+                min_touches=self.KEY_LEVEL_MIN_TOUCHES,
             )
             self._cache_idx = idx
 
@@ -98,10 +111,10 @@ class S3_KeyLevel_Breakout(BaseStrategy):
                 confluence = self._calc_confluence(current, data, idx,
                                                    "LONG", touch_count, vol)
 
-                sl = level_price - 0.5 * atr_val
-                tp1 = close + 1.5 * atr_val
-                tp2 = close + 2.5 * atr_val
-                tp3 = close + 4.0 * atr_val
+                sl = level_price - self.SL_ATR_MULT * atr_val
+                tp1 = close + self.TP1_ATR_MULT * atr_val
+                tp2 = close + self.TP2_ATR_MULT * atr_val
+                tp3 = close + self.TP3_ATR_MULT * atr_val
 
                 return {
                     "direction": "LONG",
@@ -127,10 +140,10 @@ class S3_KeyLevel_Breakout(BaseStrategy):
                 confluence = self._calc_confluence(current, data, idx,
                                                    "SHORT", touch_count, vol)
 
-                sl = level_price + 0.5 * atr_val
-                tp1 = close - 1.5 * atr_val
-                tp2 = close - 2.5 * atr_val
-                tp3 = close - 4.0 * atr_val
+                sl = level_price + self.SL_ATR_MULT * atr_val
+                tp1 = close - self.TP1_ATR_MULT * atr_val
+                tp2 = close - self.TP2_ATR_MULT * atr_val
+                tp3 = close - self.TP3_ATR_MULT * atr_val
 
                 return {
                     "direction": "SHORT",
