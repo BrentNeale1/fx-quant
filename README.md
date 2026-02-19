@@ -140,6 +140,111 @@ Moving to Smart Money / institutional flow strategies. Will also revisit S3 (SL/
 
 ---
 
+## Phase 2: Live Paper Trading + Extended Analytics
+
+Phase 2 advances 5 strategies to live paper trading and extended backtesting analytics.
+
+### Resuming on a New Machine
+
+```bash
+git clone https://github.com/BrentNeale1/fx-quant.git
+cd fx-quant
+pip install pandas numpy requests pyyaml
+```
+
+**Set your OANDA credentials** in `config/.env`:
+```
+OANDA_API_KEY=your-key-here
+OANDA_ACCOUNT_ID=your-account-id    # <-- REQUIRED, currently empty
+OANDA_ENV=practice
+```
+
+The API key is already populated. You need to add your **OANDA_ACCOUNT_ID** (find it in the OANDA fxTrade Practice platform under Account Settings).
+
+### Running the Live Engine
+
+```bash
+# Single cycle (test connectivity + signal checks)
+python src/live/run.py --once
+
+# Continuous mode (polls every 60s, runs overnight)
+python src/live/run.py
+```
+
+The engine runs 5 strategy slots in paper mode:
+
+| Slot | Strategy | Pair | Timeframe | Signal Type |
+|------|----------|------|-----------|-------------|
+| 1 | S7 Tight | GBP_JPY | H1 | Liquidity sweep reversal |
+| 2 | S9 | GBP_USD | H1 | London session breakout |
+| 3 | S9 Filtered | GBP_AUD | H1 | London session + per-pair filters |
+| 4 | S4-F | EUR_AUD | M15 + H1 | EMA ribbon trend context |
+| 5 | S3 | GBP_JPY | H1 | Key level momentum breakout |
+
+**Signals fire during London/NY sessions (07:00-17:00 UTC)**. Running outside those hours will show "No signal" which is expected.
+
+### Monitoring
+
+- **Live state**: `logs/live_state.json` (equity, open positions per slot)
+- **Trade log**: `logs/live_trades.csv` (closed trades with PnL)
+- **Paper orders**: `logs/paper_trades.csv` (all order attempts)
+- **Kill switch**: Create `STOP_ALL_TRADING` file in project root to halt
+
+### Running Analytics
+
+```bash
+# Per-year performance breakdown (2021/2022/2023)
+python src/run_regime_analysis.py
+
+# Signal overlap + portfolio metrics
+python src/run_correlation_analysis.py
+
+# Kelly criterion + Monte Carlo drawdown simulation
+python src/run_kelly_sizing.py
+```
+
+Results output to `results/phase2/`.
+
+### Phase 2 Analytics Summary
+
+**Regime Analysis** — 4 of 5 strategies show improving PF over time:
+| Strategy | 2021 PF | 2022 PF | 2023 PF | Trend |
+|----------|---------|---------|---------|-------|
+| S7 Tight / GBP_JPY | 0.47 | 0.89 | 1.80 | UP |
+| S9 / GBP_USD | 0.71 | 0.83 | 1.38 | UP |
+| S9 Filtered / GBP_AUD | 0.58 | 2.57 | 2.98 | UP |
+| S4F / EUR_AUD | 1.11 | 1.79 | 0.48 | DOWN |
+| S3 / GBP_JPY | 0.90 | 1.21 | 1.07 | UP |
+
+**Correlation** — S7+S3 on GBP_JPY: 16.9% overlap (moderate, all same-direction). S9 vs S9_Filtered: 12% temporal overlap (good diversification).
+
+**Kelly Sizing** — S9_Filtered: half-Kelly 7.3% (p95 DD 4.8%). S4F: 2.4%. S3: 1.6%. S7/S9 base: Kelly<=0 on full dataset.
+
+### Phase 2 File Structure
+
+```
+src/
+  position_manager.py        # Shared Position/TradeRecord + PositionManager
+  live/
+    __init__.py
+    data_feed.py             # OANDA candle polling + indicator computation
+    executor.py              # Paper/live order execution
+    engine.py                # LiveEngine orchestrator (5 strategy slots)
+    run.py                   # Entry point (--once or continuous)
+  run_regime_analysis.py     # Per-year performance breakdown
+  run_correlation_analysis.py# Signal overlap + portfolio metrics
+  run_kelly_sizing.py        # Kelly criterion + Monte Carlo
+config/
+  system.yaml                # phase2: section with strategy slot config
+results/
+  phase2/
+    regime_analysis.json
+    correlation_analysis.json
+    kelly_sizing.json
+```
+
+---
+
 ## Strategies (Legacy Reference)
 
 ### SMA Cross (original)
