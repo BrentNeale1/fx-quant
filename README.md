@@ -90,8 +90,9 @@ fx-quant/
   logs/                  # Output: trade CSVs, JSON summaries, chart PNGs
   models/                # Saved ML models
   sql/                   # Database schemas
-  Dockerfile             # Bot container
-  docker-compose.yml     # Bot + dashboard services
+  Dockerfile             # Container (live engine default CMD)
+  docker-compose.yml     # live-engine + dashboard services
+  railway.toml           # Railway build/deploy config
   requirements.txt       # Python dependencies (portable)
   requirements.docker.txt# Docker-specific deps
 ```
@@ -220,6 +221,34 @@ Results output to `results/phase2/`.
 
 **Kelly Sizing** — S9_Filtered: half-Kelly 7.3% (p95 DD 4.8%). S4F: 2.4%. S3: 1.6%. S7/S9 base: Kelly<=0 on full dataset.
 
+### Railway Cloud Deployment (24/7)
+
+The live engine and dashboard are deployed to [Railway](https://railway.com) for 24/7 operation without a local machine.
+
+| Service | Description | URL |
+|---------|-------------|-----|
+| **live-engine** | Runs `src/live/run.py`, polls every 60s | Internal (no public URL) |
+| **dashboard** | Flask web dashboard | https://dashboard-production-73e7.up.railway.app |
+
+**Dashboard login:** `admin` / (password in Railway env vars)
+
+**Infrastructure:**
+- Both services auto-deploy on push to `main`
+- Health checks on `/health` for both services
+- Persistent volume mounted at `/app/logs` on live-engine (survives redeployments)
+- Restart policy: on-failure with max 5 retries
+
+**Railway environment variables:**
+
+| Service | Variables |
+|---------|-----------|
+| live-engine | `OANDA_API_KEY`, `OANDA_ACCOUNT_ID`, `OANDA_ENV=practice` |
+| dashboard | `DASHBOARD_PASSWORD`, `OANDA_API_KEY`, `OANDA_ACCOUNT_ID`, `OANDA_ENV` |
+
+**Known limitations:**
+- Kill switch toggle from dashboard won't reach the engine (separate containers)
+- `/chart` route on dashboard needs Supabase credentials
+
 ### Phase 2 File Structure
 
 ```
@@ -231,6 +260,7 @@ src/
     executor.py              # Paper/live order execution
     engine.py                # LiveEngine orchestrator (5 strategy slots)
     run.py                   # Entry point (--once or continuous)
+    health.py                # Threaded HTTP health server for Railway
   run_regime_analysis.py     # Per-year performance breakdown
   run_correlation_analysis.py# Signal overlap + portfolio metrics
   run_kelly_sizing.py        # Kelly criterion + Monte Carlo
@@ -307,16 +337,17 @@ All settings live in `config/system.yaml`:
 Flask-based UI for remote management.
 
 ```bash
-# Docker
-docker-compose build && docker-compose up -d
+# Railway (already deployed)
+# https://dashboard-production-73e7.up.railway.app
+
+# Docker (local)
+docker-compose up -d
 
 # Or run directly
 python src/dashboard.py
 ```
 
-Access via SSH tunnel: `ssh -L 5000:localhost:5000 your-server`, then open http://localhost:5000.
-
-Pages: Status (`/`), Backtest (`/backtest`), Chart (`/chart`), Config (`/config`), Logs (`/logs`)
+Pages: Status (`/`), Backtest (`/backtest`), Chart (`/chart`), Config (`/config`), Logs (`/logs`), Health (`/health`)
 
 ## Kill Switch
 
@@ -351,12 +382,15 @@ Filters trade entries near high-impact economic events (NFP, CPI, rate decisions
 ## Running the Bot
 
 ```bash
-# Single execution
-python src/order_executor.py --once
+# Railway (24/7, already deployed)
+# Live engine runs automatically on push to main
 
-# Continuous loop (default 60s interval)
-python src/order_executor.py
+# Local: single cycle
+python src/live/run.py --once
 
-# Docker
+# Local: continuous loop (60s interval)
+python src/live/run.py
+
+# Docker (local)
 docker-compose up -d
 ```
