@@ -3,39 +3,27 @@
 
 {% block content %}
 <div class="row">
-  <!-- Mode & Kill Switch -->
+  <!-- Mode & Engine Status -->
   <div class="col-md-6">
     <div class="card">
       <div class="card-header"><strong>Trading Status</strong></div>
       <div class="card-body">
-        <table class="table table-borderless mb-3">
+        <table class="table table-borderless mb-0">
           <tr>
             <td>Mode</td>
-            <td><strong>{{ "PAPER" if cfg.execution.paper_mode else "LIVE" }}</strong></td>
+            <td><strong>{{ "PAPER" if cfg.phase2.paper_mode else "LIVE" }}</strong></td>
           </tr>
           <tr>
-            <td>Strategy</td>
-            <td>{{ cfg.strategy.rule }} ({{ cfg.strategy.params.short }}/{{ cfg.strategy.params.long }})</td>
+            <td>Poll Interval</td>
+            <td>{{ cfg.phase2.poll_interval_seconds }}s</td>
           </tr>
           <tr>
-            <td>Instruments</td>
-            <td>{{ cfg.brokers[0].instruments | join(", ") }}</td>
+            <td>Starting Equity</td>
+            <td>${{ "{:,.0f}".format(cfg.phase2.starting_equity) }}</td>
           </tr>
           <tr>
-            <td>Granularity</td>
-            <td>{{ cfg.data.candle_granularities | join(", ") }}</td>
-          </tr>
-          <tr>
-            <td>Loop Interval</td>
-            <td>{{ cfg.execution.interval_seconds }}s</td>
-          </tr>
-          <tr>
-            <td>Max Positions</td>
-            <td>{{ cfg.execution.max_positions }}</td>
-          </tr>
-          <tr>
-            <td>AI Confidence</td>
-            <td>{{ cfg.ai.confidence_threshold }}</td>
+            <td>Max Daily DD</td>
+            <td>{{ cfg.phase2.max_daily_drawdown_pct }}%</td>
           </tr>
         </table>
       </div>
@@ -66,6 +54,38 @@
         {% endif %}
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Strategy Slots -->
+<div class="card mt-3">
+  <div class="card-header"><strong>Strategy Slots</strong></div>
+  <div class="card-body p-0">
+    <table class="table table-sm table-striped mb-0">
+      <thead>
+        <tr>
+          <th>Slot</th><th>Strategy</th><th>Pair</th><th>Timeframe</th><th>HTF</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in cfg.phase2.strategies %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ s.name }}</td>
+          <td>{{ s.pair }}</td>
+          <td>{{ s.timeframe }}</td>
+          <td>{{ s.htf_timeframe | default("—", true) }}</td>
+          <td>
+            {% if s.enabled %}
+              <span class="badge bg-success">Enabled</span>
+            {% else %}
+              <span class="badge bg-secondary">Disabled</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
 
