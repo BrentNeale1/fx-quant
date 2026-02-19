@@ -1,0 +1,116 @@
+{
+  "S7": {
+    "full": {
+      "total_trades": 46,
+      "win_rate": 52.17,
+      "avg_rr": 0.65,
+      "expectancy": -9.03,
+      "profit_factor": 0.71,
+      "max_dd": -6.53,
+      "total_pnl_pips": -415.2,
+      "total_pnl_dollars": -9603.89,
+      "avg_win": 41.4,
+      "avg_loss": 64.0
+    },
+    "train": {
+      "total_trades": 34,
+      "win_rate": 50.0,
+      "avg_rr": 0.61,
+      "expectancy": -13.27,
+      "profit_factor": 0.61,
+      "max_dd": -5.85,
+      "total_pnl_pips": -451.2,
+      "total_pnl_dollars": -8398.24,
+      "avg_win": 40.8,
+      "avg_loss": 67.4
+    },
+    "test": {
+      "total_trades": 8,
+      "win_rate": 50.0,
+      "avg_rr": 0.84,
+      "expectancy": -4.59,
+      "profit_factor": 0.84,
+      "max_dd": -1.99,
+      "total_pnl_pips": -36.7,
+      "total_pnl_dollars": -1592.82,
+      "avg_win": 46.7,
+      "avg_loss": 55.9
+    }
+  },
+  "S8": {
+    "full": {
+      "total_trades": 15,
+      "win_rate": 40.0,
+      "avg_rr": 2.21,
+      "expectancy": 7.05,
+      "profit_factor": 1.47,
+      "max_dd": -3.94,
+      "total_pnl_pips": 105.8,
+      "total_pnl_dollars": 477.21,
+      "avg_win": 54.9,
+      "avg_loss": 24.9
+    },
+    "train": {
+      "total_trades": 11,
+      "win_rate": 45.45,
+      "avg_rr": 2.29,
+      "expectancy": 12.19,
+      "profit_factor": 1.91,
+      "max_dd": -3.94,
+      "total_pnl_pips": 134.1,
+      "total_pnl_dollars": 1860.42,
+      "avg_win": 56.4,
+      "avg_loss": 24.7
+    },
+    "test": {
+      "total_trades": 3,
+      "win_rate": 33.33,
+      "avg_rr": 2.41,
+      "expectancy": 2.71,
+      "profit_factor": 1.21,
+      "max_dd": -1.0,
+      "total_pnl_pips": 8.1,
+      "total_pnl_dollars": -400.51,
+      "avg_win": 47.6,
+      "avg_loss": 19.7
+    }
+  },
+  "S9": {
+    "full": {
+      "total_trades": 81,
+      "win_rate": 48.15,
+      "avg_rr": 0.71,
+      "expectancy": -10.39,
+      "profit_factor": 0.66,
+      "max_dd": -12.2,
+      "total_pnl_pips": -841.5,
+      "total_pnl_dollars": -13091.18,
+      "avg_win": 42.3,
+      "avg_loss": 59.3
+    },
+    "train": {
+      "total_trades": 54,
+      "win_rate": 42.6,
+      "avg_rr": 0.85,
+      "expectancy": -12.08,
+      "profit_factor": 0.63,
+      "max_dd": -8.5,
+      "total_pnl_pips": -652.1,
+      "total_pnl_dollars": -12114.19,
+      "avg_win": 48.4,
+      "avg_loss": 57.0
+    },
+    "test": {
+      "total_trades": 23,
+      "win_rate": 69.57,
+      "avg_rr": 0.6,
+      "expectancy": 6.31,
+      "profit_factor": 1.37,
+      "max_dd": -3.66,
+      "total_pnl_pips": 145.2,
+      "total_pnl_dollars": 3556.41,
+      "avg_win": 33.5,
+      "avg_loss": 55.7
+    }
+  }
+}

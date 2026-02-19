@@ -143,6 +143,17 @@ def session_vwap_bands(df: pd.DataFrame, session_start_hour: int = 8):
 
 
 # ---------------------------------------------------------------------------
+# On-Balance Volume (OBV)
+# ---------------------------------------------------------------------------
+
+def obv(df: pd.DataFrame) -> pd.Series:
+    """Cumulative OBV: adds volume on up-closes, subtracts on down-closes."""
+    direction = np.where(df["close"] > df["close"].shift(1), 1,
+                         np.where(df["close"] < df["close"].shift(1), -1, 0))
+    return (df["volume"] * direction).cumsum()
+
+
+# ---------------------------------------------------------------------------
 # Swing High / Low Detection
 # ---------------------------------------------------------------------------
 
@@ -402,5 +413,8 @@ def compute_all_indicators(df: pd.DataFrame) -> pd.DataFrame:
     # Swing points
     df["is_swing_high"] = swing_highs(df)
     df["is_swing_low"] = swing_lows(df)
+
+    # On-Balance Volume
+    df["obv"] = obv(df)
 
     return df

@@ -5,6 +5,9 @@ from .s3_key_level_breakout import S3_KeyLevel_Breakout
 from .s4_ema_ribbon import S4_EMA_Ribbon
 from .s5_momentum_exhaustion import S5_Momentum_Exhaustion
 from .s6_ema_bounce import S6_EMA_Bounce
+from .s7_liquidity_sweep import S7_Liquidity_Sweep
+from .s8_order_block import S8_Order_Block
+from .s9_london_session import S9_London_Session
 
 STRATEGIES = {
     1: S1_MA_Breakout,
@@ -13,6 +16,9 @@ STRATEGIES = {
     4: S4_EMA_Ribbon,
     5: S5_Momentum_Exhaustion,
     6: S6_EMA_Bounce,
+    7: S7_Liquidity_Sweep,
+    8: S8_Order_Block,
+    9: S9_London_Session,
 }
 
 # Which pairs each strategy trades
@@ -25,6 +31,9 @@ STRATEGY_PAIRS = {
     4: ["GBP_AUD", "EUR_AUD", "GBP_JPY"],
     5: ["GBP_AUD", "EUR_AUD", "GBP_JPY", "USD_JPY", "GBP_USD"],
     6: ["GBP_AUD"],  # Initial test — expand to EUR_AUD, GBP_USD if passing
+    7: ["GBP_USD", "GBP_JPY", "EUR_AUD"],
+    8: ["GBP_USD", "EUR_AUD", "GBP_JPY"],
+    9: ["GBP_USD", "EUR_AUD", "GBP_JPY"],
 }
 
 # Primary and filter timeframes
@@ -35,4 +44,7 @@ STRATEGY_TIMEFRAMES = {
     4: {"primary": "M15", "filter": "H1"},
     5: {"primary": "M15", "filter": "H1"},
     6: {"primary": "M15", "filter": "H1"},
+    7: {"primary": "H1", "filter": None},   # H1 primary, internal HTF via htf_data
+    8: {"primary": "H1", "filter": None},   # H1 primary, internal HTF via htf_data
+    9: {"primary": "H1", "filter": None},   # H1 primary, internal HTF via htf_data
 }

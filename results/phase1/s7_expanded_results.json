@@ -1,0 +1,236 @@
+{
+  "GBP_JPY": {
+    "mode": "FULL_DATASET",
+    "FULL": {
+      "trades": 107,
+      "wr": 59.8,
+      "pf": 0.96,
+      "pnl_pips": -22.1,
+      "pnl_usd": -1734.16,
+      "dd": -11.85,
+      "avg_win": 42.2,
+      "avg_loss": 63.3,
+      "rr": 0.67,
+      "expectancy": -0.21
+    },
+    "TRAIN": {
+      "trades": 61,
+      "wr": 54.1,
+      "pf": 0.77,
+      "pnl_pips": -336.9,
+      "pnl_usd": -6147.64,
+      "dd": -11.78,
+      "avg_win": 38.0,
+      "avg_loss": 56.8,
+      "rr": 0.67,
+      "expectancy": -5.52
+    },
+    "TEST": {
+      "trades": 43,
+      "wr": 67.4,
+      "pf": 1.39,
+      "pnl_pips": 331.2,
+      "pnl_usd": 5088.11,
+      "dd": -3.84,
+      "avg_win": 47.8,
+      "avg_loss": 75.3,
+      "rr": 0.63,
+      "expectancy": 7.7
+    }
+  },
+  "GBP_USD": {
+    "mode": "6_MONTHS",
+    "FULL": {
+      "trades": 19,
+      "wr": 63.2,
+      "pf": 0.86,
+      "pnl_pips": 48.6,
+      "pnl_usd": -1010.19,
+      "dd": -3.1,
+      "avg_win": 25.8,
+      "avg_loss": 37.3,
+      "rr": 0.69,
+      "expectancy": 2.56
+    },
+    "TRAIN": {
+      "trades": 10,
+      "wr": 60.0,
+      "pf": 0.74,
+      "pnl_pips": -4.2,
+      "pnl_usd": -1063.13,
+      "dd": -2.63,
+      "avg_win": 25.2,
+      "avg_loss": 38.9,
+      "rr": 0.65,
+      "expectancy": -0.42
+    },
+    "TEST": {
+      "trades": 6,
+      "wr": 66.7,
+      "pf": 1.24,
+      "pnl_pips": 60.2,
+      "pnl_usd": 495.36,
+      "dd": -1.0,
+      "avg_win": 33.7,
+      "avg_loss": 37.2,
+      "rr": 0.9,
+      "expectancy": 10.04
+    }
+  },
+  "EUR_AUD": {
+    "mode": "6_MONTHS",
+    "FULL": {
+      "trades": 14,
+      "wr": 42.9,
+      "pf": 0.29,
+      "pnl_pips": -254.0,
+      "pnl_usd": -5509.05,
+      "dd": -6.27,
+      "avg_win": 27.1,
+      "avg_loss": 52.1,
+      "rr": 0.52,
+      "expectancy": -18.14
+    },
+    "TRAIN": {
+      "trades": 12,
+      "wr": 41.7,
+      "pf": 0.29,
+      "pnl_pips": -217.1,
+      "pnl_usd": -4826.02,
+      "dd": -5.85,
+      "avg_win": 28.6,
+      "avg_loss": 51.4,
+      "rr": 0.56,
+      "expectancy": -18.09
+    },
+    "TEST": {
+      "trades": 2,
+      "wr": 50.0,
+      "pf": 0.28,
+      "pnl_pips": -37.0,
+      "pnl_usd": -717.66,
+      "dd": -1.0,
+      "avg_win": 19.7,
+      "avg_loss": 56.7,
+      "rr": 0.35,
+      "expectancy": -18.48
+    }
+  },
+  "GBP_AUD": {
+    "mode": "6_MONTHS",
+    "FULL": {
+      "trades": 14,
+      "wr": 57.1,
+      "pf": 0.83,
+      "pnl_pips": -185.7,
+      "pnl_usd": -1009.26,
+      "dd": -2.63,
+      "avg_win": 39.8,
+      "avg_loss": 84.0,
+      "rr": 0.47,
+      "expectancy": -13.26
+    },
+    "TRAIN": {
+      "trades": 10,
+      "wr": 60.0,
+      "pf": 0.91,
+      "pnl_pips": -79.6,
+      "pnl_usd": -346.37,
+      "dd": -1.99,
+      "avg_win": 40.9,
+      "avg_loss": 81.2,
+      "rr": 0.5,
+      "expectancy": -7.96
+    },
+    "TEST": {
+      "trades": 4,
+      "wr": 50.0,
+      "pf": 0.67,
+      "pnl_pips": -106.1,
+      "pnl_usd": -665.19,
+      "dd": -1.99,
+      "avg_win": 36.3,
+      "avg_loss": 89.3,
+      "rr": 0.41,
+      "expectancy": -26.52
+    }
+  },
+  "EUR_USD": {
+    "mode": "6_MONTHS",
+    "FULL": {
+      "trades": 22,
+      "wr": 77.3,
+      "pf": 1.88,
+      "pnl_pips": 189.8,
+      "pnl_usd": 4527.98,
+      "dd": -2.97,
+      "avg_win": 20.7,
+      "avg_loss": 32.4,
+      "rr": 0.64,
+      "expectancy": 8.63
+    },
+    "TRAIN": {
+      "trades": 18,
+      "wr": 77.8,
+      "pf": 1.91,
+      "pnl_pips": 166.8,
+      "pnl_usd": 3723.01,
+      "dd": -2.97,
+      "avg_win": 20.7,
+      "avg_loss": 30.7,
+      "rr": 0.67,
+      "expectancy": 9.27
+    },
+    "TEST": {
+      "trades": 3,
+      "wr": 66.7,
+      "pf": 0.94,
+      "pnl_pips": -4.9,
+      "pnl_usd": -63.33,
+      "dd": -1.0,
+      "avg_win": 17.2,
+      "avg_loss": 39.3,
+      "rr": 0.44,
+      "expectancy": -1.63
+    }
+  },
+  "GBP_NZD": {
+    "mode": "6_MONTHS",
+    "FULL": {
+      "trades": 16,
+      "wr": 43.8,
+      "pf": 0.39,
+      "pnl_pips": -306.5,
+      "pnl_usd": -5353.48,
+      "dd": -6.61,
+      "avg_win": 42.5,
+      "avg_loss": 67.1,
+      "rr": 0.63,
+      "expectancy": -19.16
+    },
+    "TRAIN": {
+      "trades": 10,
+      "wr": 40.0,
+      "pf": 0.29,
+      "pnl_pips": -211.5,
+      "pnl_usd": -4069.53,
+      "dd": -4.58,
+      "avg_win": 40.6,
+      "avg_loss": 62.3,
+      "rr": 0.65,
+      "expectancy": -21.15
+    },
+    "TEST": {
+      "trades": 5,
+      "wr": 60.0,
+      "pf": 0.93,
+      "pnl_pips": -14.2,
+      "pnl_usd": -145.85,
+      "dd": -1.25,
+      "avg_win": 45.2,
+      "avg_loss": 74.8,
+      "rr": 0.6,
+      "expectancy": -2.84
+    }
+  }
+}

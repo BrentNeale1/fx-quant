@@ -26,6 +26,7 @@ SPREAD_PIPS = {
     "EUR_GBP": 2.0, "GBP_JPY": 2.5,
     "USD_JPY": 1.5, "GBP_CAD": 2.5,
     "EUR_CAD": 2.5, "EUR_NZD": 2.5,
+    "GBP_NZD": 2.5,
 }
 
 # Pip value per pair
@@ -33,6 +34,7 @@ PIP_SIZE = {
     "EUR_USD": 0.0001, "GBP_USD": 0.0001, "EUR_AUD": 0.0001,
     "GBP_AUD": 0.0001, "EUR_GBP": 0.0001, "GBP_CAD": 0.0001,
     "EUR_CAD": 0.0001, "EUR_NZD": 0.0001,
+    "GBP_NZD": 0.0001,
     "USD_JPY": 0.01, "GBP_JPY": 0.01,
 }
 
