@@ -102,3 +102,30 @@ supabase:
   url: https://<your>.supabase.co
   key_env_name: SUPABASE_KEY
   table: fx_candles
+phase2:
+  strategies:
+    - name: S7_Tight
+      pair: GBP_JPY
+      timeframe: H1
+      enabled: true
+    - name: S9
+      pair: GBP_USD
+      timeframe: H1
+      enabled: true
+    - name: S9_Filtered
+      pair: GBP_AUD
+      timeframe: H1
+      enabled: true
+    - name: S4F
+      pair: EUR_AUD
+      timeframe: M15
+      htf_timeframe: H1
+      enabled: true
+    - name: S3
+      pair: GBP_JPY
+      timeframe: H1
+      enabled: true
+  poll_interval_seconds: 60
+  paper_mode: true
+  starting_equity: 100000
+  max_daily_drawdown_pct: 5.0

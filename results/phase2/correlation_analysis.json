@@ -1,0 +1,23 @@
+{
+  "S7_S3_overlap": {
+    "overlap_count": 21,
+    "same_dir": 21,
+    "opposite_dir": 0,
+    "ratio": 0.169
+  },
+  "S9_S9F_temporal": {
+    "s9_trade_days": 275,
+    "s9f_trade_days": 65,
+    "shared_trade_days": 33,
+    "temporal_overlap_ratio": 0.12
+  },
+  "portfolio": {
+    "total_trades": 694,
+    "win_rate_pct": 53.3,
+    "profit_factor": 0.99,
+    "total_pnl_pips": -175.1,
+    "total_pnl_dollars": -23036.66,
+    "max_drawdown_pct": -47.8,
+    "sharpe_ratio": -0.71
+  }
+}
