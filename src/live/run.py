@@ -89,6 +89,9 @@ def build_slots(config: dict) -> list[StrategySlot]:
 
 
 def main():
+    from src.live.health import start_health_server
+    start_health_server()
+
     config = load_config()
     if not config:
         print("ERROR: No phase2 config found in config/system.yaml")

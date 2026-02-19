@@ -12,8 +12,10 @@ RUN pip install --no-cache-dir -r requirements.docker.txt
 COPY config/system.yaml config/system.yaml
 COPY src/ src/
 COPY sql/ sql/
+COPY templates/ templates/
 
 RUN mkdir -p logs models
 
 ENV PYTHONUNBUFFERED=1
-CMD ["python", "src/order_executor.py"]
+ENV PORT=8080
+CMD ["python", "src/live/run.py"]

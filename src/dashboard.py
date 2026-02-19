@@ -161,6 +161,11 @@ def validate_config(cfg):
 # ---------------------------------------------------------------------------
 # Routes
 # ---------------------------------------------------------------------------
+@app.route("/health")
+def health():
+    return jsonify({"status": "ok"})
+
+
 @app.route("/")
 @requires_auth
 def index():
@@ -589,4 +594,4 @@ def _parse_int_list(s):
 # Main
 # ---------------------------------------------------------------------------
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=False)

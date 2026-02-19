@@ -1,13 +1,17 @@
 services:
-  fx-quant:
+  live-engine:
     build: .
-    container_name: fx-quant
+    container_name: fx-quant-engine
     env_file:
       - config/.env
+    environment:
+      - PORT=8080
     volumes:
       - ./config:/app/config
       - ./logs:/app/logs
       - ./models:/app/models
+    ports:
+      - "8080:8080"
     restart: unless-stopped
 
   dashboard:
@@ -16,6 +20,8 @@ services:
     command: python src/dashboard.py
     env_file:
       - config/.env
+    environment:
+      - PORT=5000
     volumes:
       - ./config:/app/config
       - ./logs:/app/logs:ro
