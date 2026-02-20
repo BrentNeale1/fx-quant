@@ -36,6 +36,11 @@ class S3_KeyLevel_Breakout(BaseStrategy):
     KEY_LEVEL_TOLERANCE = 0.75
     KEY_LEVEL_MIN_TOUCHES = 3
 
+    # Refinement filters (data-driven from IS/OOS trade analysis)
+    MIN_CONFLUENCE = 4          # C<4 loses money in both IS and OOS
+    SKIP_HOURS = (9, 10)        # 0% WR in IS; avoid early London before NY flow
+    SKIP_DAYS = ()              # disabled — removing 2/5 days too aggressive
+
     def __init__(self):
         super().__init__()
         self._cached_levels = None
@@ -51,6 +56,16 @@ class S3_KeyLevel_Breakout(BaseStrategy):
         hour = current.name.hour if hasattr(current.name, 'hour') else 0
         if hour < 8 or hour >= 16:
             return None
+
+        # Skip underperforming hours (morning London before NY overlap)
+        if self.SKIP_HOURS and hour in self.SKIP_HOURS:
+            return None
+
+        # Skip underperforming days of week
+        if self.SKIP_DAYS:
+            dow = current.name.dayofweek if hasattr(current.name, 'dayofweek') else 0
+            if dow in self.SKIP_DAYS:
+                return None
 
         atr_val = current.get("atr_14", 0)
         if atr_val <= 0 or np.isnan(atr_val):
@@ -110,6 +125,8 @@ class S3_KeyLevel_Breakout(BaseStrategy):
 
                 confluence = self._calc_confluence(current, data, idx,
                                                    "LONG", touch_count, vol)
+                if confluence < self.MIN_CONFLUENCE:
+                    continue
 
                 sl = level_price - self.SL_ATR_MULT * atr_val
                 tp1 = close + self.TP1_ATR_MULT * atr_val
@@ -139,6 +156,8 @@ class S3_KeyLevel_Breakout(BaseStrategy):
 
                 confluence = self._calc_confluence(current, data, idx,
                                                    "SHORT", touch_count, vol)
+                if confluence < self.MIN_CONFLUENCE:
+                    continue
 
                 sl = level_price + self.SL_ATR_MULT * atr_val
                 tp1 = close - self.TP1_ATR_MULT * atr_val

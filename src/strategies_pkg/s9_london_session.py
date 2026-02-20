@@ -71,6 +71,7 @@ class S9_London_Session(BaseStrategy):
         "GBP_AUD": {
             "min_adx": 25,              # require ADX > 25
             "skip_friday": True,        # drop Friday trades
+            "skip_monday": True,        # Monday Asian ranges unreliable after weekend gaps
             "min_ema50_dist_pips": 40,  # require 40+ pips from EMA50
         },
     }
@@ -131,11 +132,12 @@ class S9_London_Session(BaseStrategy):
         if hour < start_hour or hour >= self.ENTRY_END_HOUR:
             return None
 
-        # Friday filter (GBP_AUD: Friday position squaring kills breakouts)
-        if self._pair_cfg.get("skip_friday", False):
-            dow = current.name.dayofweek if hasattr(current.name, 'dayofweek') else 0
-            if dow == 4:  # Friday
-                return None
+        # Day-of-week filters
+        dow = current.name.dayofweek if hasattr(current.name, 'dayofweek') else 0
+        if self._pair_cfg.get("skip_friday", False) and dow == 4:
+            return None
+        if self._pair_cfg.get("skip_monday", False) and dow == 0:
+            return None
 
         atr_val = current.get("atr_14", 0)
         if atr_val <= 0 or np.isnan(atr_val):
@@ -211,6 +213,15 @@ class S9_London_Session(BaseStrategy):
 
         if direction is None:
             return None
+
+        # RSI directional filter: skip trades against RSI extremes
+        if self._pair_cfg.get("rsi_directional_filter", False):
+            rsi_val = current.get("rsi_14", 50)
+            if not np.isnan(rsi_val):
+                if direction == "LONG" and rsi_val > 60:
+                    return None
+                if direction == "SHORT" and rsi_val < 40:
+                    return None
 
         # HTF trend alignment (soft: adds confluence but doesn't block)
         htf_aligned = False

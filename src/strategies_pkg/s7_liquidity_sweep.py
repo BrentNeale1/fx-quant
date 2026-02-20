@@ -43,6 +43,10 @@ class S7_Liquidity_Sweep(BaseStrategy):
     OBV_LOOKBACK = 20         # Lookback for OBV divergence detection
     MAX_BARS = 40
 
+    # Regime filters (data-driven: consistent losers across IS + OOS)
+    MIN_RSI = 40              # RSI<40 = 0% WR in 2021, 33% OOS — no reversal fuel
+    MAX_ATR_PERCENTILE = 50   # above-median ATR loses in every period (wider SL, worse RR)
+
     def _find_swing_levels(self, data, idx):
         """Find significant swing highs and lows within lookback window."""
         start = max(0, idx - self.SWING_HISTORY)
@@ -150,6 +154,15 @@ class S7_Liquidity_Sweep(BaseStrategy):
         if atr_val <= 0 or np.isnan(atr_val):
             return None
 
+        # ATR regime filter: skip high-volatility environments (worse RR)
+        if self.MAX_ATR_PERCENTILE < 100:
+            lookback_start = max(0, idx - 100)
+            atr_window = data["atr_14"].iloc[lookback_start:idx].dropna()
+            if len(atr_window) >= 20:
+                threshold = np.percentile(atr_window, self.MAX_ATR_PERCENTILE)
+                if atr_val > threshold:
+                    return None
+
         # HTF trend alignment
         if htf_row is None:
             return None
@@ -169,6 +182,10 @@ class S7_Liquidity_Sweep(BaseStrategy):
         rsi_val = current.get("rsi_14", 50)
         if np.isnan(rsi_val):
             rsi_val = 50
+
+        # RSI floor filter: RSI<40 = no reversal fuel (0% WR in 2021, 33% OOS)
+        if rsi_val < self.MIN_RSI:
+            return None
 
         # Find swing levels
         swing_highs, swing_lows = self._find_swing_levels(data, idx)

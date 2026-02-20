@@ -40,15 +40,13 @@ OOS_END = "2023-08-31"
 WARMUP_DAYS = 60
 
 # Phase 2 strategy-pair configurations
+# S9/GBP_USD dropped: negative PF across all param combos on IS (best 0.86)
+# S4F/EUR_AUD dropped: classic overfit — IS PF 1.43 collapses to OOS PF 0.48
 CONFIGS = [
     {"name": "S7_Tight", "pair": "GBP_JPY", "tf": "H1", "htf_tf": "H1",
      "factory": lambda: S7_Liquidity_Sweep()},
-    {"name": "S9", "pair": "GBP_USD", "tf": "H1", "htf_tf": "H1",
-     "factory": lambda: S9_London_Session()},
     {"name": "S9_Filtered", "pair": "GBP_AUD", "tf": "H1", "htf_tf": "H1",
      "factory": lambda: S9_London_Session(pair="GBP_AUD", filtered=True)},
-    {"name": "S4F", "pair": "EUR_AUD", "tf": "M15", "htf_tf": "H1",
-     "factory": lambda: S4F_EMA_Ribbon()},
     {"name": "S3", "pair": "GBP_JPY", "tf": "H1", "htf_tf": "H1",
      "factory": lambda: S3_KeyLevel_Breakout()},
 ]
