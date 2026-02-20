@@ -49,8 +49,8 @@ CONFIGS = [
      "factory": lambda: S9_London_Session(pair="GBP_AUD", filtered=True)},
     {"name": "S3", "pair": "GBP_JPY", "tf": "H1", "htf_tf": "H1",
      "factory": lambda: S3_KeyLevel_Breakout()},
-    # S8: Order Block Retest — best sweep params (DISP_ATR=2.0, TP1=1.0, Window=40)
-    # OOS: 26t PF=2.14 WR=65.4% Gen=1.850 PASS
+    # S8: Order Block Retest — best sweep params (DISP_ATR=2.5, TP1=2.0, Window=40)
+    # Sweep: IS PF=1.39, OOS PF=1.59, Gen=1.382 PASS
     {"name": "S8_OB", "pair": "GBP_USD", "tf": "M15", "htf_tf": "H1",
      "factory": lambda: _s8_tuned()},
     # S10 dropped: insufficient trade counts on M15, no pair passes generalization
@@ -60,8 +60,8 @@ CONFIGS = [
 
 def _s8_tuned():
     s = S8_Order_Block()
-    s.DISPLACEMENT_ATR = 2.0
-    s.TP1_ATR_MULT = 1.0
+    s.DISPLACEMENT_ATR = 2.5
+    s.TP1_ATR_MULT = 2.0
     s.OB_RETEST_WINDOW = 40
     return s
 

@@ -99,60 +99,60 @@
     "pair": "GBP_USD",
     "timeframe": "M15",
     "is_metrics": {
-      "trades": 107,
-      "wr": 46.7,
-      "pf": 1.02,
-      "sharpe": 0.15,
-      "pnl_pips": 16.4,
-      "max_dd_pips": -116.1,
-      "expectancy": 0.15
+      "trades": 67,
+      "wr": 37.3,
+      "pf": 1.39,
+      "sharpe": 2.05,
+      "pnl_pips": 223.4,
+      "max_dd_pips": -164.1,
+      "expectancy": 3.33
     },
     "oos_metrics": {
-      "trades": 26,
-      "wr": 65.4,
-      "pf": 2.14,
-      "sharpe": 4.55,
-      "pnl_pips": 119.0,
-      "max_dd_pips": -51.6,
-      "expectancy": 4.58
+      "trades": 17,
+      "wr": 52.9,
+      "pf": 1.59,
+      "sharpe": 2.96,
+      "pnl_pips": 89.6,
+      "max_dd_pips": -40.6,
+      "expectancy": 5.27
     },
     "generalization": {
-      "composite": 1.85,
+      "composite": 1.397,
       "detail": {
-        "wr": 1.4,
-        "pf": 2.0,
-        "expectancy": 2.0,
-        "sharpe": 2.0
+        "wr": 1.418,
+        "pf": 1.144,
+        "expectancy": 1.583,
+        "sharpe": 1.444
       },
       "verdict": "PASS"
     }
   },
   "_portfolio": {
     "is_metrics": {
-      "trades": 256,
-      "wr": 53.1,
-      "pf": 1.24,
-      "sharpe": 1.27,
-      "pnl_pips": 882.2,
+      "trades": 216,
+      "wr": 51.4,
+      "pf": 1.31,
+      "sharpe": 1.68,
+      "pnl_pips": 1089.2,
       "max_dd_pips": -597.5,
-      "expectancy": 3.45
+      "expectancy": 5.04
     },
     "oos_metrics": {
-      "trades": 82,
-      "wr": 64.6,
-      "pf": 1.61,
-      "sharpe": 2.98,
-      "pnl_pips": 672.3,
-      "max_dd_pips": -182.9,
-      "expectancy": 8.2
+      "trades": 73,
+      "wr": 61.6,
+      "pf": 1.55,
+      "sharpe": 2.96,
+      "pnl_pips": 643.0,
+      "max_dd_pips": -218.1,
+      "expectancy": 8.81
     },
     "generalization": {
-      "composite": 1.629,
+      "composite": 1.473,
       "detail": {
-        "wr": 1.217,
-        "pf": 1.298,
-        "expectancy": 2.0,
-        "sharpe": 2.0
+        "wr": 1.198,
+        "pf": 1.183,
+        "expectancy": 1.748,
+        "sharpe": 1.762
       },
       "verdict": "PASS"
     }
