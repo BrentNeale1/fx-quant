@@ -1,0 +1,622 @@
+{
+  "S12_GBP_JPY": {
+    "pair": "GBP_JPY",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 35,
+      "wr": 42.9,
+      "pf": 0.74,
+      "sharpe": -2.1,
+      "pnl_pips": -93.2,
+      "max_dd_pips": -103.2,
+      "expectancy": -2.66
+    },
+    "oos_metrics": {
+      "trades": 11,
+      "wr": 45.5,
+      "pf": 0.53,
+      "sharpe": -4.41,
+      "pnl_pips": -58.4,
+      "max_dd_pips": -71.1,
+      "expectancy": -5.31
+    },
+    "generalization": {
+      "composite": 0.444,
+      "detail": {
+        "wr": 1.061,
+        "pf": 0.716,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "FAIL"
+    }
+  },
+  "S12_GBP_USD": {
+    "pair": "GBP_USD",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 63,
+      "wr": 33.3,
+      "pf": 0.43,
+      "sharpe": -5.67,
+      "pnl_pips": -323.5,
+      "max_dd_pips": -339.6,
+      "expectancy": -5.14
+    },
+    "oos_metrics": {
+      "trades": 25,
+      "wr": 48.0,
+      "pf": 0.66,
+      "sharpe": -2.94,
+      "pnl_pips": -61.3,
+      "max_dd_pips": -122.6,
+      "expectancy": -2.45
+    },
+    "generalization": {
+      "composite": 0.744,
+      "detail": {
+        "wr": 1.441,
+        "pf": 1.535,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "WARN"
+    }
+  },
+  "S12_EUR_USD": {
+    "pair": "EUR_USD",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 52,
+      "wr": 38.5,
+      "pf": 0.53,
+      "sharpe": -4.52,
+      "pnl_pips": -174.9,
+      "max_dd_pips": -210.6,
+      "expectancy": -3.36
+    },
+    "oos_metrics": {
+      "trades": 20,
+      "wr": 30.0,
+      "pf": 0.46,
+      "sharpe": -5.78,
+      "pnl_pips": -72.6,
+      "max_dd_pips": -80.9,
+      "expectancy": -3.63
+    },
+    "generalization": {
+      "composite": 0.412,
+      "detail": {
+        "wr": 0.779,
+        "pf": 0.868,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "FAIL"
+    }
+  },
+  "S12_USD_JPY": {
+    "pair": "USD_JPY",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 18,
+      "wr": 33.3,
+      "pf": 0.3,
+      "sharpe": -8.57,
+      "pnl_pips": -118.5,
+      "max_dd_pips": -132.1,
+      "expectancy": -6.58
+    },
+    "oos_metrics": {
+      "trades": 8,
+      "wr": 37.5,
+      "pf": 0.57,
+      "sharpe": -3.81,
+      "pnl_pips": -31.8,
+      "max_dd_pips": -47.4,
+      "expectancy": -3.98
+    },
+    "generalization": {
+      "composite": 0.757,
+      "detail": {
+        "wr": 1.126,
+        "pf": 1.9,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "WARN"
+    }
+  },
+  "S13_GBP_JPY": {
+    "pair": "GBP_JPY",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 294,
+      "wr": 46.9,
+      "pf": 0.75,
+      "sharpe": -2.03,
+      "pnl_pips": -934.9,
+      "max_dd_pips": -1184.4,
+      "expectancy": -3.18
+    },
+    "oos_metrics": {
+      "trades": 94,
+      "wr": 42.6,
+      "pf": 0.79,
+      "sharpe": -1.76,
+      "pnl_pips": -291.3,
+      "max_dd_pips": -352.9,
+      "expectancy": -3.1
+    },
+    "generalization": {
+      "composite": 0.49,
+      "detail": {
+        "wr": 0.908,
+        "pf": 1.053,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "FAIL"
+    }
+  },
+  "S13_EUR_USD": {
+    "pair": "EUR_USD",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 232,
+      "wr": 46.1,
+      "pf": 0.83,
+      "sharpe": -1.29,
+      "pnl_pips": -276.5,
+      "max_dd_pips": -433.4,
+      "expectancy": -1.19
+    },
+    "oos_metrics": {
+      "trades": 76,
+      "wr": 43.4,
+      "pf": 0.72,
+      "sharpe": -2.4,
+      "pnl_pips": -174.5,
+      "max_dd_pips": -269.4,
+      "expectancy": -2.3
+    },
+    "generalization": {
+      "composite": 0.452,
+      "detail": {
+        "wr": 0.941,
+        "pf": 0.867,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "FAIL"
+    }
+  },
+  "S13_GBP_USD": {
+    "pair": "GBP_USD",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 207,
+      "wr": 41.1,
+      "pf": 0.69,
+      "sharpe": -2.62,
+      "pnl_pips": -680.7,
+      "max_dd_pips": -809.6,
+      "expectancy": -3.29
+    },
+    "oos_metrics": {
+      "trades": 70,
+      "wr": 42.9,
+      "pf": 0.72,
+      "sharpe": -2.34,
+      "pnl_pips": -191.8,
+      "max_dd_pips": -268.5,
+      "expectancy": -2.74
+    },
+    "generalization": {
+      "composite": 0.522,
+      "detail": {
+        "wr": 1.044,
+        "pf": 1.043,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "WARN"
+    }
+  },
+  "S13_USD_JPY": {
+    "pair": "USD_JPY",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 268,
+      "wr": 41.4,
+      "pf": 0.77,
+      "sharpe": -1.79,
+      "pnl_pips": -503.6,
+      "max_dd_pips": -720.3,
+      "expectancy": -1.88
+    },
+    "oos_metrics": {
+      "trades": 76,
+      "wr": 39.5,
+      "pf": 0.66,
+      "sharpe": -2.99,
+      "pnl_pips": -322.6,
+      "max_dd_pips": -326.6,
+      "expectancy": -4.25
+    },
+    "generalization": {
+      "composite": 0.453,
+      "detail": {
+        "wr": 0.954,
+        "pf": 0.857,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "FAIL"
+    }
+  },
+  "S14_GBP_USD": {
+    "pair": "GBP_USD",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 23,
+      "wr": 34.8,
+      "pf": 0.55,
+      "sharpe": -4.43,
+      "pnl_pips": -89.1,
+      "max_dd_pips": -127.5,
+      "expectancy": -3.87
+    },
+    "oos_metrics": {
+      "trades": 2,
+      "wr": 0.0,
+      "pf": 0.0,
+      "sharpe": -11.22,
+      "pnl_pips": -10.6,
+      "max_dd_pips": -10.6,
+      "expectancy": -5.29
+    },
+    "generalization": {
+      "composite": 0.0,
+      "detail": {
+        "wr": 0.0,
+        "pf": 0.0,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "FAIL"
+    }
+  },
+  "S14_EUR_USD": {
+    "pair": "EUR_USD",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 20,
+      "wr": 30.0,
+      "pf": 0.45,
+      "sharpe": -5.31,
+      "pnl_pips": -80.9,
+      "max_dd_pips": -103.0,
+      "expectancy": -4.04
+    },
+    "oos_metrics": {
+      "trades": 3,
+      "wr": 0.0,
+      "pf": 0.0,
+      "sharpe": -50.87,
+      "pnl_pips": -35.9,
+      "max_dd_pips": -25.0,
+      "expectancy": -11.96
+    },
+    "generalization": {
+      "composite": 0.0,
+      "detail": {
+        "wr": 0.0,
+        "pf": 0.0,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "FAIL"
+    }
+  },
+  "S14_EUR_GBP": {
+    "pair": "EUR_GBP",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 16,
+      "wr": 43.8,
+      "pf": 0.45,
+      "sharpe": -5.64,
+      "pnl_pips": -42.1,
+      "max_dd_pips": -48.6,
+      "expectancy": -2.63
+    },
+    "oos_metrics": {
+      "trades": 4,
+      "wr": 50.0,
+      "pf": 0.4,
+      "sharpe": -5.02,
+      "pnl_pips": -8.5,
+      "max_dd_pips": -2.8,
+      "expectancy": -2.12
+    },
+    "generalization": {
+      "composite": 0.508,
+      "detail": {
+        "wr": 1.142,
+        "pf": 0.889,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "WARN"
+    }
+  },
+  "S14_GBP_JPY": {
+    "pair": "GBP_JPY",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 24,
+      "wr": 37.5,
+      "pf": 0.51,
+      "sharpe": -4.52,
+      "pnl_pips": -124.1,
+      "max_dd_pips": -147.8,
+      "expectancy": -5.17
+    },
+    "oos_metrics": {
+      "trades": 8,
+      "wr": 37.5,
+      "pf": 0.52,
+      "sharpe": -4.07,
+      "pnl_pips": -47.9,
+      "max_dd_pips": -49.1,
+      "expectancy": -5.98
+    },
+    "generalization": {
+      "composite": 0.505,
+      "detail": {
+        "wr": 1.0,
+        "pf": 1.02,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "WARN"
+    }
+  },
+  "S15_GBP_JPY": {
+    "pair": "GBP_JPY",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 473,
+      "wr": 38.9,
+      "pf": 0.8,
+      "sharpe": -1.45,
+      "pnl_pips": -1392.7,
+      "max_dd_pips": -1549.2,
+      "expectancy": -2.94
+    },
+    "oos_metrics": {
+      "trades": 166,
+      "wr": 33.7,
+      "pf": 0.57,
+      "sharpe": -3.71,
+      "pnl_pips": -1277.8,
+      "max_dd_pips": -1460.8,
+      "expectancy": -7.7
+    },
+    "generalization": {
+      "composite": 0.395,
+      "detail": {
+        "wr": 0.866,
+        "pf": 0.712,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "FAIL"
+    }
+  },
+  "S15_USD_JPY": {
+    "pair": "USD_JPY",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 505,
+      "wr": 44.0,
+      "pf": 0.94,
+      "sharpe": -0.39,
+      "pnl_pips": -236.4,
+      "max_dd_pips": -497.2,
+      "expectancy": -0.47
+    },
+    "oos_metrics": {
+      "trades": 161,
+      "wr": 41.6,
+      "pf": 0.79,
+      "sharpe": -1.65,
+      "pnl_pips": -398.2,
+      "max_dd_pips": -596.8,
+      "expectancy": -2.47
+    },
+    "generalization": {
+      "composite": 0.446,
+      "detail": {
+        "wr": 0.945,
+        "pf": 0.84,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "FAIL"
+    }
+  },
+  "S15_GBP_USD": {
+    "pair": "GBP_USD",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 529,
+      "wr": 37.4,
+      "pf": 0.72,
+      "sharpe": -2.18,
+      "pnl_pips": -1787.4,
+      "max_dd_pips": -1822.5,
+      "expectancy": -3.38
+    },
+    "oos_metrics": {
+      "trades": 171,
+      "wr": 42.1,
+      "pf": 0.87,
+      "sharpe": -0.99,
+      "pnl_pips": -237.1,
+      "max_dd_pips": -393.5,
+      "expectancy": -1.39
+    },
+    "generalization": {
+      "composite": 0.584,
+      "detail": {
+        "wr": 1.126,
+        "pf": 1.208,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "WARN"
+    }
+  },
+  "S15_EUR_USD": {
+    "pair": "EUR_USD",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 531,
+      "wr": 41.1,
+      "pf": 0.74,
+      "sharpe": -2.09,
+      "pnl_pips": -1144.3,
+      "max_dd_pips": -1321.8,
+      "expectancy": -2.16
+    },
+    "oos_metrics": {
+      "trades": 180,
+      "wr": 37.8,
+      "pf": 0.59,
+      "sharpe": -3.78,
+      "pnl_pips": -605.0,
+      "max_dd_pips": -633.6,
+      "expectancy": -3.36
+    },
+    "generalization": {
+      "composite": 0.429,
+      "detail": {
+        "wr": 0.92,
+        "pf": 0.797,
+        "expectancy": 0,
+        "sharpe": 0
+      },
+      "verdict": "FAIL"
+    }
+  },
+  "S16_GBP_JPY": {
+    "pair": "GBP_JPY",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 0,
+      "wr": 0,
+      "pf": 0,
+      "sharpe": 0,
+      "pnl_pips": 0,
+      "max_dd_pips": 0,
+      "expectancy": 0
+    },
+    "oos_metrics": {
+      "trades": 0,
+      "wr": 0,
+      "pf": 0,
+      "sharpe": 0,
+      "pnl_pips": 0,
+      "max_dd_pips": 0,
+      "expectancy": 0
+    },
+    "generalization": {
+      "composite": 0,
+      "detail": {},
+      "verdict": "FAIL"
+    }
+  },
+  "S16_GBP_USD": {
+    "pair": "GBP_USD",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 0,
+      "wr": 0,
+      "pf": 0,
+      "sharpe": 0,
+      "pnl_pips": 0,
+      "max_dd_pips": 0,
+      "expectancy": 0
+    },
+    "oos_metrics": {
+      "trades": 0,
+      "wr": 0,
+      "pf": 0,
+      "sharpe": 0,
+      "pnl_pips": 0,
+      "max_dd_pips": 0,
+      "expectancy": 0
+    },
+    "generalization": {
+      "composite": 0,
+      "detail": {},
+      "verdict": "FAIL"
+    }
+  },
+  "S16_EUR_USD": {
+    "pair": "EUR_USD",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 0,
+      "wr": 0,
+      "pf": 0,
+      "sharpe": 0,
+      "pnl_pips": 0,
+      "max_dd_pips": 0,
+      "expectancy": 0
+    },
+    "oos_metrics": {
+      "trades": 0,
+      "wr": 0,
+      "pf": 0,
+      "sharpe": 0,
+      "pnl_pips": 0,
+      "max_dd_pips": 0,
+      "expectancy": 0
+    },
+    "generalization": {
+      "composite": 0,
+      "detail": {},
+      "verdict": "FAIL"
+    }
+  },
+  "S16_USD_JPY": {
+    "pair": "USD_JPY",
+    "timeframe": "M15",
+    "is_metrics": {
+      "trades": 0,
+      "wr": 0,
+      "pf": 0,
+      "sharpe": 0,
+      "pnl_pips": 0,
+      "max_dd_pips": 0,
+      "expectancy": 0
+    },
+    "oos_metrics": {
+      "trades": 0,
+      "wr": 0,
+      "pf": 0,
+      "sharpe": 0,
+      "pnl_pips": 0,
+      "max_dd_pips": 0,
+      "expectancy": 0
+    },
+    "generalization": {
+      "composite": 0,
+      "detail": {},
+      "verdict": "FAIL"
+    }
+  }
+}

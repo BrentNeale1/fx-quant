@@ -143,6 +143,32 @@ def session_vwap_bands(df: pd.DataFrame, session_start_hour: int = 8):
 
 
 # ---------------------------------------------------------------------------
+# Bollinger Bands
+# ---------------------------------------------------------------------------
+
+def bollinger_bands(series: pd.Series, period: int = 20, num_std: float = 2.0):
+    """Bollinger Bands: middle (SMA), upper, lower."""
+    mid = series.rolling(window=period, min_periods=period).mean()
+    std = series.rolling(window=period, min_periods=period).std()
+    upper = mid + num_std * std
+    lower = mid - num_std * std
+    return mid, upper, lower
+
+
+# ---------------------------------------------------------------------------
+# Keltner Channels
+# ---------------------------------------------------------------------------
+
+def keltner_channels(df: pd.DataFrame, period: int = 20, atr_mult: float = 1.5):
+    """Keltner Channels: EMA-based middle with ATR-based bands."""
+    mid = ema(df["close"], period)
+    atr_val = atr(df, period)
+    upper = mid + atr_mult * atr_val
+    lower = mid - atr_mult * atr_val
+    return mid, upper, lower
+
+
+# ---------------------------------------------------------------------------
 # On-Balance Volume (OBV)
 # ---------------------------------------------------------------------------
 
@@ -418,5 +444,11 @@ def compute_all_indicators(df: pd.DataFrame) -> pd.DataFrame:
 
     # On-Balance Volume
     df["obv"] = obv(df)
+
+    # Bollinger Bands (20, 2)
+    df["bb_mid"], df["bb_upper"], df["bb_lower"] = bollinger_bands(df["close"], 20, 2.0)
+
+    # Keltner Channels (20, 1.5)
+    df["kc_mid"], df["kc_upper"], df["kc_lower"] = keltner_channels(df, 20, 1.5)
 
     return df
