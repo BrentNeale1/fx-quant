@@ -20,6 +20,7 @@ from src.backtester.engine import Backtester
 from src.strategies_pkg.s7_liquidity_sweep import S7_Liquidity_Sweep
 from src.strategies_pkg.s9_london_session import S9_London_Session
 from src.strategies_pkg.s3_key_level_breakout import S3_KeyLevel_Breakout
+from src.strategies_pkg.s8_order_block import S8_Order_Block
 
 PROCESSED_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "processed")
 RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "results", "phase2")
@@ -74,6 +75,21 @@ SWEEP_CONFIGS = [
             "SL_ATR_MULT": [0.3, 0.5, 0.75],
             "TP1_ATR_MULT": [1.0, 1.5, 2.0],
             "KEY_LEVEL_TOLERANCE": [0.5, 0.75],
+        },
+    },
+    # S8: Order Block Retest on GBP_USD (M15 + H1 HTF)
+    # OOS: 26t PF=2.14 WR=65.4% Gen=1.850 PASS with DISP=2.0/TP1=1.0/Window=40
+    {
+        "name": "S8_OB",
+        "pair": "GBP_USD",
+        "tf": "M15",
+        "htf_tf": "H1",
+        "factory": lambda: S8_Order_Block(),
+        "param_mode": "setattr",
+        "grid": {
+            "DISPLACEMENT_ATR": [1.5, 2.0, 2.5],
+            "TP1_ATR_MULT": [1.0, 1.5, 2.0],
+            "OB_RETEST_WINDOW": [30, 40, 50],
         },
     },
     # S10 dropped: insufficient trade counts on M15, no pair passes generalization
