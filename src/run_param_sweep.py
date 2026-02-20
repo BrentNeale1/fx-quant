@@ -76,6 +76,8 @@ SWEEP_CONFIGS = [
             "KEY_LEVEL_TOLERANCE": [0.5, 0.75],
         },
     },
+    # S10 dropped: insufficient trade counts on M15, no pair passes generalization
+    # S11 dropped: OOS collapsed across all param combos (0% WR, Gen=0.00)
 ]
 
 

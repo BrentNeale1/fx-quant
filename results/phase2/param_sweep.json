@@ -4,154 +4,154 @@
     "combos_tested": 18,
     "best_params": {
       "SWEEP_MIN_ATR": 1.0,
-      "SL_ATR_MULT": 0.8,
+      "SL_ATR_MULT": 1.0,
       "TP2_ATR_MULT": 3.0
     },
     "is_best_metrics": {
-      "trades": 26,
-      "wr": 57.7,
-      "pf": 1.02,
-      "sharpe": 0.12,
-      "pnl_pips": 10.5,
-      "expectancy": 0.41
+      "trades": 6,
+      "wr": 66.7,
+      "pf": 2.58,
+      "sharpe": 6.33,
+      "pnl_pips": 138.3,
+      "expectancy": 23.05
     },
     "oos_validation": {
-      "trades": 20,
-      "wr": 70.0,
-      "pf": 1.59,
-      "sharpe": 3.23,
-      "pnl_pips": 237.1,
-      "expectancy": 11.85
+      "trades": 8,
+      "wr": 62.5,
+      "pf": 0.68,
+      "sharpe": -2.49,
+      "pnl_pips": -63.3,
+      "expectancy": -7.91
     },
-    "generalization_score": 1.591,
-    "verdict": "PASS",
+    "generalization_score": 0.4,
+    "verdict": "FAIL",
     "is_results_ranked": [
       {
         "rank": 1,
         "params": {
           "SWEEP_MIN_ATR": 1.0,
-          "SL_ATR_MULT": 0.8,
+          "SL_ATR_MULT": 1.0,
           "TP2_ATR_MULT": 3.0
         },
         "metrics": {
-          "trades": 26,
-          "wr": 57.7,
-          "pf": 1.02,
-          "sharpe": 0.12,
-          "pnl_pips": 10.5,
-          "expectancy": 0.41
+          "trades": 6,
+          "wr": 66.7,
+          "pf": 2.58,
+          "sharpe": 6.33,
+          "pnl_pips": 138.3,
+          "expectancy": 23.05
         }
       },
       {
         "rank": 2,
         "params": {
           "SWEEP_MIN_ATR": 1.0,
-          "SL_ATR_MULT": 0.8,
+          "SL_ATR_MULT": 1.0,
           "TP2_ATR_MULT": 2.5
         },
         "metrics": {
-          "trades": 26,
-          "wr": 57.7,
-          "pf": 0.97,
-          "sharpe": -0.24,
-          "pnl_pips": -20.2,
-          "expectancy": -0.78
+          "trades": 6,
+          "wr": 66.7,
+          "pf": 2.3,
+          "sharpe": 5.63,
+          "pnl_pips": 113.8,
+          "expectancy": 18.97
         }
       },
       {
         "rank": 3,
         "params": {
-          "SWEEP_MIN_ATR": 0.5,
-          "SL_ATR_MULT": 1.5,
+          "SWEEP_MIN_ATR": 0.7,
+          "SL_ATR_MULT": 1.0,
           "TP2_ATR_MULT": 3.0
         },
         "metrics": {
-          "trades": 73,
-          "wr": 61.6,
-          "pf": 0.96,
-          "sharpe": -0.3,
-          "pnl_pips": -90.4,
-          "expectancy": -1.24
+          "trades": 23,
+          "wr": 69.6,
+          "pf": 1.52,
+          "sharpe": 2.89,
+          "pnl_pips": 207.2,
+          "expectancy": 9.01
         }
       },
       {
         "rank": 4,
         "params": {
-          "SWEEP_MIN_ATR": 1.0,
+          "SWEEP_MIN_ATR": 0.7,
           "SL_ATR_MULT": 1.0,
-          "TP2_ATR_MULT": 3.0
+          "TP2_ATR_MULT": 2.5
         },
         "metrics": {
-          "trades": 22,
-          "wr": 54.5,
-          "pf": 0.94,
-          "sharpe": -0.42,
-          "pnl_pips": -30.9,
-          "expectancy": -1.4
+          "trades": 23,
+          "wr": 69.6,
+          "pf": 1.51,
+          "sharpe": 2.9,
+          "pnl_pips": 202.2,
+          "expectancy": 8.79
         }
       },
       {
         "rank": 5,
         "params": {
-          "SWEEP_MIN_ATR": 1.0,
+          "SWEEP_MIN_ATR": 0.5,
           "SL_ATR_MULT": 1.0,
           "TP2_ATR_MULT": 2.5
         },
         "metrics": {
-          "trades": 22,
-          "wr": 54.5,
-          "pf": 0.9,
-          "sharpe": -0.71,
-          "pnl_pips": -50.3,
-          "expectancy": -2.28
+          "trades": 45,
+          "wr": 68.9,
+          "pf": 1.47,
+          "sharpe": 2.7,
+          "pnl_pips": 371.0,
+          "expectancy": 8.25
         }
       },
       {
         "rank": 6,
         "params": {
           "SWEEP_MIN_ATR": 0.5,
-          "SL_ATR_MULT": 1.5,
-          "TP2_ATR_MULT": 2.5
+          "SL_ATR_MULT": 1.0,
+          "TP2_ATR_MULT": 3.0
         },
         "metrics": {
-          "trades": 73,
-          "wr": 61.6,
-          "pf": 0.89,
-          "sharpe": -0.76,
-          "pnl_pips": -223.0,
-          "expectancy": -3.06
+          "trades": 44,
+          "wr": 68.2,
+          "pf": 1.47,
+          "sharpe": 2.66,
+          "pnl_pips": 373.7,
+          "expectancy": 8.49
         }
       },
       {
         "rank": 7,
         "params": {
-          "SWEEP_MIN_ATR": 0.5,
-          "SL_ATR_MULT": 0.8,
+          "SWEEP_MIN_ATR": 0.7,
+          "SL_ATR_MULT": 1.5,
           "TP2_ATR_MULT": 3.0
         },
         "metrics": {
-          "trades": 120,
-          "wr": 55.8,
-          "pf": 0.88,
-          "sharpe": -0.86,
-          "pnl_pips": -362.6,
-          "expectancy": -3.02
+          "trades": 7,
+          "wr": 71.4,
+          "pf": 1.37,
+          "sharpe": 2.11,
+          "pnl_pips": 53.7,
+          "expectancy": 7.67
         }
       },
       {
         "rank": 8,
         "params": {
           "SWEEP_MIN_ATR": 0.5,
-          "SL_ATR_MULT": 1.0,
-          "TP2_ATR_MULT": 3.0
+          "SL_ATR_MULT": 0.8,
+          "TP2_ATR_MULT": 2.5
         },
         "metrics": {
-          "trades": 110,
-          "wr": 56.4,
-          "pf": 0.87,
-          "sharpe": -0.9,
-          "pnl_pips": -358.0,
-          "expectancy": -3.25
+          "trades": 49,
+          "wr": 65.3,
+          "pf": 1.29,
+          "sharpe": 1.77,
+          "pnl_pips": 262.1,
+          "expectancy": 5.35
         }
       },
       {
@@ -159,444 +159,127 @@
         "params": {
           "SWEEP_MIN_ATR": 0.5,
           "SL_ATR_MULT": 0.8,
-          "TP2_ATR_MULT": 2.5
+          "TP2_ATR_MULT": 3.0
         },
         "metrics": {
-          "trades": 121,
-          "wr": 56.2,
-          "pf": 0.84,
-          "sharpe": -1.23,
-          "pnl_pips": -497.4,
-          "expectancy": -4.11
+          "trades": 48,
+          "wr": 64.6,
+          "pf": 1.29,
+          "sharpe": 1.74,
+          "pnl_pips": 264.6,
+          "expectancy": 5.51
         }
       },
       {
         "rank": 10,
+        "params": {
+          "SWEEP_MIN_ATR": 1.0,
+          "SL_ATR_MULT": 0.8,
+          "TP2_ATR_MULT": 3.0
+        },
+        "metrics": {
+          "trades": 8,
+          "wr": 62.5,
+          "pf": 1.26,
+          "sharpe": 1.48,
+          "pnl_pips": 49.7,
+          "expectancy": 6.21
+        }
+      },
+      {
+        "rank": 11,
+        "params": {
+          "SWEEP_MIN_ATR": 0.7,
+          "SL_ATR_MULT": 1.5,
+          "TP2_ATR_MULT": 2.5
+        },
+        "metrics": {
+          "trades": 7,
+          "wr": 71.4,
+          "pf": 1.26,
+          "sharpe": 1.53,
+          "pnl_pips": 37.7,
+          "expectancy": 5.39
+        }
+      },
+      {
+        "rank": 12,
         "params": {
           "SWEEP_MIN_ATR": 0.5,
-          "SL_ATR_MULT": 1.0,
-          "TP2_ATR_MULT": 2.5
-        },
-        "metrics": {
-          "trades": 111,
-          "wr": 56.8,
-          "pf": 0.84,
-          "sharpe": -1.19,
-          "pnl_pips": -459.0,
-          "expectancy": -4.13
-        }
-      },
-      {
-        "rank": 11,
-        "params": {
-          "SWEEP_MIN_ATR": 0.7,
-          "SL_ATR_MULT": 0.8,
+          "SL_ATR_MULT": 1.5,
           "TP2_ATR_MULT": 3.0
         },
         "metrics": {
-          "trades": 69,
-          "wr": 52.2,
-          "pf": 0.72,
-          "sharpe": -2.35,
-          "pnl_pips": -517.9,
-          "expectancy": -7.51
-        }
-      },
-      {
-        "rank": 12,
-        "params": {
-          "SWEEP_MIN_ATR": 0.7,
-          "SL_ATR_MULT": 0.8,
-          "TP2_ATR_MULT": 2.5
-        },
-        "metrics": {
-          "trades": 69,
-          "wr": 52.2,
-          "pf": 0.69,
-          "sharpe": -2.62,
-          "pnl_pips": -563.4,
-          "expectancy": -8.17
+          "trades": 30,
+          "wr": 66.7,
+          "pf": 1.16,
+          "sharpe": 1.0,
+          "pnl_pips": 104.2,
+          "expectancy": 3.47
         }
       },
       {
         "rank": 13,
         "params": {
-          "SWEEP_MIN_ATR": 0.7,
-          "SL_ATR_MULT": 1.0,
-          "TP2_ATR_MULT": 3.0
+          "SWEEP_MIN_ATR": 1.0,
+          "SL_ATR_MULT": 0.8,
+          "TP2_ATR_MULT": 2.5
         },
         "metrics": {
-          "trades": 63,
-          "wr": 52.4,
-          "pf": 0.68,
-          "sharpe": -2.71,
-          "pnl_pips": -567.6,
-          "expectancy": -9.01
+          "trades": 8,
+          "wr": 62.5,
+          "pf": 1.13,
+          "sharpe": 0.79,
+          "pnl_pips": 25.2,
+          "expectancy": 3.15
         }
       },
       {
         "rank": 14,
         "params": {
-          "SWEEP_MIN_ATR": 0.7,
-          "SL_ATR_MULT": 1.0,
+          "SWEEP_MIN_ATR": 0.5,
+          "SL_ATR_MULT": 1.5,
           "TP2_ATR_MULT": 2.5
         },
         "metrics": {
-          "trades": 63,
-          "wr": 52.4,
-          "pf": 0.66,
-          "sharpe": -2.97,
-          "pnl_pips": -606.3,
-          "expectancy": -9.62
+          "trades": 30,
+          "wr": 66.7,
+          "pf": 1.12,
+          "sharpe": 0.8,
+          "pnl_pips": 80.1,
+          "expectancy": 2.67
         }
       },
       {
         "rank": 15,
         "params": {
           "SWEEP_MIN_ATR": 0.7,
-          "SL_ATR_MULT": 1.5,
+          "SL_ATR_MULT": 0.8,
           "TP2_ATR_MULT": 3.0
         },
         "metrics": {
-          "trades": 24,
-          "wr": 54.2,
-          "pf": 0.56,
-          "sharpe": -3.93,
-          "pnl_pips": -374.9,
-          "expectancy": -15.62
+          "trades": 26,
+          "wr": 61.5,
+          "pf": 1.04,
+          "sharpe": 0.24,
+          "pnl_pips": 19.9,
+          "expectancy": 0.76
         }
       },
       {
         "rank": 16,
         "params": {
           "SWEEP_MIN_ATR": 0.7,
-          "SL_ATR_MULT": 1.5,
+          "SL_ATR_MULT": 0.8,
           "TP2_ATR_MULT": 2.5
         },
         "metrics": {
-          "trades": 24,
-          "wr": 54.2,
-          "pf": 0.52,
-          "sharpe": -4.4,
-          "pnl_pips": -409.1,
-          "expectancy": -17.04
-        }
-      }
-    ]
-  },
-  "S9": {
-    "pair": "GBP_USD",
-    "combos_tested": 18,
-    "best_params": {
-      "VOLUME_MULT": 2.0,
-      "SL_ATR_CAP": 2.5,
-      "ENTRY_END_HOUR": 11
-    },
-    "is_best_metrics": {
-      "trades": 226,
-      "wr": 52.2,
-      "pf": 0.86,
-      "sharpe": -1.07,
-      "pnl_pips": -599.7,
-      "expectancy": -2.65
-    },
-    "oos_validation": {
-      "trades": 18,
-      "wr": 72.2,
-      "pf": 1.8,
-      "sharpe": 3.79,
-      "pnl_pips": 164.4,
-      "expectancy": 9.13
-    },
-    "generalization_score": 1.692,
-    "verdict": "PASS",
-    "is_results_ranked": [
-      {
-        "rank": 1,
-        "params": {
-          "VOLUME_MULT": 2.0,
-          "SL_ATR_CAP": 2.5,
-          "ENTRY_END_HOUR": 11
-        },
-        "metrics": {
-          "trades": 226,
-          "wr": 52.2,
-          "pf": 0.86,
-          "sharpe": -1.07,
-          "pnl_pips": -599.7,
-          "expectancy": -2.65
-        }
-      },
-      {
-        "rank": 2,
-        "params": {
-          "VOLUME_MULT": 1.2,
-          "SL_ATR_CAP": 2.5,
-          "ENTRY_END_HOUR": 11
-        },
-        "metrics": {
-          "trades": 315,
-          "wr": 51.7,
-          "pf": 0.84,
-          "sharpe": -1.17,
-          "pnl_pips": -977.8,
-          "expectancy": -3.1
-        }
-      },
-      {
-        "rank": 3,
-        "params": {
-          "VOLUME_MULT": 1.5,
-          "SL_ATR_CAP": 2.5,
-          "ENTRY_END_HOUR": 11
-        },
-        "metrics": {
-          "trades": 297,
-          "wr": 52.2,
-          "pf": 0.84,
-          "sharpe": -1.19,
-          "pnl_pips": -910.4,
-          "expectancy": -3.07
-        }
-      },
-      {
-        "rank": 4,
-        "params": {
-          "VOLUME_MULT": 1.2,
-          "SL_ATR_CAP": 2.5,
-          "ENTRY_END_HOUR": 10
-        },
-        "metrics": {
-          "trades": 267,
-          "wr": 52.4,
-          "pf": 0.83,
-          "sharpe": -1.26,
-          "pnl_pips": -882.9,
-          "expectancy": -3.31
-        }
-      },
-      {
-        "rank": 5,
-        "params": {
-          "VOLUME_MULT": 2.0,
-          "SL_ATR_CAP": 2.5,
-          "ENTRY_END_HOUR": 10
-        },
-        "metrics": {
-          "trades": 199,
-          "wr": 52.3,
-          "pf": 0.83,
-          "sharpe": -1.3,
-          "pnl_pips": -641.3,
-          "expectancy": -3.22
-        }
-      },
-      {
-        "rank": 6,
-        "params": {
-          "VOLUME_MULT": 1.2,
-          "SL_ATR_CAP": 2.0,
-          "ENTRY_END_HOUR": 10
-        },
-        "metrics": {
-          "trades": 190,
-          "wr": 53.7,
-          "pf": 0.83,
-          "sharpe": -1.33,
-          "pnl_pips": -551.1,
-          "expectancy": -2.9
-        }
-      },
-      {
-        "rank": 7,
-        "params": {
-          "VOLUME_MULT": 2.0,
-          "SL_ATR_CAP": 2.0,
-          "ENTRY_END_HOUR": 11
-        },
-        "metrics": {
-          "trades": 173,
-          "wr": 52.6,
-          "pf": 0.83,
-          "sharpe": -1.29,
-          "pnl_pips": -474.5,
-          "expectancy": -2.74
-        }
-      },
-      {
-        "rank": 8,
-        "params": {
-          "VOLUME_MULT": 2.0,
-          "SL_ATR_CAP": 2.0,
-          "ENTRY_END_HOUR": 10
-        },
-        "metrics": {
-          "trades": 151,
-          "wr": 53.0,
-          "pf": 0.81,
-          "sharpe": -1.42,
-          "pnl_pips": -452.1,
-          "expectancy": -2.99
-        }
-      },
-      {
-        "rank": 9,
-        "params": {
-          "VOLUME_MULT": 1.2,
-          "SL_ATR_CAP": 2.0,
-          "ENTRY_END_HOUR": 11
-        },
-        "metrics": {
-          "trades": 229,
-          "wr": 52.4,
-          "pf": 0.79,
-          "sharpe": -1.63,
-          "pnl_pips": -839.2,
-          "expectancy": -3.66
-        }
-      },
-      {
-        "rank": 10,
-        "params": {
-          "VOLUME_MULT": 1.5,
-          "SL_ATR_CAP": 2.0,
-          "ENTRY_END_HOUR": 10
-        },
-        "metrics": {
-          "trades": 177,
-          "wr": 53.1,
-          "pf": 0.79,
-          "sharpe": -1.69,
-          "pnl_pips": -629.4,
-          "expectancy": -3.56
-        }
-      },
-      {
-        "rank": 11,
-        "params": {
-          "VOLUME_MULT": 1.5,
-          "SL_ATR_CAP": 2.0,
-          "ENTRY_END_HOUR": 11
-        },
-        "metrics": {
-          "trades": 213,
-          "wr": 52.1,
-          "pf": 0.78,
-          "sharpe": -1.76,
-          "pnl_pips": -806.6,
-          "expectancy": -3.79
-        }
-      },
-      {
-        "rank": 12,
-        "params": {
-          "VOLUME_MULT": 1.2,
-          "SL_ATR_CAP": 3.0,
-          "ENTRY_END_HOUR": 10
-        },
-        "metrics": {
-          "trades": 288,
-          "wr": 51.4,
-          "pf": 0.77,
-          "sharpe": -1.8,
-          "pnl_pips": -1492.9,
-          "expectancy": -5.18
-        }
-      },
-      {
-        "rank": 13,
-        "params": {
-          "VOLUME_MULT": 1.5,
-          "SL_ATR_CAP": 2.5,
-          "ENTRY_END_HOUR": 10
-        },
-        "metrics": {
-          "trades": 253,
-          "wr": 51.8,
-          "pf": 0.77,
-          "sharpe": -1.82,
-          "pnl_pips": -1171.7,
-          "expectancy": -4.63
-        }
-      },
-      {
-        "rank": 14,
-        "params": {
-          "VOLUME_MULT": 1.2,
-          "SL_ATR_CAP": 3.0,
-          "ENTRY_END_HOUR": 11
-        },
-        "metrics": {
-          "trades": 334,
-          "wr": 50.0,
-          "pf": 0.75,
-          "sharpe": -2.0,
-          "pnl_pips": -1946.2,
-          "expectancy": -5.83
-        }
-      },
-      {
-        "rank": 15,
-        "params": {
-          "VOLUME_MULT": 1.5,
-          "SL_ATR_CAP": 3.0,
-          "ENTRY_END_HOUR": 11
-        },
-        "metrics": {
-          "trades": 316,
-          "wr": 50.3,
-          "pf": 0.73,
-          "sharpe": -2.2,
-          "pnl_pips": -1947.7,
-          "expectancy": -6.16
-        }
-      },
-      {
-        "rank": 16,
-        "params": {
-          "VOLUME_MULT": 1.5,
-          "SL_ATR_CAP": 3.0,
-          "ENTRY_END_HOUR": 10
-        },
-        "metrics": {
-          "trades": 273,
-          "wr": 50.9,
-          "pf": 0.71,
-          "sharpe": -2.4,
-          "pnl_pips": -1813.4,
-          "expectancy": -6.64
-        }
-      },
-      {
-        "rank": 17,
-        "params": {
-          "VOLUME_MULT": 2.0,
-          "SL_ATR_CAP": 3.0,
-          "ENTRY_END_HOUR": 10
-        },
-        "metrics": {
-          "trades": 216,
-          "wr": 50.5,
-          "pf": 0.71,
-          "sharpe": -2.34,
-          "pnl_pips": -1362.3,
-          "expectancy": -6.31
-        }
-      },
-      {
-        "rank": 18,
-        "params": {
-          "VOLUME_MULT": 2.0,
-          "SL_ATR_CAP": 3.0,
-          "ENTRY_END_HOUR": 11
-        },
-        "metrics": {
-          "trades": 240,
-          "wr": 49.2,
-          "pf": 0.7,
-          "sharpe": -2.52,
-          "pnl_pips": -1631.8,
-          "expectancy": -6.8
+          "trades": 26,
+          "wr": 61.5,
+          "pf": 1.03,
+          "sharpe": 0.24,
+          "pnl_pips": 19.4,
+          "expectancy": 0.75
         }
       }
     ]
@@ -610,22 +293,22 @@
       "skip_friday": true
     },
     "is_best_metrics": {
-      "trades": 60,
-      "wr": 60.0,
-      "pf": 1.25,
-      "sharpe": 1.56,
-      "pnl_pips": 346.2,
-      "expectancy": 5.77
+      "trades": 44,
+      "wr": 61.4,
+      "pf": 1.48,
+      "sharpe": 2.73,
+      "pnl_pips": 460.9,
+      "expectancy": 10.47
     },
     "oos_validation": {
-      "trades": 16,
-      "wr": 62.5,
-      "pf": 1.42,
-      "sharpe": 2.44,
-      "pnl_pips": 163.0,
-      "expectancy": 10.19
+      "trades": 12,
+      "wr": 58.3,
+      "pf": 1.3,
+      "sharpe": 1.77,
+      "pnl_pips": 96.5,
+      "expectancy": 8.04
     },
-    "generalization_score": 1.315,
+    "generalization_score": 0.865,
     "verdict": "PASS",
     "is_results_ranked": [
       {
@@ -636,220 +319,220 @@
           "skip_friday": true
         },
         "metrics": {
-          "trades": 60,
-          "wr": 60.0,
-          "pf": 1.25,
-          "sharpe": 1.56,
-          "pnl_pips": 346.2,
-          "expectancy": 5.77
+          "trades": 44,
+          "wr": 61.4,
+          "pf": 1.48,
+          "sharpe": 2.73,
+          "pnl_pips": 460.9,
+          "expectancy": 10.47
         }
       },
       {
         "rank": 2,
         "params": {
-          "min_adx": 30,
+          "min_adx": 25,
           "min_ema50_dist_pips": 40,
           "skip_friday": true
         },
         "metrics": {
-          "trades": 37,
-          "wr": 62.2,
-          "pf": 1.12,
-          "sharpe": 0.78,
-          "pnl_pips": 106.6,
-          "expectancy": 2.88
+          "trades": 42,
+          "wr": 59.5,
+          "pf": 1.31,
+          "sharpe": 1.89,
+          "pnl_pips": 299.5,
+          "expectancy": 7.13
         }
       },
       {
         "rank": 3,
         "params": {
           "min_adx": 25,
+          "min_ema50_dist_pips": 30,
+          "skip_friday": true
+        },
+        "metrics": {
+          "trades": 49,
+          "wr": 57.1,
+          "pf": 1.24,
+          "sharpe": 1.51,
+          "pnl_pips": 277.6,
+          "expectancy": 5.66
+        }
+      },
+      {
+        "rank": 4,
+        "params": {
+          "min_adx": 20,
           "min_ema50_dist_pips": 40,
+          "skip_friday": false
+        },
+        "metrics": {
+          "trades": 58,
+          "wr": 60.3,
+          "pf": 1.2,
+          "sharpe": 1.23,
+          "pnl_pips": 286.2,
+          "expectancy": 4.94
+        }
+      },
+      {
+        "rank": 5,
+        "params": {
+          "min_adx": 20,
+          "min_ema50_dist_pips": 30,
           "skip_friday": true
         },
         "metrics": {
           "trades": 54,
-          "wr": 57.4,
-          "pf": 1.1,
-          "sharpe": 0.66,
-          "pnl_pips": 131.8,
-          "expectancy": 2.44
+          "wr": 55.6,
+          "pf": 1.17,
+          "sharpe": 1.11,
+          "pnl_pips": 223.9,
+          "expectancy": 4.15
         }
       },
       {
-        "rank": 4,
-        "params": {
-          "min_adx": 20,
-          "min_ema50_dist_pips": 40,
-          "skip_friday": false
-        },
-        "metrics": {
-          "trades": 74,
-          "wr": 59.5,
-          "pf": 1.09,
-          "sharpe": 0.6,
-          "pnl_pips": 171.6,
-          "expectancy": 2.32
-        }
-      },
-      {
-        "rank": 5,
+        "rank": 6,
         "params": {
           "min_adx": 20,
           "min_ema50_dist_pips": 50,
           "skip_friday": true
         },
         "metrics": {
-          "trades": 50,
-          "wr": 56.0,
+          "trades": 38,
+          "wr": 55.3,
+          "pf": 1.15,
+          "sharpe": 0.97,
+          "pnl_pips": 149.7,
+          "expectancy": 3.94
+        }
+      },
+      {
+        "rank": 7,
+        "params": {
+          "min_adx": 30,
+          "min_ema50_dist_pips": 40,
+          "skip_friday": true
+        },
+        "metrics": {
+          "trades": 28,
+          "wr": 60.7,
+          "pf": 1.14,
+          "sharpe": 0.89,
+          "pnl_pips": 96.2,
+          "expectancy": 3.44
+        }
+      },
+      {
+        "rank": 8,
+        "params": {
+          "min_adx": 25,
+          "min_ema50_dist_pips": 40,
+          "skip_friday": false
+        },
+        "metrics": {
+          "trades": 53,
+          "wr": 58.5,
           "pf": 1.09,
           "sharpe": 0.61,
-          "pnl_pips": 119.1,
-          "expectancy": 2.38
+          "pnl_pips": 127.2,
+          "expectancy": 2.4
         }
       },
       {
-        "rank": 6,
+        "rank": 9,
         "params": {
           "min_adx": 25,
-          "min_ema50_dist_pips": 30,
+          "min_ema50_dist_pips": 50,
           "skip_friday": true
         },
         "metrics": {
-          "trades": 64,
-          "wr": 56.2,
-          "pf": 1.07,
-          "sharpe": 0.5,
-          "pnl_pips": 118.3,
-          "expectancy": 1.85
+          "trades": 37,
+          "wr": 54.1,
+          "pf": 1.04,
+          "sharpe": 0.29,
+          "pnl_pips": 42.0,
+          "expectancy": 1.13
         }
       },
       {
-        "rank": 7,
-        "params": {
-          "min_adx": 20,
-          "min_ema50_dist_pips": 30,
-          "skip_friday": true
-        },
-        "metrics": {
-          "trades": 73,
-          "wr": 56.2,
-          "pf": 1.06,
-          "sharpe": 0.44,
-          "pnl_pips": 117.7,
-          "expectancy": 1.61
-        }
-      },
-      {
-        "rank": 8,
+        "rank": 10,
         "params": {
           "min_adx": 30,
           "min_ema50_dist_pips": 40,
           "skip_friday": false
         },
         "metrics": {
-          "trades": 42,
-          "wr": 61.9,
+          "trades": 33,
+          "wr": 60.6,
           "pf": 1.03,
-          "sharpe": 0.22,
-          "pnl_pips": 36.8,
-          "expectancy": 0.88
+          "sharpe": 0.19,
+          "pnl_pips": 26.4,
+          "expectancy": 0.8
         }
       },
       {
-        "rank": 9,
+        "rank": 11,
         "params": {
           "min_adx": 20,
           "min_ema50_dist_pips": 50,
           "skip_friday": false
         },
         "metrics": {
-          "trades": 61,
-          "wr": 55.7,
-          "pf": 1.0,
-          "sharpe": -0.0,
-          "pnl_pips": -0.7,
-          "expectancy": -0.01
-        }
-      },
-      {
-        "rank": 10,
-        "params": {
-          "min_adx": 30,
-          "min_ema50_dist_pips": 30,
-          "skip_friday": true
-        },
-        "metrics": {
-          "trades": 46,
-          "wr": 58.7,
-          "pf": 0.99,
-          "sharpe": -0.09,
-          "pnl_pips": -15.2,
-          "expectancy": -0.33
-        }
-      },
-      {
-        "rank": 11,
-        "params": {
-          "min_adx": 25,
-          "min_ema50_dist_pips": 40,
-          "skip_friday": false
-        },
-        "metrics": {
-          "trades": 65,
-          "wr": 56.9,
-          "pf": 0.98,
-          "sharpe": -0.16,
-          "pnl_pips": -40.5,
-          "expectancy": -0.62
+          "trades": 49,
+          "wr": 55.1,
+          "pf": 1.02,
+          "sharpe": 0.15,
+          "pnl_pips": 29.9,
+          "expectancy": 0.61
         }
       },
       {
         "rank": 12,
         "params": {
-          "min_adx": 30,
-          "min_ema50_dist_pips": 50,
-          "skip_friday": true
+          "min_adx": 25,
+          "min_ema50_dist_pips": 30,
+          "skip_friday": false
         },
         "metrics": {
-          "trades": 31,
-          "wr": 58.1,
-          "pf": 0.98,
-          "sharpe": -0.15,
-          "pnl_pips": -18.0,
-          "expectancy": -0.58
+          "trades": 63,
+          "wr": 54.0,
+          "pf": 0.96,
+          "sharpe": -0.28,
+          "pnl_pips": -68.7,
+          "expectancy": -1.09
         }
       },
       {
         "rank": 13,
         "params": {
-          "min_adx": 25,
-          "min_ema50_dist_pips": 50,
+          "min_adx": 30,
+          "min_ema50_dist_pips": 30,
           "skip_friday": true
         },
         "metrics": {
-          "trades": 46,
-          "wr": 54.3,
-          "pf": 0.97,
-          "sharpe": -0.2,
-          "pnl_pips": -35.3,
-          "expectancy": -0.77
+          "trades": 34,
+          "wr": 55.9,
+          "pf": 0.96,
+          "sharpe": -0.28,
+          "pnl_pips": -34.3,
+          "expectancy": -1.01
         }
       },
       {
         "rank": 14,
         "params": {
-          "min_adx": 30,
+          "min_adx": 20,
           "min_ema50_dist_pips": 30,
           "skip_friday": false
         },
         "metrics": {
-          "trades": 51,
-          "wr": 58.8,
+          "trades": 71,
+          "wr": 53.5,
           "pf": 0.94,
-          "sharpe": -0.44,
-          "pnl_pips": -85.0,
-          "expectancy": -1.67
+          "sharpe": -0.45,
+          "pnl_pips": -124.6,
+          "expectancy": -1.76
         }
       },
       {
@@ -857,380 +540,63 @@
         "params": {
           "min_adx": 30,
           "min_ema50_dist_pips": 50,
-          "skip_friday": false
+          "skip_friday": true
         },
         "metrics": {
-          "trades": 36,
-          "wr": 58.3,
-          "pf": 0.92,
-          "sharpe": -0.59,
-          "pnl_pips": -87.8,
-          "expectancy": -2.44
+          "trades": 24,
+          "wr": 54.2,
+          "pf": 0.91,
+          "sharpe": -0.62,
+          "pnl_pips": -60.5,
+          "expectancy": -2.52
         }
       },
       {
         "rank": 16,
         "params": {
-          "min_adx": 20,
+          "min_adx": 30,
           "min_ema50_dist_pips": 30,
           "skip_friday": false
         },
         "metrics": {
-          "trades": 90,
-          "wr": 54.4,
-          "pf": 0.91,
-          "sharpe": -0.67,
-          "pnl_pips": -230.9,
-          "expectancy": -2.57
+          "trades": 39,
+          "wr": 56.4,
+          "pf": 0.9,
+          "sharpe": -0.68,
+          "pnl_pips": -104.1,
+          "expectancy": -2.67
         }
       },
       {
         "rank": 17,
-        "params": {
-          "min_adx": 25,
-          "min_ema50_dist_pips": 30,
-          "skip_friday": false
-        },
-        "metrics": {
-          "trades": 78,
-          "wr": 53.8,
-          "pf": 0.9,
-          "sharpe": -0.76,
-          "pnl_pips": -227.9,
-          "expectancy": -2.92
-        }
-      },
-      {
-        "rank": 18,
         "params": {
           "min_adx": 25,
           "min_ema50_dist_pips": 50,
           "skip_friday": false
         },
         "metrics": {
-          "trades": 55,
-          "wr": 52.7,
-          "pf": 0.85,
-          "sharpe": -1.16,
-          "pnl_pips": -257.0,
-          "expectancy": -4.67
-        }
-      }
-    ]
-  },
-  "S4F": {
-    "pair": "EUR_AUD",
-    "combos_tested": 18,
-    "best_params": {
-      "SL_ATR_MULT": 2.0,
-      "TP_ATR_MULT": 2.5,
-      "COMPRESSION_ATR_MULT": 1.0
-    },
-    "is_best_metrics": {
-      "trades": 75,
-      "wr": 58.7,
-      "pf": 1.54,
-      "sharpe": 3.28,
-      "pnl_pips": 478.1,
-      "expectancy": 6.37
-    },
-    "oos_validation": {
-      "trades": 20,
-      "wr": 30.0,
-      "pf": 0.52,
-      "sharpe": -4.98,
-      "pnl_pips": -221.6,
-      "expectancy": -11.08
-    },
-    "generalization_score": 0.283,
-    "verdict": "FAIL",
-    "is_results_ranked": [
-      {
-        "rank": 1,
-        "params": {
-          "SL_ATR_MULT": 2.0,
-          "TP_ATR_MULT": 2.5,
-          "COMPRESSION_ATR_MULT": 1.0
-        },
-        "metrics": {
-          "trades": 75,
-          "wr": 58.7,
-          "pf": 1.54,
-          "sharpe": 3.28,
-          "pnl_pips": 478.1,
-          "expectancy": 6.37
-        }
-      },
-      {
-        "rank": 2,
-        "params": {
-          "SL_ATR_MULT": 2.0,
-          "TP_ATR_MULT": 2.5,
-          "COMPRESSION_ATR_MULT": 0.8
-        },
-        "metrics": {
-          "trades": 74,
-          "wr": 58.1,
-          "pf": 1.5,
-          "sharpe": 3.07,
-          "pnl_pips": 442.1,
-          "expectancy": 5.97
-        }
-      },
-      {
-        "rank": 3,
-        "params": {
-          "SL_ATR_MULT": 2.0,
-          "TP_ATR_MULT": 3.0,
-          "COMPRESSION_ATR_MULT": 1.0
-        },
-        "metrics": {
-          "trades": 75,
-          "wr": 50.7,
-          "pf": 1.43,
-          "sharpe": 2.63,
-          "pnl_pips": 427.8,
-          "expectancy": 5.7
-        }
-      },
-      {
-        "rank": 4,
-        "params": {
-          "SL_ATR_MULT": 1.5,
-          "TP_ATR_MULT": 2.5,
-          "COMPRESSION_ATR_MULT": 1.0
-        },
-        "metrics": {
-          "trades": 78,
-          "wr": 50.0,
-          "pf": 1.41,
-          "sharpe": 2.56,
-          "pnl_pips": 361.1,
-          "expectancy": 4.63
-        }
-      },
-      {
-        "rank": 5,
-        "params": {
-          "SL_ATR_MULT": 1.5,
-          "TP_ATR_MULT": 3.0,
-          "COMPRESSION_ATR_MULT": 1.0
-        },
-        "metrics": {
-          "trades": 78,
-          "wr": 43.6,
-          "pf": 1.41,
-          "sharpe": 2.48,
-          "pnl_pips": 389.8,
-          "expectancy": 5.0
-        }
-      },
-      {
-        "rank": 6,
-        "params": {
-          "SL_ATR_MULT": 2.0,
-          "TP_ATR_MULT": 3.0,
-          "COMPRESSION_ATR_MULT": 0.8
-        },
-        "metrics": {
-          "trades": 74,
-          "wr": 50.0,
-          "pf": 1.38,
-          "sharpe": 2.4,
-          "pnl_pips": 384.1,
-          "expectancy": 5.19
-        }
-      },
-      {
-        "rank": 7,
-        "params": {
-          "SL_ATR_MULT": 1.5,
-          "TP_ATR_MULT": 2.5,
-          "COMPRESSION_ATR_MULT": 0.8
-        },
-        "metrics": {
-          "trades": 77,
-          "wr": 49.4,
-          "pf": 1.36,
-          "sharpe": 2.34,
-          "pnl_pips": 325.1,
-          "expectancy": 4.22
-        }
-      },
-      {
-        "rank": 8,
-        "params": {
-          "SL_ATR_MULT": 1.5,
-          "TP_ATR_MULT": 3.0,
-          "COMPRESSION_ATR_MULT": 0.8
-        },
-        "metrics": {
-          "trades": 77,
-          "wr": 42.9,
-          "pf": 1.36,
-          "sharpe": 2.24,
-          "pnl_pips": 346.1,
-          "expectancy": 4.5
-        }
-      },
-      {
-        "rank": 9,
-        "params": {
-          "SL_ATR_MULT": 2.5,
-          "TP_ATR_MULT": 2.5,
-          "COMPRESSION_ATR_MULT": 1.0
-        },
-        "metrics": {
-          "trades": 75,
-          "wr": 58.7,
-          "pf": 1.33,
-          "sharpe": 2.16,
-          "pnl_pips": 341.1,
-          "expectancy": 4.55
-        }
-      },
-      {
-        "rank": 10,
-        "params": {
-          "SL_ATR_MULT": 2.5,
-          "TP_ATR_MULT": 2.5,
-          "COMPRESSION_ATR_MULT": 0.8
-        },
-        "metrics": {
-          "trades": 74,
-          "wr": 58.1,
-          "pf": 1.3,
-          "sharpe": 1.96,
-          "pnl_pips": 305.0,
-          "expectancy": 4.12
-        }
-      },
-      {
-        "rank": 11,
-        "params": {
-          "SL_ATR_MULT": 1.5,
-          "TP_ATR_MULT": 4.0,
-          "COMPRESSION_ATR_MULT": 1.0
-        },
-        "metrics": {
-          "trades": 75,
-          "wr": 36.0,
-          "pf": 1.25,
-          "sharpe": 1.54,
-          "pnl_pips": 256.0,
-          "expectancy": 3.41
-        }
-      },
-      {
-        "rank": 12,
-        "params": {
-          "SL_ATR_MULT": 2.5,
-          "TP_ATR_MULT": 3.0,
-          "COMPRESSION_ATR_MULT": 1.0
-        },
-        "metrics": {
-          "trades": 75,
-          "wr": 50.7,
-          "pf": 1.23,
-          "sharpe": 1.52,
-          "pnl_pips": 264.9,
-          "expectancy": 3.53
-        }
-      },
-      {
-        "rank": 13,
-        "params": {
-          "SL_ATR_MULT": 1.5,
-          "TP_ATR_MULT": 4.0,
-          "COMPRESSION_ATR_MULT": 0.8
-        },
-        "metrics": {
-          "trades": 74,
-          "wr": 35.1,
-          "pf": 1.19,
-          "sharpe": 1.22,
-          "pnl_pips": 196.9,
-          "expectancy": 2.66
-        }
-      },
-      {
-        "rank": 14,
-        "params": {
-          "SL_ATR_MULT": 2.5,
-          "TP_ATR_MULT": 3.0,
-          "COMPRESSION_ATR_MULT": 0.8
-        },
-        "metrics": {
-          "trades": 74,
-          "wr": 50.0,
-          "pf": 1.19,
-          "sharpe": 1.28,
-          "pnl_pips": 221.2,
-          "expectancy": 2.99
-        }
-      },
-      {
-        "rank": 15,
-        "params": {
-          "SL_ATR_MULT": 2.0,
-          "TP_ATR_MULT": 4.0,
-          "COMPRESSION_ATR_MULT": 1.0
-        },
-        "metrics": {
-          "trades": 71,
-          "wr": 42.3,
-          "pf": 1.16,
-          "sharpe": 1.08,
-          "pnl_pips": 179.3,
-          "expectancy": 2.53
-        }
-      },
-      {
-        "rank": 16,
-        "params": {
-          "SL_ATR_MULT": 2.0,
-          "TP_ATR_MULT": 4.0,
-          "COMPRESSION_ATR_MULT": 0.8
-        },
-        "metrics": {
-          "trades": 70,
-          "wr": 41.4,
-          "pf": 1.11,
-          "sharpe": 0.74,
-          "pnl_pips": 120.2,
-          "expectancy": 1.72
-        }
-      },
-      {
-        "rank": 17,
-        "params": {
-          "SL_ATR_MULT": 2.5,
-          "TP_ATR_MULT": 4.0,
-          "COMPRESSION_ATR_MULT": 1.0
-        },
-        "metrics": {
-          "trades": 71,
-          "wr": 42.3,
-          "pf": 1.0,
-          "sharpe": -0.01,
-          "pnl_pips": -2.5,
-          "expectancy": -0.03
+          "trades": 46,
+          "wr": 52.2,
+          "pf": 0.87,
+          "sharpe": -0.94,
+          "pnl_pips": -179.8,
+          "expectancy": -3.91
         }
       },
       {
         "rank": 18,
         "params": {
-          "SL_ATR_MULT": 2.5,
-          "TP_ATR_MULT": 4.0,
-          "COMPRESSION_ATR_MULT": 0.8
+          "min_adx": 30,
+          "min_ema50_dist_pips": 50,
+          "skip_friday": false
         },
         "metrics": {
-          "trades": 70,
-          "wr": 41.4,
-          "pf": 0.95,
-          "sharpe": -0.36,
-          "pnl_pips": -61.5,
-          "expectancy": -0.88
+          "trades": 29,
+          "wr": 55.2,
+          "pf": 0.86,
+          "sharpe": -1.05,
+          "pnl_pips": -130.3,
+          "expectancy": -4.49
         }
       }
     ]
@@ -1244,22 +610,22 @@
       "KEY_LEVEL_TOLERANCE": 0.5
     },
     "is_best_metrics": {
-      "trades": 120,
-      "wr": 50.0,
-      "pf": 1.32,
-      "sharpe": 1.82,
-      "pnl_pips": 789.5,
-      "expectancy": 6.58
+      "trades": 80,
+      "wr": 52.5,
+      "pf": 1.6,
+      "sharpe": 3.06,
+      "pnl_pips": 913.6,
+      "expectancy": 11.42
     },
     "oos_validation": {
-      "trades": 36,
-      "wr": 38.9,
-      "pf": 0.75,
-      "sharpe": -2.16,
-      "pnl_pips": -281.5,
-      "expectancy": -7.82
+      "trades": 26,
+      "wr": 34.6,
+      "pf": 0.66,
+      "sharpe": -3.09,
+      "pnl_pips": -296.8,
+      "expectancy": -11.41
     },
-    "generalization_score": 0.449,
+    "generalization_score": 0.357,
     "verdict": "FAIL",
     "is_results_ranked": [
       {
@@ -1270,60 +636,60 @@
           "KEY_LEVEL_TOLERANCE": 0.5
         },
         "metrics": {
-          "trades": 120,
-          "wr": 50.0,
-          "pf": 1.32,
-          "sharpe": 1.82,
-          "pnl_pips": 789.5,
-          "expectancy": 6.58
+          "trades": 80,
+          "wr": 52.5,
+          "pf": 1.6,
+          "sharpe": 3.06,
+          "pnl_pips": 913.6,
+          "expectancy": 11.42
         }
       },
       {
         "rank": 2,
+        "params": {
+          "SL_ATR_MULT": 0.3,
+          "TP1_ATR_MULT": 2.0,
+          "KEY_LEVEL_TOLERANCE": 0.5
+        },
+        "metrics": {
+          "trades": 82,
+          "wr": 47.6,
+          "pf": 1.55,
+          "sharpe": 2.78,
+          "pnl_pips": 822.6,
+          "expectancy": 10.03
+        }
+      },
+      {
+        "rank": 3,
         "params": {
           "SL_ATR_MULT": 0.75,
           "TP1_ATR_MULT": 1.5,
           "KEY_LEVEL_TOLERANCE": 0.5
         },
         "metrics": {
-          "trades": 112,
-          "wr": 57.1,
-          "pf": 1.28,
-          "sharpe": 1.6,
-          "pnl_pips": 602.8,
-          "expectancy": 5.38
-        }
-      },
-      {
-        "rank": 3,
-        "params": {
-          "SL_ATR_MULT": 0.5,
-          "TP1_ATR_MULT": 1.5,
-          "KEY_LEVEL_TOLERANCE": 0.5
-        },
-        "metrics": {
-          "trades": 116,
-          "wr": 53.4,
-          "pf": 1.27,
-          "sharpe": 1.55,
-          "pnl_pips": 567.7,
-          "expectancy": 4.89
+          "trades": 73,
+          "wr": 57.5,
+          "pf": 1.53,
+          "sharpe": 2.75,
+          "pnl_pips": 691.0,
+          "expectancy": 9.47
         }
       },
       {
         "rank": 4,
         "params": {
           "SL_ATR_MULT": 0.5,
-          "TP1_ATR_MULT": 2.0,
-          "KEY_LEVEL_TOLERANCE": 0.75
+          "TP1_ATR_MULT": 1.5,
+          "KEY_LEVEL_TOLERANCE": 0.5
         },
         "metrics": {
-          "trades": 115,
-          "wr": 48.7,
-          "pf": 1.24,
-          "sharpe": 1.42,
-          "pnl_pips": 597.5,
-          "expectancy": 5.2
+          "trades": 76,
+          "wr": 53.9,
+          "pf": 1.51,
+          "sharpe": 2.63,
+          "pnl_pips": 665.9,
+          "expectancy": 8.76
         }
       },
       {
@@ -1334,12 +700,12 @@
           "KEY_LEVEL_TOLERANCE": 0.5
         },
         "metrics": {
-          "trades": 118,
-          "wr": 52.5,
-          "pf": 1.23,
-          "sharpe": 1.37,
-          "pnl_pips": 624.0,
-          "expectancy": 5.29
+          "trades": 80,
+          "wr": 55.0,
+          "pf": 1.49,
+          "sharpe": 2.63,
+          "pnl_pips": 826.4,
+          "expectancy": 10.33
         }
       },
       {
@@ -1347,191 +713,191 @@
         "params": {
           "SL_ATR_MULT": 0.3,
           "TP1_ATR_MULT": 2.0,
-          "KEY_LEVEL_TOLERANCE": 0.5
+          "KEY_LEVEL_TOLERANCE": 0.75
         },
         "metrics": {
-          "trades": 124,
-          "wr": 43.5,
-          "pf": 1.21,
-          "sharpe": 1.23,
-          "pnl_pips": 519.3,
-          "expectancy": 4.19
+          "trades": 90,
+          "wr": 48.9,
+          "pf": 1.46,
+          "sharpe": 2.39,
+          "pnl_pips": 747.4,
+          "expectancy": 8.3
         }
       },
       {
         "rank": 7,
         "params": {
-          "SL_ATR_MULT": 0.3,
+          "SL_ATR_MULT": 0.5,
           "TP1_ATR_MULT": 2.0,
           "KEY_LEVEL_TOLERANCE": 0.75
         },
         "metrics": {
-          "trades": 119,
-          "wr": 44.5,
-          "pf": 1.2,
-          "sharpe": 1.18,
-          "pnl_pips": 479.2,
-          "expectancy": 4.03
+          "trades": 88,
+          "wr": 52.3,
+          "pf": 1.46,
+          "sharpe": 2.43,
+          "pnl_pips": 784.4,
+          "expectancy": 8.91
         }
       },
       {
         "rank": 8,
-        "params": {
-          "SL_ATR_MULT": 0.75,
-          "TP1_ATR_MULT": 2.0,
-          "KEY_LEVEL_TOLERANCE": 0.75
-        },
-        "metrics": {
-          "trades": 114,
-          "wr": 50.0,
-          "pf": 1.15,
-          "sharpe": 0.95,
-          "pnl_pips": 413.2,
-          "expectancy": 3.62
-        }
-      },
-      {
-        "rank": 9,
-        "params": {
-          "SL_ATR_MULT": 0.3,
-          "TP1_ATR_MULT": 1.5,
-          "KEY_LEVEL_TOLERANCE": 0.5
-        },
-        "metrics": {
-          "trades": 121,
-          "wr": 47.1,
-          "pf": 1.11,
-          "sharpe": 0.64,
-          "pnl_pips": 236.1,
-          "expectancy": 1.95
-        }
-      },
-      {
-        "rank": 10,
-        "params": {
-          "SL_ATR_MULT": 0.3,
-          "TP1_ATR_MULT": 1.5,
-          "KEY_LEVEL_TOLERANCE": 0.75
-        },
-        "metrics": {
-          "trades": 120,
-          "wr": 46.7,
-          "pf": 1.08,
-          "sharpe": 0.51,
-          "pnl_pips": 189.4,
-          "expectancy": 1.58
-        }
-      },
-      {
-        "rank": 11,
-        "params": {
-          "SL_ATR_MULT": 0.5,
-          "TP1_ATR_MULT": 1.5,
-          "KEY_LEVEL_TOLERANCE": 0.75
-        },
-        "metrics": {
-          "trades": 112,
-          "wr": 49.1,
-          "pf": 1.06,
-          "sharpe": 0.39,
-          "pnl_pips": 146.2,
-          "expectancy": 1.31
-        }
-      },
-      {
-        "rank": 12,
         "params": {
           "SL_ATR_MULT": 0.5,
           "TP1_ATR_MULT": 1.0,
           "KEY_LEVEL_TOLERANCE": 0.75
         },
         "metrics": {
-          "trades": 82,
-          "wr": 53.7,
-          "pf": 1.05,
-          "sharpe": 0.31,
-          "pnl_pips": 68.5,
-          "expectancy": 0.84
+          "trades": 60,
+          "wr": 60.0,
+          "pf": 1.41,
+          "sharpe": 2.17,
+          "pnl_pips": 321.9,
+          "expectancy": 5.37
+        }
+      },
+      {
+        "rank": 9,
+        "params": {
+          "SL_ATR_MULT": 0.5,
+          "TP1_ATR_MULT": 1.0,
+          "KEY_LEVEL_TOLERANCE": 0.5
+        },
+        "metrics": {
+          "trades": 48,
+          "wr": 58.3,
+          "pf": 1.34,
+          "sharpe": 1.88,
+          "pnl_pips": 225.5,
+          "expectancy": 4.7
+        }
+      },
+      {
+        "rank": 10,
+        "params": {
+          "SL_ATR_MULT": 0.75,
+          "TP1_ATR_MULT": 2.0,
+          "KEY_LEVEL_TOLERANCE": 0.75
+        },
+        "metrics": {
+          "trades": 87,
+          "wr": 52.9,
+          "pf": 1.33,
+          "sharpe": 1.88,
+          "pnl_pips": 614.0,
+          "expectancy": 7.06
+        }
+      },
+      {
+        "rank": 11,
+        "params": {
+          "SL_ATR_MULT": 0.3,
+          "TP1_ATR_MULT": 1.5,
+          "KEY_LEVEL_TOLERANCE": 0.5
+        },
+        "metrics": {
+          "trades": 80,
+          "wr": 48.8,
+          "pf": 1.32,
+          "sharpe": 1.71,
+          "pnl_pips": 458.9,
+          "expectancy": 5.74
+        }
+      },
+      {
+        "rank": 12,
+        "params": {
+          "SL_ATR_MULT": 0.75,
+          "TP1_ATR_MULT": 1.0,
+          "KEY_LEVEL_TOLERANCE": 0.5
+        },
+        "metrics": {
+          "trades": 37,
+          "wr": 59.5,
+          "pf": 1.28,
+          "sharpe": 1.57,
+          "pnl_pips": 156.5,
+          "expectancy": 4.23
         }
       },
       {
         "rank": 13,
         "params": {
-          "SL_ATR_MULT": 0.75,
-          "TP1_ATR_MULT": 1.5,
-          "KEY_LEVEL_TOLERANCE": 0.75
+          "SL_ATR_MULT": 0.3,
+          "TP1_ATR_MULT": 1.0,
+          "KEY_LEVEL_TOLERANCE": 0.5
         },
         "metrics": {
-          "trades": 108,
-          "wr": 50.0,
-          "pf": 1.02,
-          "sharpe": 0.15,
-          "pnl_pips": 55.7,
-          "expectancy": 0.52
+          "trades": 58,
+          "wr": 53.4,
+          "pf": 1.26,
+          "sharpe": 1.45,
+          "pnl_pips": 201.8,
+          "expectancy": 3.48
         }
       },
       {
         "rank": 14,
         "params": {
           "SL_ATR_MULT": 0.3,
-          "TP1_ATR_MULT": 1.0,
+          "TP1_ATR_MULT": 1.5,
           "KEY_LEVEL_TOLERANCE": 0.75
         },
         "metrics": {
-          "trades": 97,
-          "wr": 50.5,
-          "pf": 0.96,
-          "sharpe": -0.25,
-          "pnl_pips": -63.1,
-          "expectancy": -0.65
+          "trades": 88,
+          "wr": 51.1,
+          "pf": 1.24,
+          "sharpe": 1.33,
+          "pnl_pips": 373.7,
+          "expectancy": 4.25
         }
       },
       {
         "rank": 15,
         "params": {
           "SL_ATR_MULT": 0.5,
-          "TP1_ATR_MULT": 1.0,
-          "KEY_LEVEL_TOLERANCE": 0.5
+          "TP1_ATR_MULT": 1.5,
+          "KEY_LEVEL_TOLERANCE": 0.75
         },
         "metrics": {
           "trades": 84,
           "wr": 53.6,
-          "pf": 0.96,
-          "sharpe": -0.26,
-          "pnl_pips": -58.8,
-          "expectancy": -0.7
+          "pf": 1.22,
+          "sharpe": 1.26,
+          "pnl_pips": 359.2,
+          "expectancy": 4.28
         }
       },
       {
         "rank": 16,
         "params": {
-          "SL_ATR_MULT": 0.75,
+          "SL_ATR_MULT": 0.3,
           "TP1_ATR_MULT": 1.0,
           "KEY_LEVEL_TOLERANCE": 0.75
         },
         "metrics": {
           "trades": 69,
-          "wr": 55.1,
-          "pf": 0.92,
-          "sharpe": -0.54,
-          "pnl_pips": -108.0,
-          "expectancy": -1.57
+          "wr": 58.0,
+          "pf": 1.19,
+          "sharpe": 1.07,
+          "pnl_pips": 176.1,
+          "expectancy": 2.55
         }
       },
       {
         "rank": 17,
         "params": {
-          "SL_ATR_MULT": 0.3,
-          "TP1_ATR_MULT": 1.0,
-          "KEY_LEVEL_TOLERANCE": 0.5
+          "SL_ATR_MULT": 0.75,
+          "TP1_ATR_MULT": 1.5,
+          "KEY_LEVEL_TOLERANCE": 0.75
         },
         "metrics": {
-          "trades": 101,
-          "wr": 48.5,
-          "pf": 0.89,
-          "sharpe": -0.78,
-          "pnl_pips": -189.3,
-          "expectancy": -1.87
+          "trades": 80,
+          "wr": 53.8,
+          "pf": 1.18,
+          "sharpe": 1.06,
+          "pnl_pips": 285.4,
+          "expectancy": 3.57
         }
       },
       {
@@ -1539,15 +905,457 @@
         "params": {
           "SL_ATR_MULT": 0.75,
           "TP1_ATR_MULT": 1.0,
-          "KEY_LEVEL_TOLERANCE": 0.5
+          "KEY_LEVEL_TOLERANCE": 0.75
         },
         "metrics": {
-          "trades": 69,
-          "wr": 53.6,
-          "pf": 0.82,
-          "sharpe": -1.29,
-          "pnl_pips": -259.8,
-          "expectancy": -3.77
+          "trades": 50,
+          "wr": 58.0,
+          "pf": 1.08,
+          "sharpe": 0.49,
+          "pnl_pips": 65.1,
+          "expectancy": 1.3
+        }
+      }
+    ]
+  },
+  "S10_EUR_USD": {
+    "pair": "EUR_USD",
+    "combos_tested": 18,
+    "best_params": {
+      "VWAP_SD_ENTRY": 2.5,
+      "MAX_ADX": 30,
+      "MAX_BARS": 6
+    },
+    "is_best_metrics": {
+      "trades": 11,
+      "wr": 63.6,
+      "pf": 2.87,
+      "sharpe": 5.84,
+      "pnl_pips": 29.8,
+      "expectancy": 2.71
+    },
+    "oos_validation": {
+      "trades": 5,
+      "wr": 40.0,
+      "pf": 3.0,
+      "sharpe": 5.28,
+      "pnl_pips": 6.3,
+      "expectancy": 1.25
+    },
+    "generalization_score": 0.712,
+    "verdict": "WARN",
+    "is_results_ranked": [
+      {
+        "rank": 1,
+        "params": {
+          "VWAP_SD_ENTRY": 2.5,
+          "MAX_ADX": 30,
+          "MAX_BARS": 6
+        },
+        "metrics": {
+          "trades": 11,
+          "wr": 63.6,
+          "pf": 2.87,
+          "sharpe": 5.84,
+          "pnl_pips": 29.8,
+          "expectancy": 2.71
+        }
+      },
+      {
+        "rank": 2,
+        "params": {
+          "VWAP_SD_ENTRY": 2.5,
+          "MAX_ADX": 30,
+          "MAX_BARS": 8
+        },
+        "metrics": {
+          "trades": 11,
+          "wr": 63.6,
+          "pf": 2.75,
+          "sharpe": 5.98,
+          "pnl_pips": 31.8,
+          "expectancy": 2.89
+        }
+      },
+      {
+        "rank": 3,
+        "params": {
+          "VWAP_SD_ENTRY": 1.5,
+          "MAX_ADX": 30,
+          "MAX_BARS": 6
+        },
+        "metrics": {
+          "trades": 13,
+          "wr": 61.5,
+          "pf": 2.43,
+          "sharpe": 5.16,
+          "pnl_pips": 30.0,
+          "expectancy": 2.31
+        }
+      },
+      {
+        "rank": 4,
+        "params": {
+          "VWAP_SD_ENTRY": 2.0,
+          "MAX_ADX": 30,
+          "MAX_BARS": 6
+        },
+        "metrics": {
+          "trades": 13,
+          "wr": 61.5,
+          "pf": 2.43,
+          "sharpe": 5.16,
+          "pnl_pips": 30.0,
+          "expectancy": 2.31
+        }
+      },
+      {
+        "rank": 5,
+        "params": {
+          "VWAP_SD_ENTRY": 1.5,
+          "MAX_ADX": 30,
+          "MAX_BARS": 8
+        },
+        "metrics": {
+          "trades": 13,
+          "wr": 53.8,
+          "pf": 1.67,
+          "sharpe": 3.17,
+          "pnl_pips": 20.1,
+          "expectancy": 1.55
+        }
+      },
+      {
+        "rank": 6,
+        "params": {
+          "VWAP_SD_ENTRY": 2.0,
+          "MAX_ADX": 30,
+          "MAX_BARS": 8
+        },
+        "metrics": {
+          "trades": 13,
+          "wr": 53.8,
+          "pf": 1.67,
+          "sharpe": 3.17,
+          "pnl_pips": 20.1,
+          "expectancy": 1.55
+        }
+      }
+    ]
+  },
+  "S11_GBP_JPY": {
+    "pair": "GBP_JPY",
+    "combos_tested": 18,
+    "best_params": {
+      "MIN_ADX": 35,
+      "EMA_PROXIMITY_ATR": 0.3,
+      "TP_RR_MULT": 1.8
+    },
+    "is_best_metrics": {
+      "trades": 9,
+      "wr": 77.8,
+      "pf": 5.67,
+      "sharpe": 10.25,
+      "pnl_pips": 89.0,
+      "expectancy": 9.89
+    },
+    "oos_validation": {
+      "trades": 2,
+      "wr": 0.0,
+      "pf": 0.0,
+      "sharpe": -58.86,
+      "pnl_pips": -43.0,
+      "expectancy": -21.48
+    },
+    "generalization_score": 0.0,
+    "verdict": "FAIL",
+    "is_results_ranked": [
+      {
+        "rank": 1,
+        "params": {
+          "MIN_ADX": 35,
+          "EMA_PROXIMITY_ATR": 0.3,
+          "TP_RR_MULT": 1.8
+        },
+        "metrics": {
+          "trades": 9,
+          "wr": 77.8,
+          "pf": 5.67,
+          "sharpe": 10.25,
+          "pnl_pips": 89.0,
+          "expectancy": 9.89
+        }
+      },
+      {
+        "rank": 2,
+        "params": {
+          "MIN_ADX": 35,
+          "EMA_PROXIMITY_ATR": 0.3,
+          "TP_RR_MULT": 1.5
+        },
+        "metrics": {
+          "trades": 9,
+          "wr": 77.8,
+          "pf": 5.35,
+          "sharpe": 10.65,
+          "pnl_pips": 83.0,
+          "expectancy": 9.22
+        }
+      },
+      {
+        "rank": 3,
+        "params": {
+          "MIN_ADX": 35,
+          "EMA_PROXIMITY_ATR": 0.5,
+          "TP_RR_MULT": 1.8
+        },
+        "metrics": {
+          "trades": 11,
+          "wr": 63.6,
+          "pf": 4.14,
+          "sharpe": 8.03,
+          "pnl_pips": 82.0,
+          "expectancy": 7.45
+        }
+      },
+      {
+        "rank": 4,
+        "params": {
+          "MIN_ADX": 35,
+          "EMA_PROXIMITY_ATR": 0.5,
+          "TP_RR_MULT": 1.5
+        },
+        "metrics": {
+          "trades": 11,
+          "wr": 63.6,
+          "pf": 3.91,
+          "sharpe": 8.22,
+          "pnl_pips": 75.9,
+          "expectancy": 6.9
+        }
+      },
+      {
+        "rank": 5,
+        "params": {
+          "MIN_ADX": 35,
+          "EMA_PROXIMITY_ATR": 0.2,
+          "TP_RR_MULT": 1.5
+        },
+        "metrics": {
+          "trades": 5,
+          "wr": 80.0,
+          "pf": 2.83,
+          "sharpe": 6.74,
+          "pnl_pips": 29.8,
+          "expectancy": 5.95
+        }
+      },
+      {
+        "rank": 6,
+        "params": {
+          "MIN_ADX": 35,
+          "EMA_PROXIMITY_ATR": 0.2,
+          "TP_RR_MULT": 1.8
+        },
+        "metrics": {
+          "trades": 5,
+          "wr": 80.0,
+          "pf": 2.79,
+          "sharpe": 6.11,
+          "pnl_pips": 29.1,
+          "expectancy": 5.81
+        }
+      },
+      {
+        "rank": 7,
+        "params": {
+          "MIN_ADX": 30,
+          "EMA_PROXIMITY_ATR": 0.5,
+          "TP_RR_MULT": 1.8
+        },
+        "metrics": {
+          "trades": 16,
+          "wr": 56.2,
+          "pf": 1.68,
+          "sharpe": 3.33,
+          "pnl_pips": 55.8,
+          "expectancy": 3.49
+        }
+      },
+      {
+        "rank": 8,
+        "params": {
+          "MIN_ADX": 30,
+          "EMA_PROXIMITY_ATR": 0.3,
+          "TP_RR_MULT": 1.8
+        },
+        "metrics": {
+          "trades": 13,
+          "wr": 61.5,
+          "pf": 1.61,
+          "sharpe": 3.13,
+          "pnl_pips": 45.9,
+          "expectancy": 3.53
+        }
+      },
+      {
+        "rank": 9,
+        "params": {
+          "MIN_ADX": 30,
+          "EMA_PROXIMITY_ATR": 0.5,
+          "TP_RR_MULT": 1.5
+        },
+        "metrics": {
+          "trades": 16,
+          "wr": 56.2,
+          "pf": 1.56,
+          "sharpe": 2.94,
+          "pnl_pips": 45.9,
+          "expectancy": 2.87
+        }
+      },
+      {
+        "rank": 10,
+        "params": {
+          "MIN_ADX": 30,
+          "EMA_PROXIMITY_ATR": 0.3,
+          "TP_RR_MULT": 1.5
+        },
+        "metrics": {
+          "trades": 13,
+          "wr": 61.5,
+          "pf": 1.51,
+          "sharpe": 2.77,
+          "pnl_pips": 38.1,
+          "expectancy": 2.93
+        }
+      },
+      {
+        "rank": 11,
+        "params": {
+          "MIN_ADX": 25,
+          "EMA_PROXIMITY_ATR": 0.3,
+          "TP_RR_MULT": 1.8
+        },
+        "metrics": {
+          "trades": 18,
+          "wr": 55.6,
+          "pf": 1.39,
+          "sharpe": 2.15,
+          "pnl_pips": 41.4,
+          "expectancy": 2.3
+        }
+      },
+      {
+        "rank": 12,
+        "params": {
+          "MIN_ADX": 25,
+          "EMA_PROXIMITY_ATR": 0.5,
+          "TP_RR_MULT": 1.8
+        },
+        "metrics": {
+          "trades": 25,
+          "wr": 52.0,
+          "pf": 1.37,
+          "sharpe": 2.02,
+          "pnl_pips": 52.6,
+          "expectancy": 2.11
+        }
+      },
+      {
+        "rank": 13,
+        "params": {
+          "MIN_ADX": 25,
+          "EMA_PROXIMITY_ATR": 0.3,
+          "TP_RR_MULT": 1.5
+        },
+        "metrics": {
+          "trades": 18,
+          "wr": 55.6,
+          "pf": 1.3,
+          "sharpe": 1.72,
+          "pnl_pips": 31.1,
+          "expectancy": 1.73
+        }
+      },
+      {
+        "rank": 14,
+        "params": {
+          "MIN_ADX": 25,
+          "EMA_PROXIMITY_ATR": 0.5,
+          "TP_RR_MULT": 1.5
+        },
+        "metrics": {
+          "trades": 25,
+          "wr": 52.0,
+          "pf": 1.26,
+          "sharpe": 1.53,
+          "pnl_pips": 37.4,
+          "expectancy": 1.5
+        }
+      },
+      {
+        "rank": 15,
+        "params": {
+          "MIN_ADX": 25,
+          "EMA_PROXIMITY_ATR": 0.2,
+          "TP_RR_MULT": 1.8
+        },
+        "metrics": {
+          "trades": 13,
+          "wr": 46.2,
+          "pf": 0.69,
+          "sharpe": -2.43,
+          "pnl_pips": -31.9,
+          "expectancy": -2.45
+        }
+      },
+      {
+        "rank": 16,
+        "params": {
+          "MIN_ADX": 25,
+          "EMA_PROXIMITY_ATR": 0.2,
+          "TP_RR_MULT": 1.5
+        },
+        "metrics": {
+          "trades": 13,
+          "wr": 46.2,
+          "pf": 0.67,
+          "sharpe": -2.67,
+          "pnl_pips": -33.7,
+          "expectancy": -2.59
+        }
+      },
+      {
+        "rank": 17,
+        "params": {
+          "MIN_ADX": 30,
+          "EMA_PROXIMITY_ATR": 0.2,
+          "TP_RR_MULT": 1.5
+        },
+        "metrics": {
+          "trades": 8,
+          "wr": 50.0,
+          "pf": 0.63,
+          "sharpe": -3.16,
+          "pnl_pips": -26.7,
+          "expectancy": -3.33
+        }
+      },
+      {
+        "rank": 18,
+        "params": {
+          "MIN_ADX": 30,
+          "EMA_PROXIMITY_ATR": 0.2,
+          "TP_RR_MULT": 1.8
+        },
+        "metrics": {
+          "trades": 8,
+          "wr": 50.0,
+          "pf": 0.62,
+          "sharpe": -3.16,
+          "pnl_pips": -27.4,
+          "expectancy": -3.42
         }
       }
     ]

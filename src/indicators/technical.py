@@ -386,9 +386,11 @@ def compute_all_indicators(df: pd.DataFrame) -> pd.DataFrame:
 
     # RSI
     df["rsi_14"] = rsi(df["close"], 14)
+    df["rsi_9"] = rsi(df["close"], 9)
 
     # ATR
     df["atr_14"] = atr(df, 14)
+    df["atr_10"] = atr(df, 10)
 
     # MACD
     df["macd"], df["macd_signal"], df["macd_hist"] = macd(df["close"])

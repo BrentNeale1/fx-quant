@@ -48,6 +48,8 @@ CONFIGS = [
      "factory": lambda: S9_London_Session(pair="GBP_AUD", filtered=True)},
     {"name": "S3", "pair": "GBP_JPY", "tf": "H1", "htf_tf": "H1",
      "factory": lambda: S3_KeyLevel_Breakout()},
+    # S10 dropped: insufficient trade counts on M15, no pair passes generalization
+    # S11 dropped: OOS collapsed across all param combos (0% WR, Gen=0.00)
 ]
 
 
