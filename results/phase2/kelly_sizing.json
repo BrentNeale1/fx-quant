@@ -1,81 +1,65 @@
 {
   "S7_Tight_GBP_JPY": {
-    "trades": 98,
-    "win_rate": 59.2,
-    "avg_win_pips": 42.8,
-    "avg_loss_pips": 62.3,
-    "avg_win_loss_ratio": 0.69,
-    "kelly_full_pct": 0,
-    "kelly_half_pct": 0,
+    "trades": 38,
+    "win_rate": 71.1,
+    "avg_win_pips": 39.1,
+    "avg_loss_pips": 59.0,
+    "avg_win_loss_ratio": 0.66,
+    "kelly_full_pct": 27.41,
+    "kelly_half_pct": 13.7,
     "monte_carlo_half_kelly": {
-      "p50_dd": 0,
-      "p75_dd": 0,
-      "p95_dd": 0,
-      "p99_dd": 0,
-      "ruin_pct": 0
-    }
-  },
-  "S9_GBP_USD": {
-    "trades": 285,
-    "win_rate": 53.7,
-    "avg_win_pips": 29.3,
-    "avg_loss_pips": 41.7,
-    "avg_win_loss_ratio": 0.7,
-    "kelly_full_pct": 0,
-    "kelly_half_pct": 0,
-    "monte_carlo_half_kelly": {
-      "p50_dd": 0,
-      "p75_dd": 0,
-      "p95_dd": 0,
-      "p99_dd": 0,
-      "ruin_pct": 0
-    }
-  },
-  "S9_Filtered_GBP_AUD": {
-    "trades": 66,
-    "win_rate": 60.6,
-    "avg_win_pips": 49.5,
-    "avg_loss_pips": 57.9,
-    "avg_win_loss_ratio": 0.85,
-    "kelly_full_pct": 14.53,
-    "kelly_half_pct": 7.26,
-    "monte_carlo_half_kelly": {
-      "p50_dd": 2.5,
-      "p75_dd": 3.3,
-      "p95_dd": 4.8,
-      "p99_dd": 6.3,
+      "p50_dd": 2.8,
+      "p75_dd": 3.6,
+      "p95_dd": 5.4,
+      "p99_dd": 7.0,
       "ruin_pct": 0.0
     }
   },
-  "S4F_EUR_AUD": {
-    "trades": 95,
-    "win_rate": 45.3,
-    "avg_win_pips": 38.8,
-    "avg_loss_pips": 28.7,
-    "avg_win_loss_ratio": 1.35,
-    "kelly_full_pct": 4.7,
-    "kelly_half_pct": 2.35,
+  "S9_Filtered_GBP_AUD": {
+    "trades": 51,
+    "win_rate": 60.8,
+    "avg_win_pips": 53.2,
+    "avg_loss_pips": 56.5,
+    "avg_win_loss_ratio": 0.94,
+    "kelly_full_pct": 19.08,
+    "kelly_half_pct": 9.54,
     "monte_carlo_half_kelly": {
-      "p50_dd": 0.7,
-      "p75_dd": 1.0,
-      "p95_dd": 1.5,
-      "p99_dd": 1.9,
+      "p50_dd": 2.6,
+      "p75_dd": 3.5,
+      "p95_dd": 5.4,
+      "p99_dd": 7.1,
       "ruin_pct": 0.0
     }
   },
   "S3_GBP_JPY": {
-    "trades": 150,
-    "win_rate": 50.7,
-    "avg_win_pips": 43.5,
-    "avg_loss_pips": 41.9,
-    "avg_win_loss_ratio": 1.04,
-    "kelly_full_pct": 3.11,
-    "kelly_half_pct": 1.56,
+    "trades": 116,
+    "win_rate": 55.2,
+    "avg_win_pips": 41.9,
+    "avg_loss_pips": 42.0,
+    "avg_win_loss_ratio": 1.0,
+    "kelly_full_pct": 10.18,
+    "kelly_half_pct": 5.09,
+    "monte_carlo_half_kelly": {
+      "p50_dd": 2.1,
+      "p75_dd": 2.8,
+      "p95_dd": 4.2,
+      "p99_dd": 5.3,
+      "ruin_pct": 0.0
+    }
+  },
+  "S8_OB_GBP_USD": {
+    "trades": 84,
+    "win_rate": 40.5,
+    "avg_win_pips": 30.4,
+    "avg_loss_pips": 14.4,
+    "avg_win_loss_ratio": 2.11,
+    "kelly_full_pct": 12.24,
+    "kelly_half_pct": 6.12,
     "monte_carlo_half_kelly": {
       "p50_dd": 0.9,
       "p75_dd": 1.2,
-      "p95_dd": 1.9,
-      "p99_dd": 2.4,
+      "p95_dd": 1.8,
+      "p99_dd": 2.3,
       "ruin_pct": 0.0
     }
   }

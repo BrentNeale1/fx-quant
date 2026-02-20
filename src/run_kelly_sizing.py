@@ -20,24 +20,31 @@ from src.backtester.engine import Backtester
 # Strategy imports
 from src.strategies_pkg.s7_liquidity_sweep import S7_Liquidity_Sweep
 from src.strategies_pkg.s9_london_session import S9_London_Session
-from src.strategies_pkg.s4f_ema_ribbon import S4F_EMA_Ribbon
 from src.strategies_pkg.s3_key_level_breakout import S3_KeyLevel_Breakout
+from src.strategies_pkg.s8_order_block import S8_Order_Block
 
 PROCESSED_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "processed")
 RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "results", "phase2")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
+
+def _s8_tuned():
+    s = S8_Order_Block()
+    s.DISPLACEMENT_ATR = 2.5
+    s.TP1_ATR_MULT = 2.0
+    s.OB_RETEST_WINDOW = 40
+    return s
+
+
 CONFIGS = [
-    {"name": "S7_Tight", "pair": "GBP_JPY", "tf": "H1",
+    {"name": "S7_Tight", "pair": "GBP_JPY", "tf": "H1", "htf_tf": "H1",
      "factory": lambda: S7_Liquidity_Sweep()},
-    {"name": "S9", "pair": "GBP_USD", "tf": "H1",
-     "factory": lambda: S9_London_Session()},
-    {"name": "S9_Filtered", "pair": "GBP_AUD", "tf": "H1",
+    {"name": "S9_Filtered", "pair": "GBP_AUD", "tf": "H1", "htf_tf": "H1",
      "factory": lambda: S9_London_Session(pair="GBP_AUD", filtered=True)},
-    {"name": "S4F", "pair": "EUR_AUD", "tf": "M15",
-     "factory": lambda: S4F_EMA_Ribbon()},
-    {"name": "S3", "pair": "GBP_JPY", "tf": "H1",
+    {"name": "S3", "pair": "GBP_JPY", "tf": "H1", "htf_tf": "H1",
      "factory": lambda: S3_KeyLevel_Breakout()},
+    {"name": "S8_OB", "pair": "GBP_USD", "tf": "M15", "htf_tf": "H1",
+     "factory": lambda: _s8_tuned()},
 ]
 
 N_SIMULATIONS = 1000
@@ -53,14 +60,23 @@ def load_data(pair, tf):
     return compute_all_indicators(df)
 
 
-def run_backtest(cfg):
+def run_backtest(cfg, data_cache):
     pair = cfg["pair"]
     tf = cfg["tf"]
-    data = load_data(pair, tf)
+    htf_tf = cfg["htf_tf"]
+
+    cache_key = f"{pair}_{tf}"
+    if cache_key not in data_cache:
+        data_cache[cache_key] = load_data(pair, tf)
+    data = data_cache[cache_key]
     if data is None:
         return None
 
-    htf_data = data.copy() if tf == "H1" else load_data(pair, "H1")
+    htf_cache_key = f"{pair}_{htf_tf}"
+    if htf_cache_key not in data_cache:
+        data_cache[htf_cache_key] = load_data(pair, htf_tf)
+    htf_data = data_cache[htf_cache_key] if htf_tf != tf else data
+
     strategy = cfg["factory"]()
     bt = Backtester(data=data, strategy=strategy, pair=pair,
                     starting_equity=STARTING_EQUITY, htf_data=htf_data)
@@ -181,17 +197,19 @@ def main():
     print(f"{'='*90}")
 
     all_results = {}
+    data_cache = {}
 
     for cfg in CONFIGS:
         name = cfg["name"]
         pair = cfg["pair"]
+        tf = cfg["tf"]
 
         print(f"\n{'#'*60}")
-        print(f"# {name} / {pair}")
+        print(f"# {name} / {pair} ({tf})")
         print(f"{'#'*60}")
 
         t0 = time.time()
-        trade_log = run_backtest(cfg)
+        trade_log = run_backtest(cfg, data_cache)
         elapsed = time.time() - t0
 
         if trade_log is None or trade_log.empty:
