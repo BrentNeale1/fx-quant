@@ -1,23 +1,65 @@
 {
-  "S7_S3_overlap": {
-    "overlap_count": 21,
-    "same_dir": 21,
+  "S7_S3_signal_overlap": {
+    "overlap_count": 5,
+    "same_dir": 5,
     "opposite_dir": 0,
-    "ratio": 0.169
+    "ratio": 0.065
   },
-  "S9_S9F_temporal": {
-    "s9_trade_days": 275,
-    "s9f_trade_days": 65,
-    "shared_trade_days": 33,
-    "temporal_overlap_ratio": 0.12
+  "pnl_correlation": {
+    "S7_Tight_vs_S9_Filtered": -0.054,
+    "S7_Tight_vs_S3": 0.072,
+    "S7_Tight_vs_S8_OB": 0.055,
+    "S9_Filtered_vs_S3": -0.05,
+    "S9_Filtered_vs_S8_OB": 0.036,
+    "S3_vs_S8_OB": 0.109
+  },
+  "avg_pairwise_correlation": 0.028,
+  "temporal_overlap": {
+    "S7_Tight_vs_S9_Filtered": {
+      "trade_days_a": 38,
+      "trade_days_b": 50,
+      "shared_days": 5,
+      "jaccard_index": 0.06
+    },
+    "S7_Tight_vs_S3": {
+      "trade_days_a": 38,
+      "trade_days_b": 111,
+      "shared_days": 6,
+      "jaccard_index": 0.042
+    },
+    "S7_Tight_vs_S8_OB": {
+      "trade_days_a": 38,
+      "trade_days_b": 51,
+      "shared_days": 2,
+      "jaccard_index": 0.023
+    },
+    "S9_Filtered_vs_S3": {
+      "trade_days_a": 50,
+      "trade_days_b": 111,
+      "shared_days": 11,
+      "jaccard_index": 0.073
+    },
+    "S9_Filtered_vs_S8_OB": {
+      "trade_days_a": 50,
+      "trade_days_b": 51,
+      "shared_days": 7,
+      "jaccard_index": 0.074
+    },
+    "S3_vs_S8_OB": {
+      "trade_days_a": 111,
+      "trade_days_b": 51,
+      "shared_days": 11,
+      "jaccard_index": 0.073
+    }
   },
   "portfolio": {
-    "total_trades": 694,
-    "win_rate_pct": 53.3,
-    "profit_factor": 0.99,
-    "total_pnl_pips": -175.1,
-    "total_pnl_dollars": -23036.66,
-    "max_drawdown_pct": -47.8,
-    "sharpe_ratio": -0.71
+    "total_trades": 289,
+    "win_rate_pct": 54.0,
+    "profit_factor": 1.37,
+    "total_pnl_pips": 1732.1,
+    "total_pnl_dollars": 23424.02,
+    "max_drawdown_pct": -21.06,
+    "sharpe_ratio": 1.29,
+    "expectancy_pips": 5.99
   }
 }
