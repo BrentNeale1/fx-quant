@@ -25,7 +25,6 @@ from src.backtester.engine import Backtester
 # Strategy imports
 from src.strategies_pkg.s7_liquidity_sweep import S7_Liquidity_Sweep
 from src.strategies_pkg.s9_london_session import S9_London_Session
-from src.strategies_pkg.s4f_ema_ribbon import S4F_EMA_Ribbon
 from src.strategies_pkg.s3_key_level_breakout import S3_KeyLevel_Breakout
 
 PROCESSED_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "processed")

@@ -19,7 +19,6 @@ from src.backtester.engine import Backtester
 # Strategy imports
 from src.strategies_pkg.s7_liquidity_sweep import S7_Liquidity_Sweep
 from src.strategies_pkg.s9_london_session import S9_London_Session
-from src.strategies_pkg.s4f_ema_ribbon import S4F_EMA_Ribbon
 from src.strategies_pkg.s3_key_level_breakout import S3_KeyLevel_Breakout
 
 PROCESSED_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "processed")
@@ -49,19 +48,7 @@ SWEEP_CONFIGS = [
             "TP2_ATR_MULT": [2.5, 3.0],
         },
     },
-    {
-        "name": "S9",
-        "pair": "GBP_USD",
-        "tf": "H1",
-        "htf_tf": "H1",
-        "factory": lambda: S9_London_Session(),
-        "param_mode": "setattr",
-        "grid": {
-            "VOLUME_MULT": [1.2, 1.5, 2.0],
-            "SL_ATR_CAP": [2.0, 2.5, 3.0],
-            "ENTRY_END_HOUR": [10, 11],
-        },
-    },
+    # S9/GBP_USD dropped: negative PF across all param combos on IS
     {
         "name": "S9_Filtered",
         "pair": "GBP_AUD",
@@ -75,19 +62,7 @@ SWEEP_CONFIGS = [
             "skip_friday": [True, False],
         },
     },
-    {
-        "name": "S4F",
-        "pair": "EUR_AUD",
-        "tf": "M15",
-        "htf_tf": "H1",
-        "factory": lambda: S4F_EMA_Ribbon(),
-        "param_mode": "setattr",
-        "grid": {
-            "SL_ATR_MULT": [1.5, 2.0, 2.5],
-            "TP_ATR_MULT": [2.5, 3.0, 4.0],
-            "COMPRESSION_ATR_MULT": [0.8, 1.0],
-        },
-    },
+    # S4F/EUR_AUD dropped: overfit — IS PF 1.43 collapses to OOS PF 0.48
     {
         "name": "S3",
         "pair": "GBP_JPY",
