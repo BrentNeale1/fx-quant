@@ -4,75 +4,37 @@
     "timeframe": "H1",
     "years": {
       "2021": {
-        "trades": 34,
-        "wr": 47.1,
-        "pf": 0.47,
-        "pnl_pips": -465.5,
-        "max_dd_pips": -618.3,
-        "expectancy": -13.69
+        "trades": 12,
+        "wr": 66.7,
+        "pf": 1.26,
+        "pnl_pips": 44.0,
+        "max_dd_pips": -76.0,
+        "expectancy": 3.66
       },
       "2022": {
-        "trades": 29,
-        "wr": 58.6,
-        "pf": 0.89,
-        "pnl_pips": -102.1,
-        "max_dd_pips": -412.7,
-        "expectancy": -3.52
+        "trades": 11,
+        "wr": 72.7,
+        "pf": 1.71,
+        "pnl_pips": 163.2,
+        "max_dd_pips": -205.7,
+        "expectancy": 14.84
       },
       "2023": {
-        "trades": 35,
-        "wr": 71.4,
+        "trades": 15,
+        "wr": 73.3,
         "pf": 1.8,
-        "pnl_pips": 558.9,
-        "max_dd_pips": -219.9,
-        "expectancy": 15.97
+        "pnl_pips": 200.1,
+        "max_dd_pips": -73.5,
+        "expectancy": 13.34
       }
     },
     "full": {
-      "trades": 98,
-      "wr": 59.2,
-      "pf": 1.0,
-      "pnl_pips": -8.6,
-      "max_dd_pips": -723.9,
-      "expectancy": -0.09
-    }
-  },
-  "S9_GBP_USD": {
-    "pair": "GBP_USD",
-    "timeframe": "H1",
-    "years": {
-      "2021": {
-        "trades": 138,
-        "wr": 52.2,
-        "pf": 0.71,
-        "pnl_pips": -701.8,
-        "max_dd_pips": -856.6,
-        "expectancy": -5.09
-      },
-      "2022": {
-        "trades": 115,
-        "wr": 51.3,
-        "pf": 0.83,
-        "pnl_pips": -470.0,
-        "max_dd_pips": -1030.5,
-        "expectancy": -4.09
-      },
-      "2023": {
-        "trades": 32,
-        "wr": 68.8,
-        "pf": 1.38,
-        "pnl_pips": 154.8,
-        "max_dd_pips": -132.7,
-        "expectancy": 4.84
-      }
-    },
-    "full": {
-      "trades": 285,
-      "wr": 53.7,
-      "pf": 0.82,
-      "pnl_pips": -1017.0,
-      "max_dd_pips": -1775.8,
-      "expectancy": -3.57
+      "trades": 38,
+      "wr": 71.1,
+      "pf": 1.63,
+      "pnl_pips": 407.2,
+      "max_dd_pips": -310.7,
+      "expectancy": 10.72
     }
   },
   "S9_Filtered_GBP_AUD": {
@@ -80,75 +42,37 @@
     "timeframe": "H1",
     "years": {
       "2021": {
-        "trades": 31,
-        "wr": 45.2,
-        "pf": 0.58,
-        "pnl_pips": -412.3,
-        "max_dd_pips": -535.5,
-        "expectancy": -13.3
-      },
-      "2022": {
-        "trades": 23,
-        "wr": 73.9,
-        "pf": 2.57,
-        "pnl_pips": 544.1,
-        "max_dd_pips": -116.9,
-        "expectancy": 23.65
-      },
-      "2023": {
-        "trades": 12,
-        "wr": 75.0,
-        "pf": 2.98,
-        "pnl_pips": 342.6,
-        "max_dd_pips": -49.6,
-        "expectancy": 28.55
-      }
-    },
-    "full": {
-      "trades": 66,
-      "wr": 60.6,
-      "pf": 1.32,
-      "pnl_pips": 474.3,
-      "max_dd_pips": -561.2,
-      "expectancy": 7.19
-    }
-  },
-  "S4F_EUR_AUD": {
-    "pair": "EUR_AUD",
-    "timeframe": "M15",
-    "years": {
-      "2021": {
-        "trades": 42,
+        "trades": 21,
         "wr": 42.9,
-        "pf": 1.11,
-        "pnl_pips": 57.8,
-        "max_dd_pips": -119.7,
-        "expectancy": 1.38
+        "pf": 0.58,
+        "pnl_pips": -285.3,
+        "max_dd_pips": -374.2,
+        "expectancy": -13.59
       },
       "2022": {
-        "trades": 33,
-        "wr": 60.6,
-        "pf": 1.79,
-        "pnl_pips": 370.0,
-        "max_dd_pips": -183.7,
-        "expectancy": 11.21
+        "trades": 21,
+        "wr": 76.2,
+        "pf": 3.11,
+        "pnl_pips": 584.8,
+        "max_dd_pips": -73.2,
+        "expectancy": 27.85
       },
       "2023": {
-        "trades": 20,
-        "wr": 25.0,
-        "pf": 0.48,
-        "pnl_pips": -254.7,
-        "max_dd_pips": -337.2,
-        "expectancy": -12.74
+        "trades": 9,
+        "wr": 66.7,
+        "pf": 2.26,
+        "pnl_pips": 217.8,
+        "max_dd_pips": -49.6,
+        "expectancy": 24.19
       }
     },
     "full": {
-      "trades": 95,
-      "wr": 45.3,
-      "pf": 1.12,
-      "pnl_pips": 173.0,
-      "max_dd_pips": -337.2,
-      "expectancy": 1.82
+      "trades": 51,
+      "wr": 60.8,
+      "pf": 1.46,
+      "pnl_pips": 517.2,
+      "max_dd_pips": -393.2,
+      "expectancy": 10.14
     }
   },
   "S3_GBP_JPY": {
@@ -156,37 +80,75 @@
     "timeframe": "H1",
     "years": {
       "2021": {
-        "trades": 65,
-        "wr": 46.2,
-        "pf": 0.9,
-        "pnl_pips": -112.6,
-        "max_dd_pips": -345.7,
-        "expectancy": -1.73
+        "trades": 46,
+        "wr": 54.3,
+        "pf": 1.16,
+        "pnl_pips": 101.1,
+        "max_dd_pips": -184.1,
+        "expectancy": 2.2
       },
       "2022": {
-        "trades": 47,
-        "wr": 53.2,
-        "pf": 1.21,
-        "pnl_pips": 262.9,
-        "max_dd_pips": -307.3,
-        "expectancy": 5.59
+        "trades": 38,
+        "wr": 52.6,
+        "pf": 1.27,
+        "pnl_pips": 262.1,
+        "max_dd_pips": -335.7,
+        "expectancy": 6.9
       },
       "2023": {
-        "trades": 38,
-        "wr": 55.3,
-        "pf": 1.07,
-        "pnl_pips": 56.9,
+        "trades": 32,
+        "wr": 59.4,
+        "pf": 1.23,
+        "pnl_pips": 135.5,
         "max_dd_pips": -182.9,
-        "expectancy": 1.5
+        "expectancy": 4.24
       }
     },
     "full": {
-      "trades": 150,
-      "wr": 50.7,
-      "pf": 1.07,
-      "pnl_pips": 203.1,
-      "max_dd_pips": -533.2,
-      "expectancy": 1.35
+      "trades": 116,
+      "wr": 55.2,
+      "pf": 1.23,
+      "pnl_pips": 494.7,
+      "max_dd_pips": -335.7,
+      "expectancy": 4.26
+    }
+  },
+  "S8_OB_GBP_USD": {
+    "pair": "GBP_USD",
+    "timeframe": "M15",
+    "years": {
+      "2021": {
+        "trades": 31,
+        "wr": 29.0,
+        "pf": 0.66,
+        "pnl_pips": -99.2,
+        "max_dd_pips": -164.1,
+        "expectancy": -3.2
+      },
+      "2022": {
+        "trades": 36,
+        "wr": 44.4,
+        "pf": 2.15,
+        "pnl_pips": 322.6,
+        "max_dd_pips": -76.7,
+        "expectancy": 8.96
+      },
+      "2023": {
+        "trades": 17,
+        "wr": 52.9,
+        "pf": 1.59,
+        "pnl_pips": 89.6,
+        "max_dd_pips": -40.6,
+        "expectancy": 5.27
+      }
+    },
+    "full": {
+      "trades": 84,
+      "wr": 40.5,
+      "pf": 1.43,
+      "pnl_pips": 313.0,
+      "max_dd_pips": -164.1,
+      "expectancy": 3.73
     }
   }
 }

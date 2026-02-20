@@ -18,25 +18,32 @@ from src.backtester.engine import Backtester
 # Strategy imports
 from src.strategies_pkg.s7_liquidity_sweep import S7_Liquidity_Sweep
 from src.strategies_pkg.s9_london_session import S9_London_Session
-from src.strategies_pkg.s4f_ema_ribbon import S4F_EMA_Ribbon
 from src.strategies_pkg.s3_key_level_breakout import S3_KeyLevel_Breakout
+from src.strategies_pkg.s8_order_block import S8_Order_Block
 
 PROCESSED_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "data", "processed")
 RESULTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "results", "phase2")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
+
+def _s8_tuned():
+    s = S8_Order_Block()
+    s.DISPLACEMENT_ATR = 2.5
+    s.TP1_ATR_MULT = 2.0
+    s.OB_RETEST_WINDOW = 40
+    return s
+
+
 # Phase 2 strategy-pair configurations
 CONFIGS = [
     {"name": "S7_Tight", "pair": "GBP_JPY", "tf": "H1", "htf_tf": "H1",
      "factory": lambda: S7_Liquidity_Sweep()},
-    {"name": "S9", "pair": "GBP_USD", "tf": "H1", "htf_tf": "H1",
-     "factory": lambda: S9_London_Session()},
     {"name": "S9_Filtered", "pair": "GBP_AUD", "tf": "H1", "htf_tf": "H1",
      "factory": lambda: S9_London_Session(pair="GBP_AUD", filtered=True)},
-    {"name": "S4F", "pair": "EUR_AUD", "tf": "M15", "htf_tf": "H1",
-     "factory": lambda: S4F_EMA_Ribbon()},
     {"name": "S3", "pair": "GBP_JPY", "tf": "H1", "htf_tf": "H1",
      "factory": lambda: S3_KeyLevel_Breakout()},
+    {"name": "S8_OB", "pair": "GBP_USD", "tf": "M15", "htf_tf": "H1",
+     "factory": lambda: _s8_tuned()},
 ]
 
 
