@@ -1,0 +1,65 @@
+{
+  "S7_Tight": {
+    "pair": "GBP_JPY",
+    "timeframe": "H1",
+    "metrics_2025": {
+      "trades": 18,
+      "wr": 55.6,
+      "pf": 0.52,
+      "sharpe": -4.36,
+      "pnl_pips": -293.6,
+      "max_dd_pips": -450.7,
+      "expectancy": -16.31
+    }
+  },
+  "S9_Filtered": {
+    "pair": "GBP_AUD",
+    "timeframe": "H1",
+    "metrics_2025": {
+      "trades": 18,
+      "wr": 55.6,
+      "pf": 0.74,
+      "sharpe": -2.08,
+      "pnl_pips": -112.2,
+      "max_dd_pips": -199.7,
+      "expectancy": -6.23
+    }
+  },
+  "S3": {
+    "pair": "GBP_JPY",
+    "timeframe": "H1",
+    "metrics_2025": {
+      "trades": 35,
+      "wr": 42.9,
+      "pf": 1.05,
+      "sharpe": 0.36,
+      "pnl_pips": 52.2,
+      "max_dd_pips": -498.4,
+      "expectancy": 1.49
+    }
+  },
+  "S8_OB": {
+    "pair": "GBP_USD",
+    "timeframe": "M15",
+    "metrics_2025": {
+      "trades": 19,
+      "wr": 31.6,
+      "pf": 0.84,
+      "sharpe": -1.17,
+      "pnl_pips": -19.9,
+      "max_dd_pips": -103.9,
+      "expectancy": -1.04
+    }
+  },
+  "_portfolio": {
+    "metrics_2025": {
+      "trades": 90,
+      "wr": 45.6,
+      "pf": 0.83,
+      "sharpe": -1.23,
+      "pnl_pips": -373.4,
+      "max_dd_pips": -518.1,
+      "expectancy": -4.15
+    }
+  }
+}
