@@ -49,6 +49,7 @@ class S12_AsianRangeSweep(BaseStrategy):
     TP_RR_MULT = 1.5      # Minimum RR filter
 
     MAX_BARS = 40
+    LOOKBACK_BARS = 60  # How far back to search for Asian session bars
 
     def __init__(self):
         super().__init__()
@@ -63,7 +64,7 @@ class S12_AsianRangeSweep(BaseStrategy):
             return self._asian_range_cache[current_date]
 
         asian_bars = []
-        for i in range(max(0, idx - 60), idx + 1):
+        for i in range(max(0, idx - self.LOOKBACK_BARS), idx + 1):
             bar_time = data.index[i]
             if bar_time.date() != current_date:
                 continue

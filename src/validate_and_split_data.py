@@ -23,6 +23,7 @@ SPLIT_DATE = "2023-09-01"
 
 # Expected timeframe intervals
 EXPECTED_INTERVALS = {
+    "M5": pd.Timedelta(minutes=5),
     "M15": pd.Timedelta(minutes=15),
     "H1": pd.Timedelta(hours=1),
 }
