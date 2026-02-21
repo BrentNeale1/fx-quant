@@ -1,0 +1,118 @@
+{
+  "EUR_USD": {
+    "training": {
+      "trades": 10,
+      "wr": 50.0,
+      "pf": 0.48,
+      "sharpe": -4.88,
+      "pnl_pips": -55.4,
+      "max_dd_pips": -83.8,
+      "expectancy": -5.54
+    },
+    "test_set": {
+      "trades": 7,
+      "wr": 57.1,
+      "pf": 0.65,
+      "sharpe": -2.97,
+      "pnl_pips": -14.6,
+      "max_dd_pips": -29.4,
+      "expectancy": -2.08
+    },
+    "2025": {
+      "trades": 3,
+      "wr": 66.7,
+      "pf": 5.26,
+      "sharpe": 9.57,
+      "pnl_pips": 51.9,
+      "max_dd_pips": 0.0,
+      "expectancy": 17.31
+    }
+  },
+  "GBP_USD": {
+    "training": {
+      "trades": 5,
+      "wr": 40.0,
+      "pf": 1.73,
+      "sharpe": 3.24,
+      "pnl_pips": 31.7,
+      "max_dd_pips": -19.3,
+      "expectancy": 6.34
+    },
+    "test_set": {
+      "trades": 6,
+      "wr": 50.0,
+      "pf": 1.2,
+      "sharpe": 1.28,
+      "pnl_pips": 8.4,
+      "max_dd_pips": -24.3,
+      "expectancy": 1.41
+    },
+    "2025": {
+      "trades": 2,
+      "wr": 50.0,
+      "pf": 0.91,
+      "sharpe": -0.55,
+      "pnl_pips": -2.1,
+      "max_dd_pips": 0.0,
+      "expectancy": -1.06
+    }
+  },
+  "GBP_JPY": {
+    "training": {
+      "trades": 3,
+      "wr": 33.3,
+      "pf": 0.4,
+      "sharpe": -5.03,
+      "pnl_pips": -107.6,
+      "max_dd_pips": -154.7,
+      "expectancy": -35.87
+    },
+    "test_set": {
+      "trades": 0,
+      "wr": 0,
+      "pf": 0,
+      "sharpe": 0,
+      "pnl_pips": 0,
+      "max_dd_pips": 0,
+      "expectancy": 0
+    },
+    "2025": {
+      "trades": 0,
+      "wr": 0,
+      "pf": 0,
+      "sharpe": 0,
+      "pnl_pips": 0,
+      "max_dd_pips": 0,
+      "expectancy": 0
+    }
+  },
+  "GBP_AUD": {
+    "training": {
+      "trades": 0,
+      "wr": 0,
+      "pf": 0,
+      "sharpe": 0,
+      "pnl_pips": 0,
+      "max_dd_pips": 0,
+      "expectancy": 0
+    },
+    "test_set": {
+      "trades": 0,
+      "wr": 0,
+      "pf": 0,
+      "sharpe": 0,
+      "pnl_pips": 0,
+      "max_dd_pips": 0,
+      "expectancy": 0
+    },
+    "2025": {
+      "trades": 0,
+      "wr": 0,
+      "pf": 0,
+      "sharpe": 0,
+      "pnl_pips": 0,
+      "max_dd_pips": 0,
+      "expectancy": 0
+    }
+  }
+}

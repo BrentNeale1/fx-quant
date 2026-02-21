@@ -1,0 +1,118 @@
+{
+  "EUR_USD": {
+    "training": {
+      "trades": 551,
+      "wr": 44.6,
+      "pf": 0.69,
+      "sharpe": -2.42,
+      "pnl_pips": -1338.7,
+      "max_dd_pips": -1454.8,
+      "expectancy": -2.43
+    },
+    "test_set": {
+      "trades": 233,
+      "wr": 42.5,
+      "pf": 0.65,
+      "sharpe": -2.85,
+      "pnl_pips": -486.9,
+      "max_dd_pips": -598.2,
+      "expectancy": -2.09
+    },
+    "2025": {
+      "trades": 252,
+      "wr": 43.7,
+      "pf": 0.64,
+      "sharpe": -2.89,
+      "pnl_pips": -726.5,
+      "max_dd_pips": -757.2,
+      "expectancy": -2.88
+    }
+  },
+  "GBP_USD": {
+    "training": {
+      "trades": 667,
+      "wr": 45.7,
+      "pf": 0.75,
+      "sharpe": -1.89,
+      "pnl_pips": -1635.0,
+      "max_dd_pips": -1778.5,
+      "expectancy": -2.45
+    },
+    "test_set": {
+      "trades": 281,
+      "wr": 38.8,
+      "pf": 0.62,
+      "sharpe": -3.24,
+      "pnl_pips": -804.6,
+      "max_dd_pips": -891.7,
+      "expectancy": -2.86
+    },
+    "2025": {
+      "trades": 249,
+      "wr": 50.2,
+      "pf": 0.89,
+      "sharpe": -0.81,
+      "pnl_pips": -213.7,
+      "max_dd_pips": -303.6,
+      "expectancy": -0.86
+    }
+  },
+  "GBP_JPY": {
+    "training": {
+      "trades": 693,
+      "wr": 42.4,
+      "pf": 0.66,
+      "sharpe": -2.76,
+      "pnl_pips": -3316.1,
+      "max_dd_pips": -3372.9,
+      "expectancy": -4.79
+    },
+    "test_set": {
+      "trades": 343,
+      "wr": 45.8,
+      "pf": 0.72,
+      "sharpe": -2.16,
+      "pnl_pips": -1522.5,
+      "max_dd_pips": -1760.6,
+      "expectancy": -4.44
+    },
+    "2025": {
+      "trades": 292,
+      "wr": 41.8,
+      "pf": 0.65,
+      "sharpe": -2.91,
+      "pnl_pips": -1851.5,
+      "max_dd_pips": -1857.7,
+      "expectancy": -6.34
+    }
+  },
+  "GBP_AUD": {
+    "training": {
+      "trades": 764,
+      "wr": 48.2,
+      "pf": 0.83,
+      "sharpe": -1.29,
+      "pnl_pips": -1783.8,
+      "max_dd_pips": -1985.8,
+      "expectancy": -2.33
+    },
+    "test_set": {
+      "trades": 368,
+      "wr": 48.1,
+      "pf": 0.79,
+      "sharpe": -1.67,
+      "pnl_pips": -922.9,
+      "max_dd_pips": -1222.2,
+      "expectancy": -2.51
+    },
+    "2025": {
+      "trades": 295,
+      "wr": 50.8,
+      "pf": 0.85,
+      "sharpe": -1.05,
+      "pnl_pips": -565.9,
+      "max_dd_pips": -688.6,
+      "expectancy": -1.92
+    }
+  }
+}

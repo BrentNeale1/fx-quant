@@ -438,6 +438,15 @@ def compute_all_indicators(df: pd.DataFrame) -> pd.DataFrame:
         except Exception:
             pass
 
+    # Midnight-reset VWAP (for S19)
+    if len(df) > 0 and hasattr(df.index, "hour"):
+        try:
+            vwap_midnight = session_vwap_bands(df, session_start_hour=0)
+            df["session_vwap_midnight"] = vwap_midnight["session_vwap"]
+            df["vwap_std_midnight"] = vwap_midnight["vwap_std"]
+        except Exception:
+            pass
+
     # Swing points
     df["is_swing_high"] = swing_highs(df)
     df["is_swing_low"] = swing_lows(df)
