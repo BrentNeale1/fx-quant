@@ -1,0 +1,166 @@
+{
+  "S3_GBP_JPY": {
+    "pair": "GBP_JPY",
+    "tf": "H1",
+    "is_metrics": {
+      "trades": 84,
+      "wr": 53.6,
+      "pf": 1.22,
+      "sharpe": 1.26,
+      "pnl_pips": 359.2,
+      "max_dd_pips": -335.7,
+      "expectancy": 4.28
+    },
+    "oos_metrics": {
+      "trades": 32,
+      "wr": 59.4,
+      "pf": 1.23,
+      "sharpe": 1.47,
+      "pnl_pips": 135.5,
+      "max_dd_pips": -182.9,
+      "expectancy": 4.24
+    },
+    "test_metrics": {
+      "trades": 55,
+      "wr": 45.5,
+      "pf": 0.95,
+      "sharpe": -0.36,
+      "pnl_pips": -72.5,
+      "max_dd_pips": -325.7,
+      "expectancy": -1.32
+    },
+    "fwd_metrics": {
+      "trades": 35,
+      "wr": 42.9,
+      "pf": 1.05,
+      "sharpe": 0.36,
+      "pnl_pips": 52.2,
+      "max_dd_pips": -498.4,
+      "expectancy": 1.49
+    },
+    "verdict": "MIXED"
+  },
+  "S3_GBP_USD": {
+    "pair": "GBP_USD",
+    "tf": "H1",
+    "is_metrics": {
+      "trades": 96,
+      "wr": 54.2,
+      "pf": 1.13,
+      "sharpe": 0.86,
+      "pnl_pips": 173.5,
+      "max_dd_pips": -178.6,
+      "expectancy": 1.81
+    },
+    "oos_metrics": {
+      "trades": 23,
+      "wr": 56.5,
+      "pf": 1.01,
+      "sharpe": 0.09,
+      "pnl_pips": 4.9,
+      "max_dd_pips": -123.4,
+      "expectancy": 0.21
+    },
+    "test_metrics": {
+      "trades": 55,
+      "wr": 41.8,
+      "pf": 0.66,
+      "sharpe": -3.02,
+      "pnl_pips": -259.8,
+      "max_dd_pips": -332.2,
+      "expectancy": -4.72
+    },
+    "fwd_metrics": {
+      "trades": 29,
+      "wr": 55.2,
+      "pf": 0.95,
+      "sharpe": -0.39,
+      "pnl_pips": -22.3,
+      "max_dd_pips": -199.9,
+      "expectancy": -0.77
+    },
+    "verdict": "MIXED"
+  },
+  "S3_EUR_USD": {
+    "pair": "EUR_USD",
+    "tf": "H1",
+    "is_metrics": {
+      "trades": 85,
+      "wr": 50.6,
+      "pf": 0.91,
+      "sharpe": -0.68,
+      "pnl_pips": -98.1,
+      "max_dd_pips": -272.6,
+      "expectancy": -1.15
+    },
+    "oos_metrics": {
+      "trades": 32,
+      "wr": 46.9,
+      "pf": 0.89,
+      "sharpe": -0.79,
+      "pnl_pips": -41.2,
+      "max_dd_pips": -171.7,
+      "expectancy": -1.29
+    },
+    "test_metrics": {
+      "trades": 76,
+      "wr": 38.2,
+      "pf": 0.49,
+      "sharpe": -5.11,
+      "pnl_pips": -522.9,
+      "max_dd_pips": -507.4,
+      "expectancy": -6.88
+    },
+    "fwd_metrics": {
+      "trades": 45,
+      "wr": 48.9,
+      "pf": 0.87,
+      "sharpe": -1.01,
+      "pnl_pips": -72.3,
+      "max_dd_pips": -158.4,
+      "expectancy": -1.61
+    },
+    "verdict": "MIXED"
+  },
+  "S3_GBP_AUD": {
+    "pair": "GBP_AUD",
+    "tf": "H1",
+    "is_metrics": {
+      "trades": 95,
+      "wr": 46.3,
+      "pf": 0.81,
+      "sharpe": -1.5,
+      "pnl_pips": -386.0,
+      "max_dd_pips": -587.9,
+      "expectancy": -4.06
+    },
+    "oos_metrics": {
+      "trades": 26,
+      "wr": 53.8,
+      "pf": 0.91,
+      "sharpe": -0.67,
+      "pnl_pips": -55.1,
+      "max_dd_pips": -251.6,
+      "expectancy": -2.12
+    },
+    "test_metrics": {
+      "trades": 60,
+      "wr": 51.7,
+      "pf": 1.27,
+      "sharpe": 1.69,
+      "pnl_pips": 252.9,
+      "max_dd_pips": -133.4,
+      "expectancy": 4.21
+    },
+    "fwd_metrics": {
+      "trades": 45,
+      "wr": 51.1,
+      "pf": 0.82,
+      "sharpe": -1.41,
+      "pnl_pips": -160.3,
+      "max_dd_pips": -322.4,
+      "expectancy": -3.56
+    },
+    "verdict": "MIXED"
+  }
+}
